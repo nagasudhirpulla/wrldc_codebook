@@ -1,13 +1,29 @@
 SELECT
-	rto.*,
+	rto.id,
+	rto.entity_id,
+	rto.element_id,
+	rto.reason_id,
+	rto.shutdownrequest_id,
+	rto.SHUTDOWN_TAG_ID,
+	rto.entity_name AS elementType,
+	rto.SHUT_DOWN_TYPE_NAME,
+	rto.elementname,
+	trunc(rto.outage_date) AS outage_date,
+	rto.outage_time,
+	trunc(rto.revived_date) AS revived_date,
+	rto.revived_time,
 CASE
 		WHEN rto.revived_date IS NULL THEN 'NO'
 		ELSE 'YES'
-	END IS_REVIVED
+	END IS_REVIVED,
+	rto.reason,
+	rto.shutdown_tag,
+	rto.outage_remarks,
+	rto.revival_remarks
 FROM
 	(
 	SELECT
-		outages.*, ent_master.ENTITY_NAME, reas.reason, sd_type.name AS SHUT_DOWN_TYPE_NAME, sd_tag.name AS shutown_tag, to_char(outages.OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || outages.OUTAGE_TIME AS out_date_time
+		outages.*, ent_master.ENTITY_NAME, reas.reason, sd_type.name AS SHUT_DOWN_TYPE_NAME, sd_tag.name AS shutdown_tag, to_char(outages.OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || outages.OUTAGE_TIME AS out_date_time
 	FROM
 		reporting_web_ui_uat.REAL_TIME_OUTAGE outages
 	LEFT JOIN reporting_web_ui_uat.outage_reason reas ON
@@ -20,12 +36,13 @@ FROM
 		sd_type.id = outages.shut_down_type ) rto
 INNER JOIN (
 	SELECT
-		element_id, entity_id, SHUT_DOWN_TYPE, MAX(to_char(OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || OUTAGE_TIME) AS out_date_time
+		element_id, entity_id, MAX(to_char(OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || OUTAGE_TIME) AS out_date_time
 	FROM
 		reporting_web_ui_uat.REAL_TIME_OUTAGE
 	GROUP BY
-		entity_id, ELEMENT_ID, SHUT_DOWN_TYPE) latest_out_info ON
+		entity_id, ELEMENT_ID) latest_out_info ON
 	((latest_out_info.entity_id = rto.entity_id)
 	AND (latest_out_info.element_id = rto.element_id)
-	AND (latest_out_info.SHUT_DOWN_TYPE = rto.SHUT_DOWN_TYPE)
 	AND (latest_out_info.out_date_time = rto.out_date_time))
+ORDER BY
+	rto.out_date_time DESC
