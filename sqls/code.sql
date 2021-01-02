@@ -20,6 +20,7 @@ CREATE TABLE CODE_BOOK.OP_CODE (
 	pwc_outage_type VARCHAR2(100),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP,
+	is_deleted NUMBER(1) default 0 NOT NULL,
 	CHECK (
 		code_type IN (
 			'Generic',
@@ -30,7 +31,8 @@ CREATE TABLE CODE_BOOK.OP_CODE (
 		)
 	),
 	CHECK (is_code_cancelled IN (0, 1)),
-	CHECK (is_deleted_at_src IN (0, 1))
+	CHECK (is_deleted_at_src IN (0, 1)),
+	CHECK (is_deleted IN (0, 1))
 );
 /* trigger for 'updated_at' column */
 CREATE OR REPLACE TRIGGER on_op_code_update BEFORE
