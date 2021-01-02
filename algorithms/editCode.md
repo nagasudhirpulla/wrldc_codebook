@@ -1,11 +1,12 @@
 # Editing a Code Object
+* A code can be edited only if the is_deleted field is false
 
 ## Generic Code
 If the code is a Generic code, just edit the row in the codes table after performing basic checks
 
 ## Element Code
 If the code is an Element code
-* if element id and element type is editied, cross check element info from pwc db
+* if element id and element type is edited, cross check element info from pwc db
 * edit the row in codes table after performing basic checks
 
 ## Approved Element Outage Code

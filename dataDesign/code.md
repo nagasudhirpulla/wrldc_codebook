@@ -76,3 +76,4 @@
 * element_name - string from pwc_db
 * pwc_element_type - string from pwc_db (string w.r.t pwc entity_master)
 * outage_type - string from pwc_db (w.r.t to pwc shutdown_outage_type table)
+* is_deleted - this field will be true if the code object is deleted

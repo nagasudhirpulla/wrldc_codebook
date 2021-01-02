@@ -2,7 +2,7 @@
 
 ## Create Real time Outage
 * create reason id if required and get the required reason id for creation of outage
-* create row in pwc real time outage table after perfoming all checks
+* create row in pwc real time outage table after performing all checks
 
 ## Edit Real time outage
 * do not allow to edit element id and element type
