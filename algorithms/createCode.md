@@ -1,7 +1,11 @@
 # Creating a Code Object
 
 ## Generic Code
-If the code is a Generic code, create a row in the codes table after performing basic checks
+* If the code is a Generic code, create a row in the codes table after performing basic checks
+* code_type will be considered as "Generic"
+* code_issue_time will be considered as present time
+* code_issued_by will be considered as current logged in user
+* 
 
 ## Element Code
 If the code is an Element code

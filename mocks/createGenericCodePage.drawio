@@ -1,0 +1,61 @@
+<mxfile host="65bd71144e" modified="2021-01-02T12:06:33.151Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.51.1 Chrome/83.0.4103.122 Electron/9.3.3 Safari/537.36" etag="eKHAeMLfOEbib2kgnkA_" version="13.10.0" type="embed">
+    <diagram id="RIMZuYeWPh20MSilfxXB" name="Page-1">
+        <mxGraphModel dx="790" dy="567" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Create Generic Code" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;" parent="1" vertex="1">
+                    <mxGeometry x="220" y="22" width="284" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Code" style="strokeWidth=1;html=1;shadow=0;dashed=0;shape=mxgraph.ios.iTextInput;strokeColor=#444444;buttonText=;fontSize=14;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="85" width="123" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;dashed=1;" parent="1" source="4" target="3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="To be entered by user, necessary field" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="268" y="61" width="255" height="41" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Other RLDC codes" style="strokeWidth=1;html=1;shadow=0;dashed=0;shape=mxgraph.ios.iTextInput;strokeColor=#444444;buttonText=;fontSize=14;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="141" width="123" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;dashed=1;" parent="1" source="8" target="6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="To be entered by user, comma separated values" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="268" y="117" width="192" height="41" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Code Description" style="strokeWidth=1;html=1;shadow=0;dashed=0;shape=mxgraph.ios.iTextInput;strokeColor=#444444;buttonText=;fontSize=14;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="209" width="123" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;dashed=1;" parent="1" source="10" target="9" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="To be entered by user, necessary field" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="268" y="185" width="192" height="41" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Code Tags" style="strokeWidth=1;html=1;shadow=0;dashed=0;shape=mxgraph.ios.iTextInput;strokeColor=#444444;buttonText=;fontSize=14;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="281" width="123" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;dashed=1;" parent="1" source="14" target="12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="A multi select widget (like chosen js) that enables user to select tags for the code if required. Tag options will be pre-loaded from db&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="266" y="253" width="342" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="Create Code" style="labelPosition=center;verticalLabelPosition=middle;align=center;html=1;shape=mxgraph.basic.button;dx=10;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="443" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Code execution time" style="strokeWidth=1;html=1;shadow=0;dashed=0;shape=mxgraph.ios.iTextInput;strokeColor=#444444;buttonText=;fontSize=14;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="83" y="353" width="123" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;dashed=1;" parent="1" source="18" target="16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="A datetime input widget that records the code execution time if required" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="266" y="325" width="192" height="72" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
