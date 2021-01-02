@@ -5,7 +5,10 @@
 * code_type will be considered as "Generic"
 * code_issue_time will be considered as present time
 * code_issued_by will be considered as current logged in user
-* 
+* uniqueness of code is currently not being checked
+* code field not null validation will be performed
+* other RLDC codes, if present, will be derived by comma separation
+* code description not null validation will be performed
 
 ## Element Code
 If the code is an Element code
