@@ -33,6 +33,7 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 # User session management setup
 login_manager.init_app(app)
 
+
 @app.route('/')
 def index():
     return render_template('home.html.j2')
@@ -55,8 +56,6 @@ if __name__ == '__main__':
     if serverMode.lower() == 'd':
         hostedApp.run(host="0.0.0.0", port=int(
             appConfig['flaskPort']), debug=True)
-        # app.run(host="0.0.0.0", port=int(
-        #     appConfig['flaskPort']), debug=True)
     else:
         serve(app, host='0.0.0.0', port=int(
             appConfig['flaskPort']), url_prefix=appPrefix, threads=1)

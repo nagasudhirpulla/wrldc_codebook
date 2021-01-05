@@ -1,8 +1,11 @@
 {
     "pwcDbConnStr": "conn",
     "appDbConnStr": "conn",
-    "appPrefix": "code_book",
+    "appPrefix": "/code_book",
     "flaskSecret": "123",
     "mode": "d",
-    "flaskPort": 80
+    "flaskPort": 80,
+    "oauth_app_client_id": "abcd",
+    "oauth_app_client_secret": "",
+    "oauth_provider_discovery_url": ""
 }
