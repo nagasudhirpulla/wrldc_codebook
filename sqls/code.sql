@@ -3,7 +3,7 @@ CREATE TABLE CODE_BOOK.OP_CODES (
 	code_type VARCHAR2(100) NOT NULL,
 	code_issue_time TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,
 	code_str VARCHAR2(200) NOT NULL,
-	other_ldc_codes VARCHAR2(500) NOT NULL,
+	other_ldc_codes VARCHAR2(500),
 	code_description VARCHAR2(750) NOT NULL,
 	code_execution_time TIMESTAMP,
 	code_tags VARCHAR2(500),
