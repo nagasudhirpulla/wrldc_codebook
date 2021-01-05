@@ -1,4 +1,8 @@
 {
     "pwcDbConnStr": "conn",
-    "appDbConnStr": "conn"
+    "appDbConnStr": "conn",
+    "appPrefix": "code_book",
+    "flaskSecret": "123",
+    "mode": "d",
+    "flaskPort": 80
 }
