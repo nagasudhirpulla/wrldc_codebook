@@ -8,3 +8,4 @@ class TestAppConfig(unittest.TestCase):
         """
         appConf = getConfig()
         self.assertTrue("pwcDbConnStr" in appConf)
+        self.assertTrue("appDbConnStr" in appConf)
