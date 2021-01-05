@@ -1,3 +1,4 @@
 {
-    "pwcDbConnStr": "conn"
+    "pwcDbConnStr": "conn",
+    "appDbConnStr": "conn"
 }
