@@ -31,12 +31,12 @@ def insertGenericCode(appDbConnStr, code_issue_time: Optional[dt.datetime],
         dbCur = dbConn.cursor()
 
         # text for sql place holders
-        sqlPlceHldrsTxt = ','.join([':{0}'.format(x+1)
+        sqlPlaceHldrsTxt = ','.join([':{0}'.format(x+1)
                                     for x in range(len(colNames))])
 
         # insert the code
         codeInsSql = 'insert into code_book.op_codes({0}) values ({1})'.format(
-            ','.join(colNames), sqlPlceHldrsTxt)
+            ','.join(colNames), sqlPlaceHldrsTxt)
 
         dbCur.execute(codeInsSql, sqlVals)
 
