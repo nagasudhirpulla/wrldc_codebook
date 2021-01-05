@@ -1,7 +1,14 @@
 # Creating a Code Object
 
 ## Generic Code
-If the code is a Generic code, create a row in the codes table after performing basic checks
+* If the code is a Generic code, create a row in the codes table after performing basic checks
+* code_type will be considered as "Generic"
+* code_issue_time will be considered as present time
+* code_issued_by will be considered as current logged in user
+* uniqueness of code is currently not being checked
+* code field not null validation will be performed
+* other RLDC codes, if present, will be derived by comma separation
+* code description not null validation will be performed
 
 ## Element Code
 If the code is an Element code
@@ -24,4 +31,4 @@ If the code is an Element Outage Code
 If the code is an Element Revival Code
 * cross check real_time_outage id from pwc db and ensure that the revival time is null
 * create a code row after performing all basic checks
-* if execution time is mentioned in the code info, then edit the revial time info and revival remarks for the outage row in pwc real_time_outage table (edit code execution time operation)
+* if execution time is mentioned in the code info, then edit the revival time info and revival remarks for the outage row in pwc real_time_outage table (edit code execution time operation)
