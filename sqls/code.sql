@@ -6,7 +6,7 @@ CREATE TABLE CODE_BOOK.OP_CODES (
 	other_ldc_codes VARCHAR2(500) NOT NULL,
 	code_description VARCHAR2(750) NOT NULL,
 	code_execution_time TIMESTAMP,
-	code_tags VARCHAR2(500) NOT NULL,
+	code_tags VARCHAR2(500),
 	code_issued_by VARCHAR2(500) NOT NULL,
 	is_code_cancelled NUMBER(1) default 0 NOT NULL,
 	pwc_sd_req_id NUMBER,
