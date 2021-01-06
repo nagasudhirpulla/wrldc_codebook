@@ -1,0 +1,53 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Generic Code{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Create a Code</h3>
+{% from "_formhelpers.html.j2" import render_field %}
+<form method=post>
+  <dl>
+    {{ render_field(form.code) }}
+    {{ render_field(form.codeDescription) }}
+    {{ render_field(form.otherLdcCodes) }}
+    {{ render_field(form.codeIssuedTo) }}
+    {{ render_field(form.codeTags) }}
+    {# {{ render_field(form.codeExecDate, class="datetimepicker") }} #}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+<link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+<script>
+jQuery(document).ready(function($) {
+    if (window.jQuery().datetimepicker) {
+        $('.datetimepicker').datetimepicker({
+            // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation
+            // Formats
+            // follow MomentJS docs: https://momentjs.com/docs/#/displaying/format/
+            format: 'YYYY-MM-DD HH:mm',
+            
+            // Your Icons
+            // as Bootstrap 4 is not using Glyphicons anymore
+            icons: {
+                time: 'fa fa-clock',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-check',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -3,6 +3,7 @@ This is the web server that acts as a service that creates outages raw data
 '''
 from src.appConfig import getConfig
 from src.routeControllers.oauth import login_manager, oauthPage
+from src.routeControllers.genericCode import genericCodePage
 from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
 from flask import Flask, request, jsonify, render_template
 from waitress import serve
@@ -44,6 +45,7 @@ app.register_error_handler(401, page_unauthorized)
 app.register_error_handler(403, page_forbidden)
 app.register_error_handler(404, page_not_found)
 app.register_blueprint(oauthPage, url_prefix='/oauth')
+app.register_blueprint(genericCodePage, url_prefix='/genericCode')
 
 hostedApp = Flask(__name__)
 

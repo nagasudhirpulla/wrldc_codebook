@@ -1,1 +1,21 @@
 <!-- Nav Item - Dashboard -->
+{% if user %}
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item text-uppercase">
+        <a class="nav-link" href='#'>
+            <i class="fas fa-th-large"></i>
+            <span>Web Dashboard</span>
+        </a>
+    </li>
+{% endif %}
+<!-- Nav Item - Dashboard -->
+<li class="nav-item text-uppercase">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseGeneric" aria-expanded="false" aria-controls="collapseGeneric">
+        <span>Generic Code</span>
+    </a>
+    <div id="collapseGeneric" class="collapse" aria-labelledby="headingGeneric" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ url_for('genericCode.create') }}">Create Generic Code</a>
+        </div>
+    </div>
+</li>
