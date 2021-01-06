@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from wtforms import Form, StringField, validators, DateTimeField
 from src.repos.codes.codesRepo import CodesRepo
 from src.appConfig import getConfig
+from src.security.decorators import role_required, roles_required
 
 genericCodePage = Blueprint('genericCode', __name__,
                             template_folder='templates')
@@ -21,6 +22,7 @@ class CreateGenericCodeForm(Form):
     #                              validators.DataRequired()])
 
 @genericCodePage.route('/create', methods=['GET', 'POST'])
+@role_required('code_book_editor')
 def create():
     form = CreateGenericCodeForm(request.form)
     if request.method == 'POST' and form.validate():
