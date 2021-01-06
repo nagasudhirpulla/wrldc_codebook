@@ -18,7 +18,7 @@ class CodesRepo():
     def insertGenericCode(self, code_issue_time: dt.datetime,
                           code_str: str, other_ldc_codes: str,
                           code_description: str, code_execution_time: dt.datetime,
-                          code_tags: str, code_issued_by: str) -> bool:
+                          code_tags: str, code_issued_by: str, code_issued_to: str) -> bool:
         """inserts a generic code into the app db
         Returns:
             bool: returns true if process is ok
@@ -26,5 +26,5 @@ class CodesRepo():
         isInsertSuccess = insertGenericCode(self.appDbConnStr, code_issue_time,
                                             code_str, other_ldc_codes,
                                             code_description, code_execution_time,
-                                            code_tags, code_issued_by)
+                                            code_tags, code_issued_by, code_issued_to)
         return isInsertSuccess

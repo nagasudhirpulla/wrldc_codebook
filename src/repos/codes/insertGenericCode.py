@@ -6,7 +6,7 @@ from typing import Optional, Union
 def insertGenericCode(appDbConnStr, code_issue_time: Optional[dt.datetime],
                       code_str: str, other_ldc_codes: str,
                       code_description: str, code_execution_time: dt.datetime,
-                      code_tags: str, code_issued_by: str) -> bool:
+                      code_tags: str, code_issued_by: str, code_issued_to: str) -> bool:
     """inserts a generic code into the app db
     Returns:
         bool: returns true if process is ok
@@ -18,7 +18,7 @@ def insertGenericCode(appDbConnStr, code_issue_time: Optional[dt.datetime],
     try:
         # column names of the raw data table
         colNames = ["code_type", "code_issue_time", "code_str", "other_ldc_codes",
-                    "code_description", "code_execution_time", "code_tags", "code_issued_by"]
+                    "code_description", "code_execution_time", "code_tags", "code_issued_by", "code_issued_to"]
 
         code_type = "Generic"
 
@@ -26,13 +26,13 @@ def insertGenericCode(appDbConnStr, code_issue_time: Optional[dt.datetime],
             code_issue_time = dt.datetime.now()
 
         sqlVals = [code_type, code_issue_time, code_str, other_ldc_codes,
-                   code_description, code_execution_time, code_tags, code_issued_by]
+                   code_description, code_execution_time, code_tags, code_issued_by, code_issued_to]
         # get cursor for raw data table
         dbCur = dbConn.cursor()
 
         # text for sql place holders
         sqlPlaceHldrsTxt = ','.join([':{0}'.format(x+1)
-                                    for x in range(len(colNames))])
+                                     for x in range(len(colNames))])
 
         # insert the code
         codeInsSql = 'insert into code_book.op_codes({0}) values ({1})'.format(

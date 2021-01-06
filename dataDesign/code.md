@@ -15,6 +15,7 @@
 * Code execution time - datetime
 * Code Tags - string (like FTC, Violation message etc. Tags master table will be present)
 * Code issued by - person id
+* Code issued to - array of strings
 * Is code cancelled - yes/no (boolean)
 
 ## Extra attributes for code issued for an approved outage - Approved Outage Code

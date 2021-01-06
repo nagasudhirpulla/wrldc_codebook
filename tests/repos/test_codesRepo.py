@@ -17,11 +17,11 @@ class TestCodesRepo(unittest.TestCase):
         isSuccess = cRepo.insertGenericCode(
             code_issue_time=None, code_str="TEST_01", other_ldc_codes=None,
             code_description="test description", code_execution_time=None,
-            code_tags="TESTING", code_issued_by="NA")
+            code_tags="TESTING", code_issued_by="NA", code_issued_to="NA")
         self.assertTrue(isSuccess)
         # with execution time
         isSuccess = cRepo.insertGenericCode(
             code_issue_time=None, code_str="TEST_01", other_ldc_codes=None,
             code_description="test description", code_execution_time=dt.datetime.now(),
-            code_tags="TESTING", code_issued_by="NA")
+            code_tags="TESTING", code_issued_by="NA", code_issued_to="NA")
         self.assertTrue(isSuccess)

@@ -8,6 +8,7 @@ CREATE TABLE CODE_BOOK.OP_CODES (
 	code_execution_time TIMESTAMP,
 	code_tags VARCHAR2(500),
 	code_issued_by VARCHAR2(500) NOT NULL,
+	code_issued_to VARCHAR2(500) NOT NULL,
 	is_code_cancelled NUMBER(1) default 0 NOT NULL,
 	pwc_sd_req_id NUMBER,
 	pwc_rto_id NUMBER(38, 0),
