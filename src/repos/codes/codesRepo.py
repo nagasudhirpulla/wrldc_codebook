@@ -37,7 +37,7 @@ class CodesRepo():
             PWC_ELEMENT_ID, PWC_ELEMENT_TYPE_ID, PWC_OUTAGE_TYPE_ID, 
             PWC_ELEMENT_NAME, PWC_ELEMENT_TYPE, PWC_OUTAGE_TYPE, CREATED_AT, 
             UPDATED_AT, CODE_ISSUED_TO) from code_book.op_codes where is_deleted=0 
-            and code_issue_time between :1 and :2
+            and code_issue_time between :1 and :2 order by code_issue_time desc
         """
         targetColumns = ['ID', ' CODE_TYPE', ' CODE_ISSUE_TIME', ' CODE_STR', ' OTHER_LDC_CODES',
                          'CODE_DESCRIPTION', ' CODE_EXECUTION_TIME', ' CODE_TAGS', ' CODE_ISSUED_BY',
