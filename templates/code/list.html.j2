@@ -19,7 +19,7 @@
 </form>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
-<table id="displayTable" class="display table table-bordered table-hover table-responsive-md" style="width:100%">
+<table id="displayTable" class="display table table-bordered table-hover table-responsive">
     <thead>
         <tr>
             <th>Code</th>
@@ -45,6 +45,11 @@
             <td>{{item.codeDesc}}</td>
             <td>{{item.codeIssuedBy}}</td>
             <td>{{item.codeExecTime}}</td>
+            <td style="max-width:2em;">
+                <a href="#">Edit</a>
+                <span>|</span>
+                <a href="#">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -111,7 +116,7 @@
             padding: 2px;
             box-sizing: border-box;
             font-size: small;
-            width: 100%
+            width: 100%;
         }
     </style>
 {% endblock %}
