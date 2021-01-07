@@ -3,7 +3,7 @@ import datetime as dt
 from typing import Optional, Union
 
 
-def insertGenericCode(appDbConnStr, code_issue_time: Optional[dt.datetime],
+def insertGenericCode(appDbConnStr:str, code_issue_time: Optional[dt.datetime],
                       code_str: str, other_ldc_codes: str,
                       code_description: str, code_execution_time: dt.datetime,
                       code_tags: str, code_issued_by: str, code_issued_to: str) -> bool:
