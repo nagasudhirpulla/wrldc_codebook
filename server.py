@@ -17,7 +17,7 @@ import os
 import pandas as pd
 
 # set this variable since we are currently not running this app on SSL
-# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)   
 
