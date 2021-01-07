@@ -7,63 +7,70 @@
 
 {% block content %}
 <h3>View Codes</h3>
-{% from "_formhelpers.html.j2" import render_field %}
-<form method=post>
-  <span>{{form.startDate.label}}</span>
-  {{form.startDate(type="date")}}
+<div>
+    <form method="post">
+    <span>{{form.startDate.label}}</span>
+    {{form.startDate(type="date")}}
 
-  <span class="ml-3">{{form.endDate.label}}</span>
-  {{form.endDate(type="date")}}
-  
-  <input class="ml-3" type='submit' value='Fetch data'/>
-</form>
+    <span class="ml-3">{{form.endDate.label}}</span>
+    {{form.endDate(type="date")}}
+    
+    <input class="ml-3 btn btn-sm btn-success" type="submit" value="Fetch data"/>
+    <br/>
+    </form>
+</div>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
 <table id="displayTable" class="display table table-bordered table-hover table-responsive">
     <thead>
         <tr>
+            <th>Issued Time</th>
             <th>Code</th>
             <th>Code Type</th>
-            <th>Issued Time</th>
             <th>Issued To</th>
             <th>Element Name</th>
             <th>Element Type</th>
             <th>Description</th>
             <th>Issued By</th>
             <th>Execution Time</th>
+            <th>Tags</th>
+            <th></th>
         </tr>
     </thead>    
     <tbody>
         {% for item in data['codes'] %}
         <tr>
+            <td>{{item.codeIssueTime}}</td>
             <td>{{item.codeStr}}</td>
             <td>{{item.codeType}}</td>
-            <td>{{item.codeIssueTime}}</td>
             <td>{{item.codeIssuedTo}}</td>
             <td>{{item.pwcElName}}</td>
             <td>{{item.pwcElType}}</td>
             <td>{{item.codeDesc}}</td>
             <td>{{item.codeIssuedBy}}</td>
             <td>{{item.codeExecTime}}</td>
+            <td>{{item.codeTags}}</td>
             <td style="max-width:2em;">
                 <a href="#">Edit</a>
                 <span>|</span>
-                <a href="#">Delete</a>
+                <a href="{{ url_for('code.delete', codeId=item.id) }}">Delete</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
     <tfoot>
         <tr>
+            <th>Issued Time</th>
             <th>Code</th>
             <th>Code Type</th>
-            <th>Issued Time</th>
             <th>Issued To</th>
             <th>Element Name</th>
             <th>Element Type</th>
             <th>Description</th>
             <th>Issued By</th>
             <th>Execution Time</th>
+            <th>Tags</th>
+            <th></th>
         </tr>
     </tfoot>
 </table>
@@ -92,7 +99,6 @@
             "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
             "pageLength": 50,
             dom: 'Bfrtip',
-            "scrollX": false,
             "order": [[0, "asc"]],
             buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
         });

@@ -2,7 +2,9 @@ import cx_Oracle
 import datetime as dt
 from src.repos.codes.insertGenericCode import insertGenericCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
-from typing import List
+from src.repos.codes.getCodeById import getCodeById
+from src.repos.codes.deleteCode import deleteCode
+from typing import List, Optional
 from src.typeDefs.code import ICode
 
 
@@ -43,3 +45,24 @@ class CodesRepo():
             List[ICode]: list of code objects
         """
         return getCodesBetweenDates(self.appDbConnStr, startDt, endDt)
+
+    def getCodeById(self, codeId: int) -> Optional[ICode]:
+        """fetches code object by id
+
+        Args:
+            codeId (int): [description]
+
+        Returns:
+            Optional[ICode]: code object
+        """
+        return getCodeById(self.appDbConnStr, codeId)
+
+    def deleteCode(self, codeId: int) -> bool:
+        """delete a code with id
+
+        Args:
+            codeId (int): [description]
+        Returns:
+            bool: returns true if code is deleted successfully
+        """
+        return deleteCode(self.appDbConnStr, codeId)

@@ -30,3 +30,19 @@ def list():
         codes = cRepo.getCodesBetweenDates(
             startDt=todayDt, endDt=todayDt)
     return render_template('code/list.html.j2', form=form, data={'codes': codes})
+
+@codePage.route('/delete/<codeId>', methods=['GET', 'POST'])
+@roles_required(['code_book_editor'])
+def delete(codeId:int):
+    appConf = getConfig()
+    cRepo = CodesRepo(appConf['appDbConnStr'])
+    if request.method == 'POST':
+        isSuccess = cRepo.deleteCode(codeId)
+        if isSuccess:
+            flash('Successfully deleted the code', category='success')
+            return redirect(url_for('code.list'))
+        else:
+            flash('Could not delete the code', category='error')
+    else:
+        code = cRepo.getCodeById(codeId)
+    return render_template('code/delete.html.j2', data={'code': code})

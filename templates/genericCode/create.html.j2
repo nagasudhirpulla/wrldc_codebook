@@ -8,7 +8,7 @@
 {% block content %}
 <h3>Create a Code</h3>
 {% from "_formhelpers.html.j2" import render_field %}
-<form method=post>
+<form method="post">
   <dl>
     {{ render_field(form.code) }}
     {{ render_field(form.codeDescription) }}

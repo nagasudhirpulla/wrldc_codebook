@@ -1,0 +1,17 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Delete a Code{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Delete a Code</h3>
+<form method="post">
+  <h3>Are you sure you want to delete the code?</h3>
+  <p><input type="submit" value="Delete Code" class="btn btn-sm btn-danger"/>
+</form>
+<pre style="white-space:pre-wrap;word-break:break-word;">{{ data.code|safe }}</pre>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

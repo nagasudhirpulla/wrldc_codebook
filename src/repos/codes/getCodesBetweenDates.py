@@ -93,6 +93,7 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
             "codeDesc": codeDesc,
             "codeExecTime": codeExecTime,
             "codeIssuedBy": codeIssuedBy,
+            "codeTags": codeTags,
             "isCodeCancelled": isCodeCancelled,
             "pwcSdReqId": pwcSdReqId,
             "isDelAtSrc": isDelAtSrc,
