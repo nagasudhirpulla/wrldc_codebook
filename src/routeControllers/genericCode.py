@@ -34,7 +34,7 @@ def create():
             code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data)
         if isSuccess:
             flash('Successfully created the code - {0}'.format(form.code.data), category='success')
-            return redirect(url_for('index'))
+            return redirect(url_for('code.list'))
         else:
             flash('Could not create the code - {0}'.format(form.code.data), category='error')
     return render_template('genericCode/create.html.j2', form=form)
