@@ -39,7 +39,7 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
 
     if (False in [(col in targetColumns) for col in colNames]):
         # all desired columns not fetched, hence return empty
-        return []
+        return None
 
     # fetch all rows
     dbRows = dbCur.fetchall()
