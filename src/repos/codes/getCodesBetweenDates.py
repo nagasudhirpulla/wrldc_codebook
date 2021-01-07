@@ -26,7 +26,7 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
             select {0}
             from code_book.op_codes 
             where is_deleted=0 
-            and TRUNC(code_issue_time) between :1 and :2 
+            and TRUNC(code_issue_time) between TRUNC(:1) and TRUNC(:2)
             order by code_issue_time desc
         """.format(','.join(targetColumns))
 

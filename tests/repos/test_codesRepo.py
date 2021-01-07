@@ -1,12 +1,12 @@
 import unittest
-from src.appConfig import getConfig
+from src.appConfig import initAppConfig
 from src.repos.codes.codesRepo import CodesRepo
 import datetime as dt
 
 
 class TestCodesRepo(unittest.TestCase):
     def setUp(self):
-        self.appConf = getConfig()
+        self.appConf = initAppConfig()
 
     def test_createGenericCode(self) -> None:
         """tests the function that gets creates generic code

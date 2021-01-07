@@ -1,0 +1,29 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}View Codes{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>View Codes</h3>
+{% from "_formhelpers.html.j2" import render_field %}
+<form method=post>
+  <span>{{form.startDate.label}}</span>
+  {{form.startDate(type="date")}}
+
+  <span class="ml-3">{{form.endDate.label}}</span>
+  {{form.endDate(type="date")}}
+  
+  <input class="ml-3" type='submit' value='Fetch data'/>
+</form>
+<p>{{ data.codes|safe }}</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+jQuery(document).ready(function($) {
+    
+});
+</script>
+{% endblock %}
