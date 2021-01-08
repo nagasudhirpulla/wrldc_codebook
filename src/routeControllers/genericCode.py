@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from wtforms import Form, StringField, validators, DateTimeField
+from wtforms import Form, StringField, validators, DateTimeField, BooleanField
 from src.repos.codes.codesRepo import CodesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
@@ -21,6 +21,7 @@ class CreateGenericCodeForm(Form):
     # codeExecDate = DateTimeField('Code Execution Date-Time', format='%Y-%m-%d %H:%M', validators=[
     #                              validators.DataRequired()])
 
+
 @genericCodePage.route('/create', methods=['GET', 'POST'])
 @role_required('code_book_editor')
 def create():
@@ -33,8 +34,10 @@ def create():
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data)
         if isSuccess:
-            flash('Successfully created the code - {0}'.format(form.code.data), category='success')
+            flash(
+                'Successfully created the code - {0}'.format(form.code.data), category='success')
             return redirect(url_for('code.list'))
         else:
-            flash('Could not create the code - {0}'.format(form.code.data), category='error')
+            flash(
+                'Could not create the code - {0}'.format(form.code.data), category='error')
     return render_template('genericCode/create.html.j2', form=form)

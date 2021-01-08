@@ -1,11 +1,11 @@
 import cx_Oracle
 import datetime as dt
 from typing import Optional, List, Tuple, Any
-from src.repos.codes.codesRepo import CodesRepo
+from src.repos.codes.getCodeById import getCodeById
 from src.typeDefs.code import ICode
 
 
-def editGenericCode(appDbConnStr: str, code_id: int, code_issue_time: Optional[dt.datetime],
+def editGenericCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
                     code_str: str, other_ldc_codes: str,
                     code_description: str, code_execution_time: dt.datetime,
                     code_tags: str, code_issued_by: str, code_issued_to: str, is_code_cancelled: bool) -> bool:
@@ -13,8 +13,7 @@ def editGenericCode(appDbConnStr: str, code_id: int, code_issue_time: Optional[d
     Returns:
         bool: returns true if process is ok
     """
-    cRepo = CodesRepo(appDbConnStr)
-    code: ICode = cRepo.getCodeById(code_id)
+    code: ICode = getCodeById(appDbConnStr, codeId)
 
     changedInfo: List[Tuple[str, Any]] = []
 
@@ -63,18 +62,18 @@ def editGenericCode(appDbConnStr: str, code_id: int, code_issue_time: Optional[d
     dbConn = cx_Oracle.connect(appDbConnStr)
 
     try:
-        sqlSetString = ','.join(["{0}={1}".format(iInd+1, cInf[0])
+        sqlSetString = ','.join(["{0}=:{1}".format(cInf[0], iInd+1)
                                  for iInd, cInf in enumerate(changedInfo)])
 
         # get cursor for raw data table
         dbCur = dbConn.cursor()
 
         # edit the code
-        codeEditSql = 'update code_book.op_codes set {0} where id={1}'.format(
+        codeEditSql = 'update code_book.op_codes set {0} where id=:{1}'.format(
             sqlSetString, len(changedInfo)+1)
 
         sqlVals: List[Any] = [cInf[1] for cInf in changedInfo]
-        sqlVals.append(code_id)
+        sqlVals.append(codeId)
 
         dbCur.execute(codeEditSql, sqlVals)
 

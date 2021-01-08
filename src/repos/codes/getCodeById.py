@@ -92,6 +92,7 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
         "codeDesc": codeDesc,
         "codeExecTime": codeExecTime,
         "codeIssuedBy": codeIssuedBy,
+        "codeTags": codeTags,
         "isCodeCancelled": isCodeCancelled,
         "pwcSdReqId": pwcSdReqId,
         "isDelAtSrc": isDelAtSrc,

@@ -1,6 +1,6 @@
-import cx_Oracle
 import datetime as dt
 from src.repos.codes.insertGenericCode import insertGenericCode
+from src.repos.codes.editGenericCode import editGenericCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.deleteCode import deleteCode
@@ -66,3 +66,29 @@ class CodesRepo():
             bool: returns true if code is deleted successfully
         """
         return deleteCode(self.appDbConnStr, codeId)
+
+    def editGenericCode(self, codeId: int, code_issue_time: Optional[dt.datetime],
+                        code_str: str, other_ldc_codes: str,
+                        code_description: str, code_execution_time: dt.datetime,
+                        code_tags: str, code_issued_by: str, code_issued_to: str, is_code_cancelled: bool) -> bool:
+        """edit a generic code
+
+        Args:
+            codeId (int): [description]
+            code_issue_time (Optional[dt.datetime]): [description]
+            code_str (str): [description]
+            other_ldc_codes (str): [description]
+            code_description (str): [description]
+            code_execution_time (dt.datetime): [description]
+            code_tags (str): [description]
+            code_issued_by (str): [description]
+            code_issued_to (str): [description]
+            is_code_cancelled (bool): [description]
+
+        Returns:
+            bool: return true if edit is success
+        """                        
+        return editGenericCode(self.appDbConnStr, codeId, code_issue_time,
+                               code_str, other_ldc_codes,
+                               code_description, code_execution_time,
+                               code_tags, code_issued_by, code_issued_to, is_code_cancelled)
