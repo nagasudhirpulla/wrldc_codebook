@@ -25,11 +25,13 @@
     <thead>
         <tr>
             <th>Issued Time</th>
-            <th>Code</th>
             <th>Code Type</th>
+            <th>Code</th>
+            <th>Other LDC Codes</th>
             <th>Issued To</th>
             <th>Element Name</th>
             <th>Element Type</th>
+            <th>Outage Type</th>
             <th>Description</th>
             <th>Issued By</th>
             <th>Execution Time</th>
@@ -39,17 +41,19 @@
     </thead>    
     <tbody>
         {% for item in data['codes'] %}
-        <tr>
+        <tr {% if item.isCodeCancelled %} class="cancelledCode" {% endif %}>
             <td>{{item.codeIssueTime}}</td>
-            <td>{{item.codeStr}}</td>
             <td>{{item.codeType}}</td>
+            <td>{{item.codeStr}}</td>
+            <td>{{item.otherLdcCodes if item.otherLdcCodes}}</td>
             <td>{{item.codeIssuedTo}}</td>
-            <td>{{item.pwcElName}}</td>
-            <td>{{item.pwcElType}}</td>
+            <td>{{item.pwcElName if item.pwcElName}}</td>
+            <td>{{item.pwcElType if item.pwcElType}}</td>
+            <td>{{item.pwcOutageType if item.pwcOutageType}}</td>
             <td>{{item.codeDesc}}</td>
             <td>{{item.codeIssuedBy}}</td>
-            <td>{{item.codeExecTime}}</td>
-            <td>{{item.codeTags}}</td>
+            <td>{{item.codeExecTime if item.codeExecTime}}</td>
+            <td>{{item.codeTags if item.codeTags}}</td>
             <td style="max-width:2em;">
                 <a href="{{ url_for('code.edit', codeId=item.id) }}">Edit</a>
                 <span>|</span>
@@ -61,11 +65,13 @@
     <tfoot>
         <tr>
             <th>Issued Time</th>
-            <th>Code</th>
             <th>Code Type</th>
+            <th>Code</th>
+            <th>Other LDC Codes</th>
             <th>Issued To</th>
             <th>Element Name</th>
             <th>Element Type</th>
+            <th>Outage Type</th>
             <th>Description</th>
             <th>Issued By</th>
             <th>Execution Time</th>
@@ -123,6 +129,9 @@
             box-sizing: border-box;
             font-size: small;
             width: 100%;
+        }
+        tr.cancelledCode{
+            text-decoration: line-through;
         }
     </style>
 {% endblock %}
