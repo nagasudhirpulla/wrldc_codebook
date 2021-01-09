@@ -16,5 +16,5 @@ class EditGenericCodeForm(Form):
     codeExecTime = DateTimeField(
         'Execution Time', format='%Y-%m-%d %H:%M', validators=[validators.Optional()])
     codeIssuedBy = StringField(
-        'Code Issued By', [validators.Length(min=0, max=500)])
+        'Code Issued By', validators=[validators.DataRequired(),validators.Length(min=0, max=500)])
     isCodeCancelled = BooleanField("Code Cancelled")
