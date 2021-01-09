@@ -10,10 +10,12 @@ def deleteCode(appDbConnStr: str, codeId: int) -> bool:
     Returns:
         bool: returns true if code is deleted successfully
     """
-    # get connection with application db
-    dbConn = cx_Oracle.connect(appDbConnStr)
+    dbConn = None
+    dbCur = None
     isDeleteSuccess = True
     try:
+        # get connection with application db
+        dbConn = cx_Oracle.connect(appDbConnStr)
         # get cursor
         dbCur = dbConn.cursor()
 
@@ -26,7 +28,8 @@ def deleteCode(appDbConnStr: str, codeId: int) -> bool:
         print(err)
     finally:
         # closing database cursor and connection
-        if dbConn is not None:
+        if dbCur is not None:
             dbCur.close()
-        dbConn.close()
+        if dbConn is not None:
+            dbConn.close()
     return isDeleteSuccess

@@ -28,27 +28,42 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
             where id=:1
         """.format(','.join(targetColumns))
 
-    # get connection with raw data table
-    dbConn = cx_Oracle.connect(appDbConnStr)
-
-    # get cursor and execute fetch sql
-    dbCur = dbConn.cursor()
-    dbCur.execute(codesFetchSql, (codeId,))
-
-    colNames = [row[0] for row in dbCur.description]
-
-    if (False in [(col in targetColumns) for col in colNames]):
-        # all desired columns not fetched, hence return empty
-        return None
-
-    # fetch all rows
-    dbRows = dbCur.fetchall()
-
     # initialise code object
     code: Optional[ICode] = None
+    colNames = []
+    dbRows = []
+    dbConn = None
+    dbCur = None
+    try:
+        # get connection with raw data table
+        dbConn = cx_Oracle.connect(appDbConnStr)
+
+        # get cursor and execute fetch sql
+        dbCur = dbConn.cursor()
+        dbCur.execute(codesFetchSql, (codeId,))
+
+        colNames = [row[0] for row in dbCur.description]
+
+        # fetch all rows
+        dbRows = dbCur.fetchall()
+    except Exception as err:
+        dbRows = []
+        print('Error while creation of fetching code by Id')
+        print(err)
+    finally:
+        # closing database cursor and connection
+        if dbCur is not None:
+            dbCur.close()
+        if dbConn is not None:
+            dbConn.close()
+    
+    if (False in [(col in targetColumns) for col in colNames]):
+            # all desired columns not fetched, hence return empty
+            return None
+    
     if len(dbRows) == 0:
         return code
-    
+
     row = dbRows[0]
     id: ICode["id"] = row[colNames.index('ID')]
     codeType: ICode["codeType"] = row[colNames.index('CODE_TYPE')]

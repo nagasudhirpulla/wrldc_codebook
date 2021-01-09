@@ -30,24 +30,38 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
             order by code_issue_time desc
         """.format(','.join(targetColumns))
 
-    # get connection with raw data table
-    dbConn = cx_Oracle.connect(appDbConnStr)
+    # initialise codes to be returned
+    codes: List[ICode] = []
+    colNames = []
+    dbRows = []
+    dbConn = None
+    dbCur = None
+    try:
+        # get connection with raw data table
+        dbConn = cx_Oracle.connect(appDbConnStr)
 
-    # get cursor and execute fetch sql
-    dbCur = dbConn.cursor()
-    dbCur.execute(codesFetchSql, (startDt, endDt))
+        # get cursor and execute fetch sql
+        dbCur = dbConn.cursor()
+        dbCur.execute(codesFetchSql, (startDt, endDt))
 
-    colNames = [row[0] for row in dbCur.description]
+        colNames = [row[0] for row in dbCur.description]
+
+        # fetch all rows
+        dbRows = dbCur.fetchall()
+    except Exception as err:
+        dbRows = []
+        print('Error while creation of fetching codes between dates')
+        print(err)
+    finally:
+        # closing database cursor and connection
+        if dbCur is not None:
+            dbCur.close()
+        if dbConn is not None:
+            dbConn.close()
 
     if (False in [(col in targetColumns) for col in colNames]):
         # all desired columns not fetched, hence return empty
         return []
-
-    # fetch all rows
-    dbRows = dbCur.fetchall()
-
-    # initialise codes to be returned
-    codes: List[ICode] = []
 
     # iterate through each row to populate result outage rows
     for row in dbRows:
@@ -60,7 +74,8 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
             'OTHER_LDC_CODES')]
         codeIssuedTo: ICode["codeIssuedTo"] = row[colNames.index(
             'CODE_ISSUED_TO')]
-        codeDesc: ICode["codeDesc"] = row[colNames.index('CODE_DESCRIPTION')]
+        codeDesc: ICode["codeDesc"] = row[colNames.index(
+            'CODE_DESCRIPTION')]
         codeExecTime: ICode["codeExecTime"] = row[colNames.index(
             'CODE_EXECUTION_TIME')]
         codeIssuedBy: ICode["codeIssuedBy"] = row[colNames.index(
@@ -68,7 +83,8 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
         codeTags: ICode["codeTags"] = row[colNames.index('CODE_TAGS')]
         isCodeCancelled: ICode["isCodeCancelled"] = row[colNames.index(
             'IS_CODE_CANCELLED')]
-        pwcSdReqId: ICode["pwcSdReqId"] = row[colNames.index('PWC_SD_REQ_ID')]
+        pwcSdReqId: ICode["pwcSdReqId"] = row[colNames.index(
+            'PWC_SD_REQ_ID')]
         pwcRtoId: ICode["pwcRtoId"] = row[colNames.index('PWC_RTO_ID')]
         isDelAtSrc: ICode["isDelAtSrc"] = row[colNames.index(
             'IS_DELETED_AT_SRC')]
@@ -77,8 +93,10 @@ def getCodesBetweenDates(appDbConnStr: str, startDt: dt.datetime, endDt: dt.date
             'PWC_ELEMENT_TYPE_ID')]
         pwcOutageTypeId: ICode["pwcOutageTypeId"] = row[colNames.index(
             'PWC_OUTAGE_TYPE_ID')]
-        pwcElName: ICode["pwcElName"] = row[colNames.index('PWC_ELEMENT_NAME')]
-        pwcElType: ICode["pwcElType"] = row[colNames.index('PWC_ELEMENT_TYPE')]
+        pwcElName: ICode["pwcElName"] = row[colNames.index(
+            'PWC_ELEMENT_NAME')]
+        pwcElType: ICode["pwcElType"] = row[colNames.index(
+            'PWC_ELEMENT_TYPE')]
         pwcOutageType: ICode["pwcOutageType"] = row[colNames.index(
             'PWC_OUTAGE_TYPE')]
         createdAt: ICode["createdAt"] = row[colNames.index('CREATED_AT')]

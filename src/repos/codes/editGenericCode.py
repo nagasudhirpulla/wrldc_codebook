@@ -57,11 +57,11 @@ def editGenericCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt
     isEditSuccess = True
     if len(changedInfo) == 0:
         return isEditSuccess
-
-    # get connection with raw data table
-    dbConn = cx_Oracle.connect(appDbConnStr)
-
+    dbConn = None
+    dbCur = None
     try:
+        # get connection with raw data table
+        dbConn = cx_Oracle.connect(appDbConnStr)
         sqlSetString = ','.join(["{0}=:{1}".format(cInf[0], iInd+1)
                                  for iInd, cInf in enumerate(changedInfo)])
 
@@ -87,5 +87,6 @@ def editGenericCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt
         # closing database cursor and connection
         if dbCur is not None:
             dbCur.close()
-        dbConn.close()
+        if dbConn is not None:
+            dbConn.close()
     return isEditSuccess

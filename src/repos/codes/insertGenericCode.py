@@ -3,7 +3,7 @@ import datetime as dt
 from typing import Optional, Union
 
 
-def insertGenericCode(appDbConnStr:str, code_issue_time: Optional[dt.datetime],
+def insertGenericCode(appDbConnStr: str, code_issue_time: Optional[dt.datetime],
                       code_str: str, other_ldc_codes: str,
                       code_description: str, code_execution_time: dt.datetime,
                       code_tags: str, code_issued_by: str, code_issued_to: str) -> bool:
@@ -11,11 +11,12 @@ def insertGenericCode(appDbConnStr:str, code_issue_time: Optional[dt.datetime],
     Returns:
         bool: returns true if process is ok
     """
-    # get connection with raw data table
-    dbConn = cx_Oracle.connect(appDbConnStr)
-
+    dbConn = None
+    dbCur = None
     isInsertSuccess = True
     try:
+        # get connection with raw data table
+        dbConn = cx_Oracle.connect(appDbConnStr)
         # column names of the raw data table
         colNames = ["code_type", "code_issue_time", "code_str", "other_ldc_codes",
                     "code_description", "code_execution_time", "code_tags", "code_issued_by", "code_issued_to"]
@@ -42,13 +43,14 @@ def insertGenericCode(appDbConnStr:str, code_issue_time: Optional[dt.datetime],
 
         # commit the changes
         dbConn.commit()
-    except Exception as e:
+    except Exception as err:
         isInsertSuccess = False
         print('Error while creation of generic code')
-        print(e)
+        print(err)
     finally:
         # closing database cursor and connection
         if dbCur is not None:
             dbCur.close()
-        dbConn.close()
+        if dbConn is not None:
+            dbConn.close()
     return isInsertSuccess
