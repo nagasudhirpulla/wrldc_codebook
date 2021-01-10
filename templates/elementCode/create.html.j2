@@ -1,34 +1,37 @@
 {% extends "layoutBase.html.j2" %}
-{% block title %}Edit Generic Code{% endblock %}
+{% block title %}Create Element Code{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block content %}
-<h3>Edit Code</h3>
+<h3>Create Element Code</h3>
+<div>
+<select id="elTypesSelect"></select>
+</div>
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
     {{ render_field(form.code) }}
-    {{ render_field(form.codeIssueTime, class="datetimepicker") }}
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
-    {{ render_field(form.codeExecTime, class="datetimepicker") }}
-    {{ render_field(form.codeIssuedBy) }}
-    {{ render_field(form.isCodeCancelled) }}
-  </dl>
-  <p><input type="submit" value="Update Code" class="btn btn-sm btn-default"/>
+  </dl> 
+  <p><input type="submit" value="Create Element Code"/>
 </form>
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
 <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
 <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+<script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
 <script>
 jQuery(document).ready(function($) {
+    // populate element types
+    loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
+
     if (window.jQuery().datetimepicker) {
         $('.datetimepicker').datetimepicker({
             // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation

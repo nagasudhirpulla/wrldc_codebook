@@ -5,8 +5,8 @@ from src.typeDefs.bay import IBay
 
 def getBaysForDisplay(pwcDbConnStr: str) -> List[IBay]:
     fetchSql = """SELECT
-                    b.id,
-                    b.BAY_NAME as name,
+                    b.id as element_id,
+                    b.BAY_NAME as element_name,
                     b.BAY_NUMBER ,
                     as2.SUBSTATION_NAME,
                     bt.type,
@@ -19,7 +19,7 @@ def getBaysForDisplay(pwcDbConnStr: str) -> List[IBay]:
                     as2.ID = b.STATION_ID
                 LEFT JOIN REPORTING_WEB_UI_UAT.TRANS_ELEMENT_TYPE_MASTER vol ON
                     vol.TRANS_ELEMENT_TYPE_ID = b.VOLTAGE_ID"""
-    targetColumns = ['ID', 'NAME', 'BAY_NUMBER', 'SUBSTATION_NAME',
+    targetColumns = ['ELEMENT_ID', 'ELEMENT_NAME', 'BAY_NUMBER', 'SUBSTATION_NAME',
                      'TYPE', 'VOLTAGE']
     bays: List[IBay] = []
     colNames = []
@@ -55,8 +55,8 @@ def getBaysForDisplay(pwcDbConnStr: str) -> List[IBay]:
     # fetch all rows
     for row in dbRows:
         bay: IBay = {
-            "id": row[colNames.index("ID")],
-            "name": row[colNames.index("NAME")],
+            "elementId": row[colNames.index("ELEMENT_ID")],
+            "elementName": row[colNames.index("ELEMENT_NAME")],
             "bayNumber": row[colNames.index("BAY_NUMBER")],
             "stationName": row[colNames.index("SUBSTATION_NAME")],
             "bayType": row[colNames.index("TYPE")],

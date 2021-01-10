@@ -1,12 +1,11 @@
 '''
 This is the web server that acts as a service that creates outages raw data
 '''
-from src.appConfig import getConfig, initAppConfig
-# get application config
-appConfig = initAppConfig()
-from src.routeControllers.oauth import login_manager, oauthPage
 from src.routeControllers.genericCode import genericCodePage
+from src.routeControllers.elementCode import elementCodePage
+from src.routeControllers.oauth import login_manager, oauthPage
 from src.routeControllers.code import codePage
+from src.routeControllers.elements import elementsPage
 from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
 from flask import Flask, request, jsonify, render_template
 from waitress import serve
@@ -15,11 +14,15 @@ from werkzeug.exceptions import NotFound
 from typing import Any, cast
 import os
 import pandas as pd
+from src.appConfig import getConfig, initAppConfig
+# get application config
+appConfig = initAppConfig()
+
 
 # set this variable since we are currently not running this app on SSL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-app = Flask(__name__)   
+app = Flask(__name__)
 
 appPrefix = appConfig["appPrefix"]
 if pd.isna(appPrefix):
@@ -46,7 +49,9 @@ app.register_error_handler(403, page_forbidden)
 app.register_error_handler(404, page_not_found)
 app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(genericCodePage, url_prefix='/genericCode')
+app.register_blueprint(elementCodePage, url_prefix='/elementCode')
 app.register_blueprint(codePage, url_prefix='/code')
+app.register_blueprint(elementsPage, url_prefix='/elements')
 
 hostedApp = Flask(__name__)
 

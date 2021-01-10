@@ -8,20 +8,21 @@
         </a>
     </li>
 {% endif %}
-<!-- Nav Item - Dashboard -->
-<li class="nav-item text-uppercase">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseGeneric" aria-expanded="false" aria-controls="collapseGeneric">
-        <span>Generic Code</span>
-    </a>
-    <div id="collapseGeneric" class="collapse" aria-labelledby="headingGeneric" data-parent="#accordionSidebar" style="">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ url_for('genericCode.create') }}">Create Generic Code</a>
-        </div>
-    </div>
-</li>
 <li class="nav-item text-uppercase">
     <a class="nav-link" href="{{ url_for('code.list') }}">
         <i class="fas fa-th-large"></i>
         <span>View Codes</span>
+    </a>
+</li>
+<li class="nav-item text-uppercase">
+    <a class="nav-link" href="{{ url_for('genericCode.create') }}">
+        <i class="fas fa-th-large"></i>
+        <span>Create Generic Code</span>
+    </a>
+</li>
+<li class="nav-item text-uppercase">
+    <a class="nav-link" href="{{ url_for('elementCode.create') }}">
+        <i class="fas fa-th-large"></i>
+        <span>Create Element Code</span>
     </a>
 </li>

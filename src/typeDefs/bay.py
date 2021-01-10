@@ -1,9 +1,7 @@
-from typing import TypedDict, Optional
+from src.typeDefs.element import IElement
 
 
-class IBay(TypedDict):
-    id: int
-    name: str
+class IBay(IElement):
     bayNumber: str
     stationName: str
     bayType: str

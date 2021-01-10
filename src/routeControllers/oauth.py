@@ -19,32 +19,43 @@ login_manager = LoginManager()
 oauthPage = Blueprint('oauth', __name__,
                       template_folder='templates')
 
-# Configuration
-appConfig = getConfig()
-oauth_app_client_id = appConfig["oauth_app_client_id"]
-oauth_app_client_secret = appConfig["oauth_app_client_secret"]
-oauth_provider_discovery_url = (
-    appConfig["oauth_provider_discovery_url"]
-)
+# # Configuration
+# appConfig = getConfig()
+# oauth_app_client_id = appConfig["oauth_app_client_id"]
+# oauth_app_client_secret = appConfig["oauth_app_client_secret"]
+# oauth_provider_discovery_url = (
+#     appConfig["oauth_provider_discovery_url"]
+# )
 
-# OAuth2 client setup
-client = WebApplicationClient(oauth_app_client_id)
+# # OAuth2 client setup
+# client = WebApplicationClient(oauth_app_client_id)
 
 
 def get_oauth_provider_cfg():
+    # Configuration
+    appConfig = getConfig()
+    oauth_provider_discovery_url = (
+        appConfig["oauth_provider_discovery_url"]
+    )
     return requests.get(oauth_provider_discovery_url, verify=False).json()
-
-# Flask-Login helper to retrieve a user from our db
 
 
 @login_manager.user_loader
 def load_user(user_id):
+    # Flask-Login helper to retrieve a user from our db
     sUser = session['SUSER']
     return User(sUser['id'], sUser['name'], sUser['email'], sUser['roles'])
 
 
 @oauthPage.route("/login")
 def login():
+    appConfig = getConfig()
+    oauth_app_client_id = appConfig["oauth_app_client_id"]
+    oauth_app_client_secret = appConfig["oauth_app_client_secret"]
+
+    # OAuth2 client setup
+    client = WebApplicationClient(oauth_app_client_id)
+    
     # Find out what URL to hit for Google login
     oauth_provider_cfg = get_oauth_provider_cfg()
     authorization_endpoint = oauth_provider_cfg["authorization_endpoint"]
@@ -76,6 +87,13 @@ def login():
 
 @oauthPage.route("/login/callback")
 def callback():
+    appConfig = getConfig()
+    oauth_app_client_id = appConfig["oauth_app_client_id"]
+    oauth_app_client_secret = appConfig["oauth_app_client_secret"]
+
+    # OAuth2 client setup
+    client = WebApplicationClient(oauth_app_client_id)
+
     # Get authorization code Google sent back to you
     code = request.args.get("code")
 
@@ -162,6 +180,11 @@ def callback():
 def logout():
     # logout from this application
     logout_user()
+    appConfig = getConfig()
+    oauth_app_client_id = appConfig["oauth_app_client_id"]
+
+    # OAuth2 client setup
+    client = WebApplicationClient(oauth_app_client_id)
 
     # redirect to oauth provider for logout
     # https://identityserver4.readthedocs.io/en/latest/endpoints/endsession.html
