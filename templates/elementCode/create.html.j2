@@ -8,8 +8,10 @@
 {% block content %}
 <h3>Create Element Code</h3>
 <div>
-<select id="elTypesSelect"></select>
+<span>Select element type - </span><select id="elTypesSelect" onchange="onElTypeChange()"></select>
 </div>
+<table id="displayTable" class="display table table-bordered table-hover table-responsive">
+</table>
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
@@ -23,34 +25,49 @@
 </form>
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
-<script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
-<link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
-<script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
-<script>
-jQuery(document).ready(function($) {
-    // populate element types
-    loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+  <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+  <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
+  <script>
+  jQuery(document).ready(function($) {
+      // populate element types
+      loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
 
-    if (window.jQuery().datetimepicker) {
-        $('.datetimepicker').datetimepicker({
-            // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation
-            // MomentJS Formats: https://momentjs.com/docs/#/displaying/format/
-            format: 'YYYY-MM-DD HH:mm',
-            // as Bootstrap 4 is not using Glyphicons anymore
-            icons: {
-                time: 'fa fa-clock',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-check',
-                clear: 'fa fa-trash',
-                close: 'fa fa-times'
-            }
-        });
-    }
-});
-</script>
+      if (window.jQuery().datetimepicker) {
+          $('.datetimepicker').datetimepicker({
+              // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation
+              // MomentJS Formats: https://momentjs.com/docs/#/displaying/format/
+              format: 'YYYY-MM-DD HH:mm',
+              // as Bootstrap 4 is not using Glyphicons anymore
+              icons: {
+                  time: 'fa fa-clock',
+                  date: 'fa fa-calendar',
+                  up: 'fa fa-chevron-up',
+                  down: 'fa fa-chevron-down',
+                  previous: 'fa fa-chevron-left',
+                  next: 'fa fa-chevron-right',
+                  today: 'fa fa-check',
+                  clear: 'fa fa-trash',
+                  close: 'fa fa-times'
+              }
+          });
+      }
+  });
+
+  function onElTypeChange(){
+    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}"
+    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable")
+  }
+  </script>
 {% endblock %}
