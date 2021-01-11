@@ -3,7 +3,7 @@ This is the web server that acts as a service that creates outages raw data
 '''
 from src.routeControllers.genericCode import genericCodePage
 from src.routeControllers.elementCode import elementCodePage
-from src.routeControllers.oauth import login_manager, oauthPage
+from src.routeControllers.oauth import login_manager, oauthPage, initOauthClient
 from src.routeControllers.code import codePage
 from src.routeControllers.elements import elementsPage
 from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
@@ -18,6 +18,7 @@ from src.appConfig import getConfig, initAppConfig
 # get application config
 appConfig = initAppConfig()
 
+initOauthClient()
 
 # set this variable since we are currently not running this app on SSL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'

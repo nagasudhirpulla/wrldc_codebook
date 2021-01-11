@@ -19,6 +19,7 @@ login_manager = LoginManager()
 oauthPage = Blueprint('oauth', __name__,
                       template_folder='templates')
 
+client = None
 # # Configuration
 # appConfig = getConfig()
 # oauth_app_client_id = appConfig["oauth_app_client_id"]
@@ -29,6 +30,13 @@ oauthPage = Blueprint('oauth', __name__,
 
 # # OAuth2 client setup
 # client = WebApplicationClient(oauth_app_client_id)
+
+
+def initOauthClient():
+    global client
+    appConfig = getConfig()
+    oauth_app_client_id = appConfig["oauth_app_client_id"]
+    client = WebApplicationClient(oauth_app_client_id)
 
 
 def get_oauth_provider_cfg():
@@ -50,12 +58,11 @@ def load_user(user_id):
 @oauthPage.route("/login")
 def login():
     appConfig = getConfig()
-    oauth_app_client_id = appConfig["oauth_app_client_id"]
-    oauth_app_client_secret = appConfig["oauth_app_client_secret"]
+    # oauth_app_client_id = appConfig["oauth_app_client_id"]
 
     # OAuth2 client setup
-    client = WebApplicationClient(oauth_app_client_id)
-    
+    # client = WebApplicationClient(oauth_app_client_id)
+
     # Find out what URL to hit for Google login
     oauth_provider_cfg = get_oauth_provider_cfg()
     authorization_endpoint = oauth_provider_cfg["authorization_endpoint"]
@@ -92,7 +99,7 @@ def callback():
     oauth_app_client_secret = appConfig["oauth_app_client_secret"]
 
     # OAuth2 client setup
-    client = WebApplicationClient(oauth_app_client_id)
+    # client = WebApplicationClient(oauth_app_client_id)
 
     # Get authorization code Google sent back to you
     code = request.args.get("code")
@@ -181,10 +188,10 @@ def logout():
     # logout from this application
     logout_user()
     appConfig = getConfig()
-    oauth_app_client_id = appConfig["oauth_app_client_id"]
+    # oauth_app_client_id = appConfig["oauth_app_client_id"]
 
     # OAuth2 client setup
-    client = WebApplicationClient(oauth_app_client_id)
+    # client = WebApplicationClient(oauth_app_client_id)
 
     # redirect to oauth provider for logout
     # https://identityserver4.readthedocs.io/en/latest/endpoints/endsession.html
