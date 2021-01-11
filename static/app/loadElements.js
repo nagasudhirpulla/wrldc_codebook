@@ -17,12 +17,17 @@ function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
                 if (elemsList.length > 0) {
                     // populate elements table only if number of elements > 0
                     var colNames = Object.keys(elemsList[0]);
+                    // move element name column to first
                     const elNameInd = colNames.indexOf("elementName");
                     if (elNameInd >= 0) {
                         colNames.splice(elNameInd, 1);
                         colNames.unshift("elementName")
                     }
-
+                    // remove element id column
+                    const elIdInd = colNames.indexOf("elementId");
+                    if (elIdInd >= 0) {
+                        colNames.splice(elIdInd, 1);
+                    }
                     for (var i = 0; i < elemsList.length; i++) {
                         elemsList[i]["elementType"] = selElType;
                         elemsList[i]["elementTypeId"] = elTypeSelector.value;

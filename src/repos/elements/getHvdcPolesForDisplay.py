@@ -1,28 +1,27 @@
 import cx_Oracle
 from typing import List
-from src.typeDefs.transLineCkt import ITransLineCkt
+from src.typeDefs.hvdcPole import IHvdcPole
 
 
-def getTranLineCktsForDisplay(pwcDbConnStr: str) -> List[ITransLineCkt]:
+def getHvdcPolesForDisplay(pwcDbConnStr: str) -> List[IHvdcPole]:
     fetchSql = """SELECT
-                    ckt.id as element_id,
-                    ckt.LINE_CIRCUIT_NAME as element_name,
-                    ckt.CIRCUIT_NUMBER,
-                    ckt.LENGTH,
-                    line.voltage
+                    hp.id as ELEMENT_ID,
+                    hp.POLE_NAME as ELEMENT_NAME,
+                    stn.SUBSTATION_NAME,
+                    stn.voltage
                 FROM
-                    REPORTING_WEB_UI_UAT.AC_TRANSMISSION_LINE_CIRCUIT ckt
+                    REPORTING_WEB_UI_UAT.HVDC_POLE hp
                 LEFT JOIN (
                     SELECT
-                        lm.*, vol.TRANS_ELEMENT_TYPE AS voltage
+                        as2.*, vol.TRANS_ELEMENT_TYPE AS voltage
                     FROM
-                        REPORTING_WEB_UI_UAT.AC_TRANS_LINE_MASTER lm
+                        REPORTING_WEB_UI_UAT.ASSOCIATE_SUBSTATION as2
                     LEFT JOIN REPORTING_WEB_UI_UAT.TRANS_ELEMENT_TYPE_MASTER vol ON
-                        vol.TRANS_ELEMENT_TYPE_ID = lm.VOLTAGE_LEVEL ) line ON
-                    line.id = ckt.line_id"""
-    targetColumns = ['ELEMENT_ID', 'ELEMENT_NAME', 'CIRCUIT_NUMBER', 'LENGTH',
+                        vol.TRANS_ELEMENT_TYPE_ID = as2.VOLTAGE_LEVEL) stn ON
+                    stn.id = hp.FK_SUBSTATION"""
+    targetColumns = ['ELEMENT_ID', 'ELEMENT_NAME', 'SUBSTATION_NAME',
                      'VOLTAGE']
-    lines: List[ITransLineCkt] = []
+    elems: List[IHvdcPole] = []
     colNames = []
     dbRows = []
     dbConn = None
@@ -40,7 +39,7 @@ def getTranLineCktsForDisplay(pwcDbConnStr: str) -> List[ITransLineCkt]:
         dbRows = dbCur.fetchall()
     except Exception as err:
         dbRows = []
-        print('Error while getting trans line ckts for display')
+        print('Error while getting hvdc poles for display')
         print(err)
     finally:
         # closing database cursor and connection
@@ -51,17 +50,16 @@ def getTranLineCktsForDisplay(pwcDbConnStr: str) -> List[ITransLineCkt]:
 
     if (False in [(col in targetColumns) for col in colNames]):
         # all desired columns not fetched, hence return empty
-        return lines
+        return elems
 
     # fetch all rows
     for row in dbRows:
-        line: ITransLineCkt = {
+        el: IHvdcPole = {
             "elementId": row[colNames.index("ELEMENT_ID")],
             "elementName": row[colNames.index("ELEMENT_NAME")],
-            "cktNumber": row[colNames.index("CIRCUIT_NUMBER")],
-            "length": row[colNames.index("LENGTH")],
+            "substation": row[colNames.index("SUBSTATION_NAME")],
             "voltage": row[colNames.index("VOLTAGE")]
         }
-        lines.append(line)
+        elems.append(el)
 
-    return lines
+    return elems
