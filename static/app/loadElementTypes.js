@@ -12,12 +12,12 @@ function loadElementTypes(fetchUrl, selElId) {
                     elTypesDropDownEl.options[i] = null;
                 }
                 var elTypes = resp['elTypes'];
-                elTypes.unshift("Select");
+                elTypes.unshift({ "id": -1, "name": "Select" });
                 for (var i = 0; i < elTypes.length; i++) {
                     var option = document.createElement("option");
-                    txt = document.createTextNode(elTypes[i]);
+                    txt = document.createTextNode(elTypes[i]["name"]);
                     option.appendChild(txt);
-                    option.setAttribute("value", elTypes[i]);
+                    option.setAttribute("value", elTypes[i]["id"]);
                     elTypesDropDownEl.add(option);
                 }
             } else {

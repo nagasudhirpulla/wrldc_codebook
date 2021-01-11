@@ -18,7 +18,7 @@ class ElementsRepo():
         self.pwcDbConnStr = dbConStr
 
     def getElementTypes(self) -> List[str]:
-        return getElementTypes()
+        return getElementTypes(self.pwcDbConnStr)
 
     def getBaysForDisplay(self) -> List[IBay]:
         return getBaysForDisplay(self.pwcDbConnStr)

@@ -1,5 +1,11 @@
 function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
-    var selElType = document.getElementById(selElId).value;
+    if ($.fn.DataTable.isDataTable('#' + elTableId)) {
+        $('#' + elTableId).DataTable().destroy();
+        $('#' + elTableId + ' tbody').empty();
+        $('#' + elTableId + ' thead').empty();
+    }
+    var elTypeSelector = document.getElementById(selElId);
+    var selElType = elTypeSelector.options[elTypeSelector.selectedIndex].text;
     $.ajax({
         url: fetchUrl + selElType,
         type: 'get',
@@ -16,6 +22,13 @@ function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
                         colNames.splice(elNameInd, 1);
                         colNames.unshift("elementName")
                     }
+
+                    for (var i = 0; i < elemsList.length; i++) {
+                        elemsList[i]["elementType"] = selElType;
+                        elemsList[i]["elementTypeId"] = elTypeSelector.value;
+                    }
+
+
                     var dtColumns = [];
                     for (var i = 0; i < colNames.length; i++) {
                         dtColumns.push({ title: colNames[i], data: colNames[i] });

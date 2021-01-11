@@ -23,6 +23,10 @@
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
+    {{ render_field(form.elementId, readonly="true") }}
+    {{ render_field(form.elementTypeId, readonly="true") }}
+    {{ render_field(form.elementName, readonly="true") }}
+    {{ render_field(form.elementType, readonly="true") }}
   </dl> 
   <p><input type="submit" value="Create Element Code"/>
 </form>
@@ -73,17 +77,49 @@
     if(rowObjs.length > 0){
       selectedElemInfo_g = rowObjs[0];
       displaySelectedElemInfo();
+      populateSelectedElemInForm();
     }
   }
-  function displaySelectedElemInfo(){
+
+  function populateSelectedElemInForm(){
     if(selectedElemInfo_g!=null){
-      document.getElementById("selElemDisplaySpan").innerText = selectedElemInfo_g["elementName"]
+      document.getElementById('elementName').value = selectedElemInfo_g["elementName"];
+      document.getElementById('elementId').value = selectedElemInfo_g["elementId"];
+      document.getElementById('elementType').value = selectedElemInfo_g["elementType"];
+      document.getElementById('elementTypeId').value = selectedElemInfo_g["elementTypeId"];
+    } else{
+      document.getElementById('elementName').value = "";
+      document.getElementById('elementId').value = "";
+      document.getElementById('elementType').value = "";
+      document.getElementById('elementTypeId').value = "";
+    }
+  }
+
+  function resetElemInfo(){
+    // populate element name and element id
+    document.getElementById('elementName').value = "";
+    document.getElementById('elementId').value = "";
+    document.getElementById('elementType').value = "";
+    document.getElementById('elementTypeId').value = "";
+  }
+
+  function displaySelectedElemInfo(){
+    var displayElem = document.getElementById("selElemDisplaySpan");
+    if(selectedElemInfo_g!=null){
+      displayElem.innerText = selectedElemInfo_g["elementName"];
+    } else{
+      displayElem.innerText = "";
     }
   }
 
   function onElTypeChange(){
-    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}"
-    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onRowSelect)
+    // clear element info in form
+    // populate element type info in form
+    selectedElemInfo_g = null;
+    populateSelectedElemInForm();
+    displaySelectedElemInfo();
+    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}";
+    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onRowSelect);
   }
   </script>
 {% endblock %}

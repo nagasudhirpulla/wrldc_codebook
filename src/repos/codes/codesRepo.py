@@ -1,5 +1,6 @@
 import datetime as dt
 from src.repos.codes.insertGenericCode import insertGenericCode
+from src.repos.codes.insertElementCode import insertElementCode
 from src.repos.codes.editGenericCode import editGenericCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
@@ -87,8 +88,26 @@ class CodesRepo():
 
         Returns:
             bool: return true if edit is success
-        """                        
+        """
         return editGenericCode(self.appDbConnStr, codeId, code_issue_time,
                                code_str, other_ldc_codes,
                                code_description, code_execution_time,
                                code_tags, code_issued_by, code_issued_to, is_code_cancelled)
+
+    def insertElementCode(self, code_issue_time: dt.datetime,
+                          code_str: str, other_ldc_codes: str,
+                          code_description: str, code_execution_time: dt.datetime,
+                          code_tags: str, code_issued_by: str, code_issued_to: str,
+                          pwc_element_type_id: int, pwc_element_id: int,
+                          pwc_element_name: str, pwc_element_type: str) -> bool:
+        """inserts an element code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        isInsertSuccess = insertElementCode(self.appDbConnStr, code_issue_time,
+                                            code_str, other_ldc_codes,
+                                            code_description, code_execution_time,
+                                            code_tags, code_issued_by, code_issued_to,
+                                            pwc_element_type_id, pwc_element_id,
+                                            pwc_element_name, pwc_element_type)
+        return isInsertSuccess

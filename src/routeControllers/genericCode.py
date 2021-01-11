@@ -18,8 +18,6 @@ class CreateGenericCodeForm(Form):
     codeTags = StringField('Tags', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
-    # codeExecDate = DateTimeField('Code Execution Date-Time', format='%Y-%m-%d %H:%M', validators=[
-    #                              validators.DataRequired()])
 
 
 @genericCodePage.route('/create', methods=['GET', 'POST'])
@@ -39,5 +37,5 @@ def create():
             return redirect(url_for('code.list'))
         else:
             flash(
-                'Could not create the code - {0}'.format(form.code.data), category='error')
+                'Could not create the code - {0}'.format(form.code.data), category='danger')
     return render_template('genericCode/create.html.j2', form=form)
