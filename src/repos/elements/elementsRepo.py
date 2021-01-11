@@ -2,6 +2,7 @@ import datetime as dt
 from typing import List, Optional
 from src.repos.elements.getElementTypes import getElementTypes
 from src.repos.elements.getBaysForDisplay import getBaysForDisplay
+from src.repos.elements.getTransLineCktsForDisplay import getTranLineCktsForDisplay
 from src.typeDefs.bay import IBay
 
 
@@ -22,3 +23,6 @@ class ElementsRepo():
 
     def getBaysForDisplay(self) -> List[IBay]:
         return getBaysForDisplay(self.pwcDbConnStr)
+
+    def getTranLineCktsForDisplay(self) -> List[IBay]:
+        return getTranLineCktsForDisplay(self.pwcDbConnStr)

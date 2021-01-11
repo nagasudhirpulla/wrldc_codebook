@@ -27,4 +27,7 @@ def getElementsByType(elType: str) -> dict:
     if elType == 'Bay':
         bays = eRepo.getBaysForDisplay()
         elObjs = bays
+    if elType == 'AC_TRANSMISSION_LINE_CIRCUIT':
+        elems = eRepo.getTranLineCktsForDisplay()
+        elObjs = elems
     return {"elements": elObjs}
