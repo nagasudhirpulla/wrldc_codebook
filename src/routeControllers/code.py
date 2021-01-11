@@ -7,6 +7,9 @@ import datetime as dt
 from src.app.genericCode.editForm import EditGenericCodeForm
 from src.app.genericCode.editFromForm import editGenericCodeViaForm
 from src.app.genericCode.createEditForm import createGenericCodeEditForm
+from src.app.elementCode.editForm import EditElementCodeForm
+from src.app.elementCode.editFromForm import editElementCodeViaForm
+from src.app.elementCode.createEditForm import createElementCodeEditForm
 import werkzeug
 
 codePage = Blueprint('code', __name__,
@@ -77,5 +80,21 @@ def edit(codeId: int):
         else:
             form = createGenericCodeEditForm(code)
         return render_template('genericCode/edit.html.j2', form=form)
+    elif code["codeType"] == "Element":
+        if request.method == 'POST':
+            form = EditElementCodeForm(request.form)
+            if form.validate():
+                isSuccess = editElementCodeViaForm(
+                    codeId=codeId, cRepo=cRepo, form=form)
+                if isSuccess:
+                    flash(
+                        'Successfully edited the code - {0}'.format(form.code.data), category='success')
+                else:
+                    flash(
+                        'Could not edit the code - {0}'.format(form.code.data), category='danger')
+                return redirect(url_for('code.list'))
+        else:
+            form = createElementCodeEditForm(code)
+        return render_template('elementCode/edit.html.j2', form=form)
     else:
         raise werkzeug.exceptions.NotFound()

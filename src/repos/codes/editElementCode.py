@@ -5,8 +5,7 @@ from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getGenericCodeChanges import getGenericCodeChanges
 from src.typeDefs.code import ICode
 
-
-def editGenericCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
+def editElementCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
                     code_str: str, other_ldc_codes: str,
                     code_description: str, code_execution_time: dt.datetime,
                     code_tags: str, code_issued_by: str, code_issued_to: str, is_code_cancelled: bool) -> bool:
@@ -49,7 +48,7 @@ def editGenericCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt
         dbConn.commit()
     except Exception as e:
         isEditSuccess = False
-        print('Error while updating of generic code')
+        print('Error while updating of element code')
         print(e)
     finally:
         # closing database cursor and connection
