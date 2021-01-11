@@ -1,4 +1,4 @@
-function loadElements(fetchUrl, selElId, elTableId) {
+function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
     var selElType = document.getElementById(selElId).value;
     $.ajax({
         url: fetchUrl + selElType,
@@ -26,6 +26,12 @@ function loadElements(fetchUrl, selElId, elTableId) {
                         select: {
                             style: 'single'
                         }
+                    });
+                    $('#' + elTableId).on('select.dt', function(e, dt, type, indexes) {
+                        // get the array of rows
+                        var rowsData = dt.rows(indexes).data();
+                        // console.log(data);
+                        onRowSelect(rowsData);
                     });
                     // $("#displayTable").DataTable().row({selected:true}).data()
                 }

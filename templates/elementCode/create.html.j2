@@ -12,6 +12,9 @@
 </div>
 <table id="displayTable" class="display table table-bordered table-hover table-responsive">
 </table>
+
+<h3><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h3>
+
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
@@ -40,6 +43,7 @@
   <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
   <script>
+  selectedElemInfo_g = null;
   jQuery(document).ready(function($) {
       // populate element types
       loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
@@ -65,9 +69,21 @@
       }
   });
 
+  function onRowSelect(rowObjs){
+    if(rowObjs.length > 0){
+      selectedElemInfo_g = rowObjs[0];
+      displaySelectedElemInfo();
+    }
+  }
+  function displaySelectedElemInfo(){
+    if(selectedElemInfo_g!=null){
+      document.getElementById("selElemDisplaySpan").innerText = selectedElemInfo_g["elementName"]
+    }
+  }
+
   function onElTypeChange(){
     var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}"
-    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable")
+    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onRowSelect)
   }
   </script>
 {% endblock %}
