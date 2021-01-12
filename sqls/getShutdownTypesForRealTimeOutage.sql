@@ -1,6 +1,6 @@
 /*get real time outage shutdown types for generators*/
 SELECT
-	ID, NAME 
+	ID, NAME, IS_GENERATOR 
 FROM
 	REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TYPE SD_TYPE
 WHERE
@@ -9,7 +9,7 @@ WHERE
 
 /*get real time outage shutdown types for non-generators*/
 SELECT
-	ID, NAME 
+	ID, NAME, IS_GENERATOR 
 FROM
 	REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TYPE SD_TYPE
 WHERE

@@ -4,11 +4,13 @@ from wtforms.fields import html5 as h5fields
 from wtforms.widgets import html5 as h5widgets
 from src.repos.elements.elementsRepo import ElementsRepo
 from src.repos.codes.codesRepo import CodesRepo
+from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
+from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
 
-elementCodePage = Blueprint('elementOutageCode', __name__,
-                            template_folder='templates')
+elementOutageCodePage = Blueprint('elementOutageCode', __name__,
+                                  template_folder='templates')
 
 
 class CreateElementOutageCodeForm(Form):
@@ -50,13 +52,17 @@ class CreateElementOutageCodeForm(Form):
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
 
 
-@elementCodePage.route('/create', methods=['GET', 'POST'])
+@elementOutageCodePage.route('/create', methods=['GET', 'POST'])
 @role_required('code_book_editor')
 def create():
     form = CreateElementOutageCodeForm(request.form)
+    appConf = getConfig()
+    oTagsRepo = OutageTagsRepo(appConf['pwcDbConnStr'])
+    oTypesRepo = OutageTypesRepo(appConf['pwcDbConnStr'])
+    oTags = oTagsRepo.getRealTimeOutageTags()
+    oTypes = oTypesRepo.getRealTimeOutageTypes()
     if request.method == 'POST' and form.validate():
         # TODO complete this
-        appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
         isSuccess = cRepo.insertElementCode(
             code_issue_time=None, code_str=form.code.data, other_ldc_codes=form.otherLdcCodes.data,
@@ -71,4 +77,4 @@ def create():
         else:
             flash(
                 'Could not create the element outage code - {0}'.format(form.code.data), category='danger')
-    return render_template('elementOutageCode/create.html.j2', form=form)
+    return render_template('elementOutageCode/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})

@@ -25,8 +25,20 @@
     {{ render_field(form.codeTags) }}
     {{ render_field(form.elementId, readonly="true") }}
     {{ render_field(form.elementTypeId, readonly="true") }}
+    {{ render_field(form.outageTypeId, readonly="true") }}
+    {{ render_field(form.outageTagId, readonly="true") }}
     {{ render_field(form.elementName, readonly="true") }}
     {{ render_field(form.elementType, readonly="true") }}
+    {{ render_field(form.outageTag, readonly="true") }}
+    {{ render_field(form.outageType, readonly="true") }}
+    <dt><label>Outage Type</label></dt>
+    <dd>
+      <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
+    </dd>
+    <dt><label>Outage Tag</label></dt>
+    <dd>
+      <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
+    </dd>
   </dl> 
   <p><input type="submit" value="Create Element Code"/>
 </form>
@@ -46,80 +58,14 @@
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
   <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
-  <script>
-  selectedElemInfo_g = null;
-  jQuery(document).ready(function($) {
-      // populate element types
-      loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
-
-      if (window.jQuery().datetimepicker) {
-          $('.datetimepicker').datetimepicker({
-              // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation
-              // MomentJS Formats: https://momentjs.com/docs/#/displaying/format/
-              format: 'YYYY-MM-DD HH:mm',
-              // as Bootstrap 4 is not using Glyphicons anymore
-              icons: {
-                  time: 'fa fa-clock',
-                  date: 'fa fa-calendar',
-                  up: 'fa fa-chevron-up',
-                  down: 'fa fa-chevron-down',
-                  previous: 'fa fa-chevron-left',
-                  next: 'fa fa-chevron-right',
-                  today: 'fa fa-check',
-                  clear: 'fa fa-trash',
-                  close: 'fa fa-times'
-              }
-          });
-      }
-  });
-
-  function onElemRowSelect(rowObjs){
-    if(rowObjs.length > 0){
-      selectedElemInfo_g = rowObjs[0];
-      displaySelectedElemInfo();
-      populateSelectedElemInForm();
-    }
-  }
-
-  function populateSelectedElemInForm(){
-    if(selectedElemInfo_g!=null){
-      document.getElementById('elementName').value = selectedElemInfo_g["elementName"];
-      document.getElementById('elementId').value = selectedElemInfo_g["elementId"];
-      document.getElementById('elementType').value = selectedElemInfo_g["elementType"];
-      document.getElementById('elementTypeId').value = selectedElemInfo_g["elementTypeId"];
-    } else{
-      document.getElementById('elementName').value = "";
-      document.getElementById('elementId').value = "";
-      document.getElementById('elementType').value = "";
-      document.getElementById('elementTypeId').value = "";
-    }
-  }
-
-  function resetElemInfo(){
-    // populate element name and element id
-    document.getElementById('elementName').value = "";
-    document.getElementById('elementId').value = "";
-    document.getElementById('elementType').value = "";
-    document.getElementById('elementTypeId').value = "";
-  }
-
-  function displaySelectedElemInfo(){
-    var displayElem = document.getElementById("selElemDisplaySpan");
-    if(selectedElemInfo_g!=null){
-      displayElem.innerText = selectedElemInfo_g["elementName"];
-    } else{
-      displayElem.innerText = "";
-    }
-  }
-
-  function onElTypeChange(){
-    // clear element info in form
-    // populate element type info in form
-    selectedElemInfo_g = null;
-    populateSelectedElemInForm();
-    displaySelectedElemInfo();
-    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}";
-    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onElemRowSelect);
-  }
+  <script type="text/javascript">
+    var oTypes_g = {{ data.oTypes|safe }};
+    oTypes_g.unshift({ id: "", name: "", isGenerator: "" })
+    var oTags_g = {{ data.oTags|safe }};
+    oTags_g.unshift({ id: "", name: "", outageTypeId: "" })
+    var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
+    var elTypesFetchUrl_g = "{{ url_for('elements.getElementTypes') }}";
   </script>
+  <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/createElementCodePage.js') }}"></script>
 {% endblock %}

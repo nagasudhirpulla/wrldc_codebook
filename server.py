@@ -3,6 +3,7 @@ This is the web server that acts as a service that creates outages raw data
 '''
 from src.routeControllers.genericCode import genericCodePage
 from src.routeControllers.elementCode import elementCodePage
+from src.routeControllers.elementOutageCode import elementOutageCodePage
 from src.routeControllers.oauth import login_manager, oauthPage, initOauthClient
 from src.routeControllers.code import codePage
 from src.routeControllers.elements import elementsPage
@@ -51,6 +52,7 @@ app.register_error_handler(404, page_not_found)
 app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(genericCodePage, url_prefix='/genericCode')
 app.register_blueprint(elementCodePage, url_prefix='/elementCode')
+app.register_blueprint(elementOutageCodePage, url_prefix='/elementOutageCode')
 app.register_blueprint(codePage, url_prefix='/code')
 app.register_blueprint(elementsPage, url_prefix='/elements')
 
