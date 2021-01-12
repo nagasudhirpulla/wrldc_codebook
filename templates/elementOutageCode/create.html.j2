@@ -23,14 +23,6 @@
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
-    {{ render_field(form.elementId, readonly="true") }}
-    {{ render_field(form.elementTypeId, readonly="true") }}
-    {{ render_field(form.outageTypeId, readonly="true") }}
-    {{ render_field(form.outageTagId, readonly="true") }}
-    {{ render_field(form.elementName, readonly="true") }}
-    {{ render_field(form.elementType, readonly="true") }}
-    {{ render_field(form.outageTag, readonly="true") }}
-    {{ render_field(form.outageType, readonly="true") }}
     <dt><label>Outage Type</label></dt>
     <dd>
       <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
@@ -39,8 +31,16 @@
     <dd>
       <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
     </dd>
+    <dt><input type="submit" value="Create Element Code" class="btn btn-success"/></dt>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTagId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTag, readonly="true", hidden="true") }}
+    {{ render_field(form.outageType, readonly="true", hidden="true") }}
   </dl> 
-  <p><input type="submit" value="Create Element Code"/>
 </form>
 {% endblock %}
 {% block scripts %}

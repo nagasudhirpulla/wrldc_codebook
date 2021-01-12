@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from wtforms import Form, StringField, validators, DateTimeField, BooleanField, IntegerField
 from wtforms.fields import html5 as h5fields
 from wtforms.widgets import html5 as h5widgets
+from wtforms.widgets import TextArea
 from src.repos.elements.elementsRepo import ElementsRepo
 from src.repos.codes.codesRepo import CodesRepo
 from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
@@ -19,36 +20,36 @@ class CreateElementOutageCodeForm(Form):
     otherLdcCodes = StringField(
         'Other LDC Codes', [validators.Length(min=0, max=150)])
     codeDescription = StringField(
-        'Description', [validators.DataRequired(), validators.Length(min=1, max=500)])
+        'Description', validators=[validators.DataRequired(), validators.Length(min=1, max=500)], widget=TextArea())
     codeTags = StringField('Tags', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
     elementId = h5fields.IntegerField(
-        "Element Id", widget=h5widgets.NumberInput(min=0, step=1)
+        "", widget=h5widgets.NumberInput(min=0, step=1)
     )
     elementTypeId = h5fields.IntegerField(
-        "Element Type Id", widget=h5widgets.NumberInput(min=0, step=1),
+        "", widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageTypeId = h5fields.IntegerField(
-        "Outage Type Id", widget=h5widgets.NumberInput(min=0, step=1),
+        "", widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageTagId = h5fields.IntegerField(
-        "Outage Tag Id", widget=h5widgets.NumberInput(min=0, step=1),
+        "", widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageType = StringField(
-        'Outage Type',
+        '',
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
     outageTag = StringField(
-        'Outage Tag',
+        '',
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
     elementName = StringField(
-        'Element Name',
+        '',
         validators=[validators.DataRequired(), validators.Length(min=1, max=500)])
     elementType = StringField(
-        'Element Type',
+        '',
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
 
 

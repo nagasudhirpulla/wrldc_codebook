@@ -44,6 +44,7 @@
   <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
   <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+  <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
   <script>
@@ -51,26 +52,8 @@
   jQuery(document).ready(function($) {
       // populate element types
       loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
-
-      if (window.jQuery().datetimepicker) {
-          $('.datetimepicker').datetimepicker({
-              // https://github.com/technovistalimited/bootstrap4-datetimepicker#user-content-installation
-              // MomentJS Formats: https://momentjs.com/docs/#/displaying/format/
-              format: 'YYYY-MM-DD HH:mm',
-              // as Bootstrap 4 is not using Glyphicons anymore
-              icons: {
-                  time: 'fa fa-clock',
-                  date: 'fa fa-calendar',
-                  up: 'fa fa-chevron-up',
-                  down: 'fa fa-chevron-down',
-                  previous: 'fa fa-chevron-left',
-                  next: 'fa fa-chevron-right',
-                  today: 'fa fa-check',
-                  clear: 'fa fa-trash',
-                  close: 'fa fa-times'
-              }
-          });
-      }
+      // setup datetime picker
+      setupDatetimepicker('datetimepicker');
   });
 
   function onElemRowSelect(rowObjs){
@@ -79,6 +62,16 @@
       displaySelectedElemInfo();
       populateSelectedElemInForm();
     }
+  }
+
+  function onElTypeChange(){
+    // clear element info in form
+    // populate element type info in form
+    selectedElemInfo_g = null;
+    populateSelectedElemInForm();
+    displaySelectedElemInfo();
+    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}";
+    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onElemRowSelect);
   }
 
   function populateSelectedElemInForm(){
@@ -110,16 +103,6 @@
     } else{
       displayElem.innerText = "";
     }
-  }
-
-  function onElTypeChange(){
-    // clear element info in form
-    // populate element type info in form
-    selectedElemInfo_g = null;
-    populateSelectedElemInForm();
-    displaySelectedElemInfo();
-    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}";
-    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onElemRowSelect);
   }
   </script>
 {% endblock %}
