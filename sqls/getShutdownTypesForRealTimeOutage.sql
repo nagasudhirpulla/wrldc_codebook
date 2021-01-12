@@ -1,0 +1,17 @@
+/*get real time outage shutdown types for generators*/
+SELECT
+	ID, NAME 
+FROM
+	REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TYPE SD_TYPE
+WHERE
+	SD_TYPE.IS_APPROVED = 0
+	AND SD_TYPE.IS_GENERATOR = 1
+
+/*get real time outage shutdown types for non-generators*/
+SELECT
+	ID, NAME 
+FROM
+	REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TYPE SD_TYPE
+WHERE
+	SD_TYPE.IS_APPROVED = 0
+	AND SD_TYPE.IS_GENERATOR = 0
