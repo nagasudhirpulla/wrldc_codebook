@@ -25,18 +25,18 @@ class CreateElementOutageCodeForm(Form):
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
     elementId = h5fields.IntegerField(
-        "", widget=h5widgets.NumberInput(min=0, step=1)
+        '', widget=h5widgets.NumberInput(min=0, step=1)
     )
     elementTypeId = h5fields.IntegerField(
-        "", widget=h5widgets.NumberInput(min=0, step=1),
+        '', widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageTypeId = h5fields.IntegerField(
-        "", widget=h5widgets.NumberInput(min=0, step=1),
+        '', widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageTagId = h5fields.IntegerField(
-        "", widget=h5widgets.NumberInput(min=0, step=1),
+        '', widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
     outageType = StringField(
@@ -63,14 +63,15 @@ def create():
     oTags = oTagsRepo.getRealTimeOutageTags()
     oTypes = oTypesRepo.getRealTimeOutageTypes()
     if request.method == 'POST' and form.validate():
-        # TODO complete this
         cRepo = CodesRepo(appConf['appDbConnStr'])
-        isSuccess = cRepo.insertElementCode(
+        isSuccess = cRepo.insertElementOutageCode(
             code_issue_time=None, code_str=form.code.data, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
-            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data)
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
+            pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data)
         if isSuccess:
             flash(
                 'Successfully created the element outage code - {0}'.format(form.code.data), category='success')
