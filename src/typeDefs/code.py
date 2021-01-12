@@ -20,8 +20,10 @@ class ICode(TypedDict):
     pwcElId: Optional[int]
     pwcElTypeId: Optional[int]
     pwcOutageTypeId: Optional[int]
+    pwcOutageTagId: Optional[int]
     pwcElName: Optional[str]
     pwcElType: Optional[str]
     pwcOutageType: Optional[str]
+    pwcOutageTag: Optional[str]
     createdAt: dt.datetime
     updatedAt: dt.datetime

@@ -7,11 +7,11 @@ from src.repos.codes.codesRepo import CodesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
 
-elementCodePage = Blueprint('elementCode', __name__,
+elementCodePage = Blueprint('elementOutageCode', __name__,
                             template_folder='templates')
 
 
-class CreateElementCodeForm(Form):
+class CreateElementOutageCodeForm(Form):
     code = StringField(
         'Code', validators=[validators.DataRequired(), validators.Length(min=1, max=100)])
     otherLdcCodes = StringField(
@@ -28,6 +28,20 @@ class CreateElementCodeForm(Form):
         "Element Type Id", widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
     )
+    outageTypeId = h5fields.IntegerField(
+        "Outage Type Id", widget=h5widgets.NumberInput(min=0, step=1),
+        validators=[validators.DataRequired()]
+    )
+    outageTagId = h5fields.IntegerField(
+        "Outage Tag Id", widget=h5widgets.NumberInput(min=0, step=1),
+        validators=[validators.DataRequired()]
+    )
+    outageType = StringField(
+        'Outage Type',
+        validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
+    outageTag = StringField(
+        'Outage Tag',
+        validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
     elementName = StringField(
         'Element Name',
         validators=[validators.DataRequired(), validators.Length(min=1, max=500)])
@@ -39,8 +53,9 @@ class CreateElementCodeForm(Form):
 @elementCodePage.route('/create', methods=['GET', 'POST'])
 @role_required('code_book_editor')
 def create():
-    form = CreateElementCodeForm(request.form)
+    form = CreateElementOutageCodeForm(request.form)
     if request.method == 'POST' and form.validate():
+        # TODO complete this
         appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
         isSuccess = cRepo.insertElementCode(
@@ -51,9 +66,9 @@ def create():
             pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data)
         if isSuccess:
             flash(
-                'Successfully created the element code - {0}'.format(form.code.data), category='success')
+                'Successfully created the element outage code - {0}'.format(form.code.data), category='success')
             return redirect(url_for('code.list'))
         else:
             flash(
-                'Could not create the element code - {0}'.format(form.code.data), category='danger')
-    return render_template('elementCode/create.html.j2', form=form)
+                'Could not create the element outage code - {0}'.format(form.code.data), category='danger')
+    return render_template('elementOutageCode/create.html.j2', form=form)

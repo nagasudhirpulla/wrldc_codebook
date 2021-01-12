@@ -18,9 +18,9 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
     targetColumns = ['ID', 'CODE_TYPE', 'CODE_ISSUE_TIME', 'CODE_STR', 'OTHER_LDC_CODES',
                      'CODE_DESCRIPTION', 'CODE_EXECUTION_TIME', 'CODE_TAGS', 'CODE_ISSUED_BY',
                      'IS_CODE_CANCELLED', 'PWC_SD_REQ_ID', 'PWC_RTO_ID', 'IS_DELETED_AT_SRC',
-                     'PWC_ELEMENT_ID', 'PWC_ELEMENT_TYPE_ID', 'PWC_OUTAGE_TYPE_ID',
-                     'PWC_ELEMENT_NAME', 'PWC_ELEMENT_TYPE', 'PWC_OUTAGE_TYPE', 'CREATED_AT',
-                     'UPDATED_AT', 'CODE_ISSUED_TO']
+                     'PWC_ELEMENT_ID', 'PWC_ELEMENT_TYPE_ID', 'PWC_OUTAGE_TYPE_ID', 'PWC_OUTAGE_TAG_ID',
+                     'PWC_ELEMENT_NAME', 'PWC_ELEMENT_TYPE', 'PWC_OUTAGE_TYPE', 'PWC_OUTAGE_TAG',
+                     'CREATED_AT', 'UPDATED_AT', 'CODE_ISSUED_TO']
 
     codesFetchSql = """
             select {0}
@@ -91,10 +91,14 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
         'PWC_ELEMENT_TYPE_ID')]
     pwcOutageTypeId: ICode["pwcOutageTypeId"] = row[colNames.index(
         'PWC_OUTAGE_TYPE_ID')]
+    pwcOutageTagId: ICode["pwcOutageTagId"] = row[colNames.index(
+            'PWC_OUTAGE_TAG_ID')]
     pwcElName: ICode["pwcElName"] = row[colNames.index('PWC_ELEMENT_NAME')]
     pwcElType: ICode["pwcElType"] = row[colNames.index('PWC_ELEMENT_TYPE')]
     pwcOutageType: ICode["pwcOutageType"] = row[colNames.index(
         'PWC_OUTAGE_TYPE')]
+    pwcOutageTag: ICode["pwcOutageTag"] = row[colNames.index(
+            'PWC_OUTAGE_TAG')]
     createdAt: ICode["createdAt"] = row[colNames.index('CREATED_AT')]
     updatedAt: ICode["updatedAt"] = row[colNames.index('UPDATED_AT')]
     code = {
@@ -114,9 +118,11 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
         "pwcElId": pwcElId,
         "pwcElTypeId": pwcElTypeId,
         "pwcOutageTypeId": pwcOutageTypeId,
+        "pwcOutageTagId": pwcOutageTagId,
         "pwcElName": pwcElName,
         "pwcElType": pwcElType,
         "pwcOutageType": pwcOutageType,
+        "pwcOutageTag": pwcOutageTag,
         "createdAt": createdAt,
         "updatedAt": updatedAt
     }
