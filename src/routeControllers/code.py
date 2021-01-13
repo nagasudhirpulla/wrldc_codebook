@@ -10,7 +10,14 @@ from src.app.genericCode.createEditForm import createGenericCodeEditForm
 from src.app.elementCode.editForm import EditElementCodeForm
 from src.app.elementCode.editFromForm import editElementCodeViaForm
 from src.app.elementCode.createEditForm import createElementCodeEditForm
+from src.app.elementOutageCode.editForm import EditElementOutageCodeForm
+from src.app.elementOutageCode.editFromForm import editElementOutageCodeViaForm
+from src.app.elementOutageCode.createEditForm import createElementOutageCodeEditForm
+from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
+from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 import werkzeug
+import json
+from src.app.utils.defaultJsonEncoder import defaultJsonEncoder
 
 codePage = Blueprint('code', __name__,
                      template_folder='templates')
@@ -96,5 +103,26 @@ def edit(codeId: int):
         else:
             form = createElementCodeEditForm(code)
         return render_template('elementCode/edit.html.j2', form=form)
+    elif code["codeType"] == "Outage":
+        if request.method == 'POST':
+            form = EditElementOutageCodeForm(request.form)
+            if form.validate():
+                isSuccess = editElementOutageCodeViaForm(
+                    codeId=codeId, cRepo=cRepo, form=form)
+                if isSuccess:
+                    flash(
+                        'Successfully edited the code - {0}'.format(form.code.data), category='success')
+                else:
+                    flash(
+                        'Could not edit the code - {0}'.format(form.code.data), category='danger')
+                return redirect(url_for('code.list'))
+        else:
+            form = createElementOutageCodeEditForm(code)
+        oTagsRepo = OutageTagsRepo(appConf['pwcDbConnStr'])
+        oTypesRepo = OutageTypesRepo(appConf['pwcDbConnStr'])
+        oTags = oTagsRepo.getRealTimeOutageTags()
+        oTypes = oTypesRepo.getRealTimeOutageTypes()
+        return render_template('elementOutageCode/edit.html.j2', form=form,
+                               data={"code": json.dumps(code, default=defaultJsonEncoder), "oTags": oTags, "oTypes": oTypes})
     else:
         raise werkzeug.exceptions.NotFound()

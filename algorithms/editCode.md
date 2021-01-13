@@ -11,14 +11,15 @@ If the code is an Element code
 
 ## Approved Element Outage Code
 If the code is an Approved Element Outage Code
-* if approval_id is edited, cross check approval info from pwc db. Allow approval_id changes only when rto_id is null
+* if approval_id is edited, cross check approval info from pwc db. Do not allow approval_id changes
 * if execution time is edited and rto_id is null and is_source_deleted is False, then create a new real_time_outage entry in pwc db and link the real_time_outage id to this code row
 * if execution time is edited and rto_id is not null and is_source_deleted is False, then edit the timings in real_time_outage entry in pwc db
+* if description is edited and rto_id is not null and is_source_deleted is False, then edit the reason in real_time_outage entry in pwc db by ensuring the reason id in the corresponding reasons master table
 * edit the row in codes table after performing basic checks
 
 ## Element Outage Code
 If the code is an Element Outage Code
-* if element id or element_type id is edited, check if they are valid. Allow element changes only when rto_id is null
+* if element id or element_type id is edited, check if they are valid. Do not allow element changes
 * if execution time is edited and rto_id is null and is_source_deleted is False, then create a new real_time_outage entry in pwc db and link the real_time_outage id to this code row
 * if execution time is edited and rto_id is not null and is_source_deleted is False, then edit the timings in real_time_outage entry in pwc db
 * edit the row in codes table after performing basic checks

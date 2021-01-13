@@ -4,6 +4,7 @@ from src.repos.codes.insertElementCode import insertElementCode
 from src.repos.codes.insertElementOutageCode import insertElementOutageCode
 from src.repos.codes.editGenericCode import editGenericCode
 from src.repos.codes.editElementCode import editElementCode
+from src.repos.codes.editElementOutageCode import editElementOutageCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.deleteCode import deleteCode
@@ -161,3 +162,39 @@ class CodesRepo():
                                                   pwc_outage_type_id, pwc_outage_tag_id,
                                                   pwc_outage_type, pwc_outage_tag)
         return isInsertSuccess
+
+    def editElementOutageCode(self, codeId: int, code_issue_time: Optional[dt.datetime],
+                              code_str: str, other_ldc_codes: str,
+                              code_description: str, code_execution_time: dt.datetime,
+                              code_tags: str, code_issued_by: str, code_issued_to: str,
+                              is_code_cancelled: bool, pwc_outage_type_id: int,
+                              pwc_outage_tag_id: int, pwc_outage_type: str,
+                              pwc_outage_tag: str) -> bool:
+        """edit element outage code
+
+        Args:
+            codeId (int): [description]
+            code_issue_time (Optional[dt.datetime]): [description]
+            code_str (str): [description]
+            other_ldc_codes (str): [description]
+            code_description (str): [description]
+            code_execution_time (dt.datetime): [description]
+            code_tags (str): [description]
+            code_issued_by (str): [description]
+            code_issued_to (str): [description]
+            is_code_cancelled (bool): [description]
+            pwc_outage_type_id (int): [description]
+            pwc_outage_tag_id (int): [description]
+            pwc_outage_type (str): [description]
+            pwc_outage_tag (str): [description]
+
+        Returns:
+            bool: returns true if element outage code editing is ok
+        """
+        return editElementOutageCode(self.appDbConnStr, codeId, code_issue_time,
+                                     code_str, other_ldc_codes,
+                                     code_description, code_execution_time,
+                                     code_tags, code_issued_by, code_issued_to,
+                                     is_code_cancelled, pwc_outage_type_id,
+                                     pwc_outage_tag_id, pwc_outage_type,
+                                     pwc_outage_tag)

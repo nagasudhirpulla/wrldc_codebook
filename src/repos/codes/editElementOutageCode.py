@@ -5,14 +5,20 @@ from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getGenericCodeChanges import getGenericCodeChanges
 from src.typeDefs.code import ICode
 
-def editElementCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
-                    code_str: str, other_ldc_codes: str,
-                    code_description: str, code_execution_time: dt.datetime,
-                    code_tags: str, code_issued_by: str, code_issued_to: str, is_code_cancelled: bool) -> bool:
-    """updates an element code into the app db
+
+def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
+                          code_str: str, other_ldc_codes: str,
+                          code_description: str, code_execution_time: dt.datetime,
+                          code_tags: str, code_issued_by: str, code_issued_to: str,
+                          is_code_cancelled: bool, pwc_outage_type_id: int,
+                          pwc_outage_tag_id: int, pwc_outage_type: str,
+                          pwc_outage_tag: str) -> bool:
+    """updates an element outage code into the app db
     Returns:
         bool: returns true if process is ok
     """
+    # TODO complete this
+    return False
     code: ICode = getCodeById(appDbConnStr, codeId)
 
     changedInfo: List[Tuple[str, Any]] = getGenericCodeChanges(code, code_issue_time,

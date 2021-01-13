@@ -10,6 +10,8 @@ def deleteCode(appDbConnStr: str, codeId: int) -> bool:
     Returns:
         bool: returns true if code is deleted successfully
     """
+    # TODO handle deletion of code which have rto_id associated,
+    # by deleting the corresponding row in pwc db
     dbConn = None
     dbCur = None
     isDeleteSuccess = True
