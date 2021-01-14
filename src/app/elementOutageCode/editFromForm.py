@@ -12,6 +12,6 @@ def editElementOutageCodeViaForm(codeId: int, cRepo: CodesRepo, form: EditElemen
                                             code_tags=form.codeTags.data, code_issued_by=form.codeIssuedBy.data,
                                             code_issued_to=form.codeIssuedTo.data,
                                             is_code_cancelled=form.isCodeCancelled.data,
-                                            pwc_outage_type_id=form.outageTypeId, pwc_outage_tag_id=form.outageTagId,
-                                            pwc_outage_type=form.outageType, pwc_outage_tag=form.outageTag)
+                                            pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
+                                            pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data)
     return isSuccess

@@ -32,3 +32,7 @@ If the code is an Element Revival Code
 * cross check real_time_outage id from pwc db and ensure that the revival time is null
 * create a code row after performing all basic checks
 * if execution time is mentioned in the code info, then edit the revival time info and revival remarks for the outage row in pwc real_time_outage table (edit code execution time operation)
+
+## Note
+* While creating a new row in real time outages table use Coalesce(Max(ID),0) + 1 and return it into a varible for consumption by our python code - https://cx-oracle.readthedocs.io/en/latest/user_guide/txn_management.html#autocommitting, 
+https://stackoverflow.com/a/17211129/2746323
