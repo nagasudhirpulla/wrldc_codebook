@@ -1,6 +1,8 @@
 import cx_Oracle
 import datetime as dt
 from typing import Optional, Union
+from src.appConfig import getConfig
+from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
 
 
 def insertElementOutageCode(appDbConnStr: str, code_issue_time: Optional[dt.datetime],
@@ -15,6 +17,16 @@ def insertElementOutageCode(appDbConnStr: str, code_issue_time: Optional[dt.date
     Returns:
         bool: returns true if process is ok
     """
+
+    pwcDbConnStr: str = getConfig()['pwcDbConnStr']
+    # check if element is already out
+    isElOut = checkIfElementIsOut(
+        pwcDbConnStr=pwcDbConnStr, elId=pwc_element_id, elTypeId=pwc_element_type_id)
+    if isElOut:
+        # element is already out, hence we will not create element outage code
+        print("could not create element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
+            pwc_element_name, pwc_element_id, pwc_element_type_id))
+        return False
     dbConn = None
     dbCur = None
     isInsertSuccess = True

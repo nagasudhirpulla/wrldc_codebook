@@ -13,7 +13,7 @@
 <table id="displayTable" class="display table table-bordered table-hover table-responsive">
 </table>
 
-<h3><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h3>
+<h4><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h4>
 
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
@@ -23,12 +23,12 @@
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
-    {{ render_field(form.elementId, readonly="true") }}
-    {{ render_field(form.elementTypeId, readonly="true") }}
-    {{ render_field(form.elementName, readonly="true") }}
-    {{ render_field(form.elementType, readonly="true") }}
+    <dt><input type="submit" value="Create Element Code" class="btn btn-success"/></dt>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true") }}
   </dl> 
-  <p><input type="submit" value="Create Element Code"/>
 </form>
 {% endblock %}
 {% block scripts %}

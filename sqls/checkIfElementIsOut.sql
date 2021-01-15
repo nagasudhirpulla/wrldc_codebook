@@ -1,0 +1,16 @@
+SELECT
+	rto.REVIVED_DATE 
+FROM
+	REPORTING_WEB_UI_UAT.REAL_TIME_OUTAGE rto
+WHERE
+	to_char(rto.OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || rto.OUTAGE_TIME = (
+	SELECT
+		MAX(to_char(OUTAGE_DATE , 'YYYY-MM-DD')|| ' ' || OUTAGE_TIME) AS out_date_time
+	FROM
+		reporting_web_ui_uat.REAL_TIME_OUTAGE
+	WHERE
+		entity_id = 14
+		AND ELEMENT_ID = 41)
+	AND rto.entity_id = 14
+	AND rto.ELEMENT_ID = 41
+ORDER BY rto.OUTAGE_DATE DESC, OUTAGE_TIME DESC, rto.ID DESC 

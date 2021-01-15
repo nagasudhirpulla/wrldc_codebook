@@ -10,6 +10,7 @@ from src.appConfig import getConfig
 from src.app.externalOutages.checkIfOutageIsPresent import checkIfOutageIsPresent
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
 from src.app.externalOutages.updateRealTimeOutage import updateRealTimeOutage
+from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
 
 
 def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
@@ -25,7 +26,7 @@ def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optio
 
     case 2 - update code in pwc db
     criteria - (rto_id of code is present) and (outage w.r.t code is not deleted in pwc db)
-    TODO currently outage can be created in pwc db even if the element is already out
+    outage can be created in pwc db even if the element is already out
     Returns:
         bool: returns true if process is ok
     """
@@ -42,21 +43,39 @@ def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optio
                                                    pwc_outage_type, pwc_outage_tag))
 
     rtoId = code["pwcRtoId"]
+    elName = code["pwcElName"]
+    elId = code["pwcElId"]
+    elTypeId = code["pwcElTypeId"]
     isRtoProcessOk = True
     if (rtoId == None) and (code["codeExecTime"] == None) and not(code_execution_time == None):
-        newRtoId = createRealTimeOutage(pwcDbConnStr=pwcDbConnStr, elemTypeId=code["pwcElTypeId"],
-                                        elementId=code["pwcElId"], outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
-                                        reason=code_description, elementName=code["pwcElName"], sdReqId=0, outageTagId=pwc_outage_tag_id)
-        if newRtoId > 0:
-            changedInfo.append(("pwc_rto_id", newRtoId))
-        else:
+        # check if element is already out
+        isElOut = checkIfElementIsOut(
+            pwcDbConnStr=pwcDbConnStr, elId=elId, elTypeId=elTypeId)
+        if isElOut:
+            # element is already out, hence this is not a valid code editing operation
             isRtoProcessOk = False
+            print("could not edit element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
+                elName, elId, elTypeId))
+        else:
+            newRtoId = createRealTimeOutage(
+                pwcDbConnStr=pwcDbConnStr, elemTypeId=elTypeId,
+                elementId=elId, outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
+                reason=code_description, elementName=elName, sdReqId=0,
+                outageTagId=pwc_outage_tag_id)
+            if newRtoId > 0:
+                changedInfo.append(("pwc_rto_id", newRtoId))
+            else:
+                # we could not create a new rto entry in vendor db,
+                # hence this is not a valid code editing operation
+                isRtoProcessOk = False
+                print("could not edit element outage code for element {0} with element id = {1}, element type id = {2}, since we could not create a new outage entry in pwc db".format(
+                    elName, elId, elTypeId))
     else:
         # check if we can update the rto row in pwc db
         isCodeDeletedAtSrc = False if code["isDelAtSrc"] == 0 else True
         if (not isCodeDeletedAtSrc) and (not rtoId == None):
             # check again if outage w.r.t code is deleted in pwc db
-            # and update the isCodeDeletedAtSrc variable
+            # and then update the isCodeDeletedAtSrc variable
             isCodeDeletedAtSrc = not checkIfOutageIsPresent(
                 pwcDbConnStr, rtoId)
             if isCodeDeletedAtSrc:
@@ -64,14 +83,20 @@ def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optio
                 changedInfo.append(("is_deleted_at_src", 1))
             else:
                 # update real time outage in pwc db
-                isRtoUpdateSuccess = updateRealTimeOutage(pwcDbConnStr=pwcDbConnStr, rtoId=rtoId, outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
-                                     reason=code_description, outageTagId=pwc_outage_tag_id)
+                isRtoUpdateSuccess = updateRealTimeOutage(
+                    pwcDbConnStr=pwcDbConnStr, rtoId=rtoId, outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
+                    reason=code_description, outageTagId=pwc_outage_tag_id)
+                # if we could not edit the rto entry in pwc db,
+                # we will mark the code editing operation as a failure
                 isRtoProcessOk = True if isRtoUpdateSuccess else False
+                if not isRtoProcessOk:
+                    print("could not edit element outage code for element {0} with element id = {1}, element type id = {2}, since we could not edit the outage entry in pwc db".format(
+                        elName, elId, elTypeId))
 
     if not isRtoProcessOk:
         # do not perform operations on app db if we could not update the pwc db correctly
         return False
-    
+
     isEditSuccess = True
 
     if len(changedInfo) == 0:
