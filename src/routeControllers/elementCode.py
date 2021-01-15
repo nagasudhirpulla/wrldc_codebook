@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from wtforms import Form, StringField, validators, DateTimeField, BooleanField, IntegerField
 from wtforms.fields import html5 as h5fields
 from wtforms.widgets import html5 as h5widgets
@@ -45,10 +45,11 @@ def create():
     if request.method == 'POST' and form.validate():
         appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
+        loggedInUsername = session['SUSER']['name']
         isSuccess = cRepo.insertElementCode(
             code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
-            code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
             pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data)
         if isSuccess:

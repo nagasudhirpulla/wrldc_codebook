@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from wtforms import Form, StringField, validators, DateTimeField, BooleanField
 from wtforms.widgets import TextArea
 from src.repos.codes.codesRepo import CodesRepo
@@ -29,10 +29,11 @@ def create():
     if request.method == 'POST' and form.validate():
         appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
+        loggedInUsername = session['SUSER']['name']
         isSuccess = cRepo.insertGenericCode(
             code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
-            code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data)
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data)
         if isSuccess:
             flash(
                 'Successfully created the code - {0}'.format(form.code.data), category='success')
