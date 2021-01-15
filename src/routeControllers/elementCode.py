@@ -7,6 +7,7 @@ from src.repos.elements.elementsRepo import ElementsRepo
 from src.repos.codes.codesRepo import CodesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
+from src.app.utils.getNewCodePlaceHolder import getNewCodePlaceHolder
 
 elementCodePage = Blueprint('elementCode', __name__,
                             template_folder='templates')
@@ -45,7 +46,7 @@ def create():
         appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
         isSuccess = cRepo.insertElementCode(
-            code_issue_time=None, code_str=form.code.data, other_ldc_codes=form.otherLdcCodes.data,
+            code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,

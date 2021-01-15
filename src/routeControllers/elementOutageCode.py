@@ -9,6 +9,7 @@ from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
 from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
+from src.app.utils.getNewCodePlaceHolder import getNewCodePlaceHolder
 
 elementOutageCodePage = Blueprint('elementOutageCode', __name__,
                                   template_folder='templates')
@@ -65,7 +66,7 @@ def create():
     if request.method == 'POST' and form.validate():
         cRepo = CodesRepo(appConf['appDbConnStr'])
         isSuccess = cRepo.insertElementOutageCode(
-            code_issue_time=None, code_str=form.code.data, other_ldc_codes=form.otherLdcCodes.data,
+            code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by="NA", code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
