@@ -26,7 +26,8 @@ class CreateElementOutageCodeForm(Form):
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
     elementId = h5fields.IntegerField(
-        '', widget=h5widgets.NumberInput(min=0, step=1)
+        '', widget=h5widgets.NumberInput(min=0, step=1),
+        validators=[validators.DataRequired()]
     )
     elementTypeId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),

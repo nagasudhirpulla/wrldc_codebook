@@ -4,9 +4,11 @@ This is the web server that acts as a service that creates outages raw data
 from src.routeControllers.genericCode import genericCodePage
 from src.routeControllers.elementCode import elementCodePage
 from src.routeControllers.elementOutageCode import elementOutageCodePage
+from src.routeControllers.elementRevivalCode import elementRevivalCodePage
 from src.routeControllers.oauth import login_manager, oauthPage, initOauthClient
 from src.routeControllers.code import codePage
 from src.routeControllers.elements import elementsPage
+from src.routeControllers.outages import outagesPage
 from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
 from flask import Flask, request, jsonify, render_template
 from waitress import serve
@@ -16,6 +18,7 @@ from typing import Any, cast
 import os
 import pandas as pd
 from src.appConfig import getConfig, initAppConfig
+from src.app.utils.defaultJsonEncoder import ServerJSONEncoder
 # get application config
 appConfig = initAppConfig()
 
@@ -25,7 +28,7 @@ initOauthClient()
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
-
+app.json_encoder = ServerJSONEncoder
 appPrefix = appConfig["appPrefix"]
 if pd.isna(appPrefix):
     appPrefix = ""
@@ -53,8 +56,11 @@ app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(genericCodePage, url_prefix='/genericCode')
 app.register_blueprint(elementCodePage, url_prefix='/elementCode')
 app.register_blueprint(elementOutageCodePage, url_prefix='/elementOutageCode')
+app.register_blueprint(elementRevivalCodePage,
+                       url_prefix='/elementRevivalCode')
 app.register_blueprint(codePage, url_prefix='/code')
 app.register_blueprint(elementsPage, url_prefix='/elements')
+app.register_blueprint(outagesPage, url_prefix='/outages')
 
 hostedApp = Flask(__name__)
 

@@ -34,6 +34,7 @@ INNER JOIN (
 	((latest_out_info.entity_id = rto.entity_id)
 	AND (latest_out_info.element_id = rto.element_id)
 	AND (latest_out_info.out_date_time = rto.out_date_time))
-WHERE rto.REVIVED_TIME IS NULL
-	ORDER BY
+WHERE
+	rto.REVIVED_TIME IS NULL
+ORDER BY
 	rto.out_date_time DESC
