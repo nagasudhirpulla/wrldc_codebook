@@ -44,7 +44,7 @@ def getLatestCode():
 
 
 @codesPage.route('/', methods=['GET', 'POST'])
-# @roles_required(['code_book_editor', 'code_book_viewer'])
+@roles_required(['code_book_editor', 'code_book_viewer'])
 def list():
     form = ListCodesForm(request.form)
     appConf = getConfig()
