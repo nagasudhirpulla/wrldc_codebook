@@ -55,7 +55,7 @@ def create():
         if isSuccess:
             flash(
                 'Successfully created the element code - {0}'.format(form.code.data), category='success')
-            return redirect(url_for('code.list'))
+            return redirect(url_for('codes.list'))
         else:
             flash(
                 'Could not create the element code - {0}'.format(form.code.data), category='danger')

@@ -19,7 +19,7 @@ import werkzeug
 import json
 from src.app.utils.defaultJsonEncoder import defaultJsonEncoder
 
-codePage = Blueprint('code', __name__,
+codesPage = Blueprint('codes', __name__,
                      template_folder='templates')
 
 
@@ -30,7 +30,17 @@ class ListCodesForm(Form):
         validators.DataRequired()])
 
 
-@codePage.route('/', methods=['GET', 'POST'])
+@codesPage.route('/api/latest', methods=['GET'])
+@roles_required(['code_book_editor', 'code_book_viewer'])
+def getLatestCode():
+    form = ListCodesForm(request.form)
+    appConf = getConfig()
+    cRepo = CodesRepo(appConf['appDbConnStr'])
+    latestCode = cRepo.getLatestCode()
+    return {"code": latestCode}
+
+
+@codesPage.route('/', methods=['GET', 'POST'])
 # @roles_required(['code_book_editor', 'code_book_viewer'])
 def list():
     form = ListCodesForm(request.form)
@@ -46,7 +56,7 @@ def list():
     return render_template('code/list.html.j2', form=form, data={'codes': codes})
 
 
-@codePage.route('/delete/<codeId>', methods=['GET', 'POST'])
+@codesPage.route('/delete/<codeId>', methods=['GET', 'POST'])
 @roles_required(['code_book_editor'])
 def delete(codeId: int):
     appConf = getConfig()
@@ -55,7 +65,7 @@ def delete(codeId: int):
         isSuccess = cRepo.deleteCode(codeId)
         if isSuccess:
             flash('Successfully deleted the code', category='success')
-            return redirect(url_for('code.list'))
+            return redirect(url_for('codes.list'))
         else:
             flash('Could not delete the code', category='error')
     else:
@@ -63,7 +73,7 @@ def delete(codeId: int):
     return render_template('code/delete.html.j2', data={'code': code})
 
 
-@codePage.route('/edit/<codeId>', methods=['GET', 'POST'])
+@codesPage.route('/edit/<codeId>', methods=['GET', 'POST'])
 @roles_required(['code_book_editor'])
 def edit(codeId: int):
     appConf = getConfig()
@@ -83,7 +93,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}'.format(form.code.data), category='danger')
-                return redirect(url_for('code.list'))
+                return redirect(url_for('codes.list'))
         else:
             form = createGenericCodeEditForm(code)
         return render_template('genericCode/edit.html.j2', form=form)
@@ -99,7 +109,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}'.format(form.code.data), category='danger')
-                return redirect(url_for('code.list'))
+                return redirect(url_for('codes.list'))
         else:
             form = createElementCodeEditForm(code)
         return render_template('elementCode/edit.html.j2', form=form)
@@ -111,11 +121,11 @@ def edit(codeId: int):
                     codeId=codeId, cRepo=cRepo, form=form)
                 if isSuccess:
                     flash(
-                        'Successfully edited the code - {0}'.format(form.code.data), category='success')
+                        'Successfully edited the code - {0}, please check if element is already out'.format(form.code.data), category='success')
                 else:
                     flash(
                         'Could not edit the code - {0}'.format(form.code.data), category='danger')
-                return redirect(url_for('code.list'))
+                return redirect(url_for('codes.list'))
         else:
             form = createElementOutageCodeEditForm(code)
         oTagsRepo = OutageTagsRepo(appConf['pwcDbConnStr'])

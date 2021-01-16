@@ -2,20 +2,24 @@ import datetime as dt
 from src.repos.codes.insertGenericCode import insertGenericCode
 from src.repos.codes.insertElementCode import insertElementCode
 from src.repos.codes.insertElementOutageCode import insertElementOutageCode
+from src.repos.codes.insertElementRevivalCode import insertElementRevivalCode
 from src.repos.codes.editGenericCode import editGenericCode
 from src.repos.codes.editElementCode import editElementCode
 from src.repos.codes.editElementOutageCode import editElementOutageCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
+from src.repos.codes.getLatestCode import getLatestCode
 from src.repos.codes.deleteCode import deleteCode
 from typing import List, Optional
 from src.typeDefs.code import ICode
+from src.appConfig import getConfig
 
 
 class CodesRepo():
     """Repository class for Codes data of application
     """
     appDbConnStr: str = ""
+    pwcDbConnStr: str = ""
 
     def __init__(self, dbConStr: str) -> None:
         """constructor method
@@ -23,6 +27,7 @@ class CodesRepo():
             dbConStr (str): database connection string
         """
         self.appDbConnStr = dbConStr
+        self.pwcDbConnStr = getConfig()['pwcDbConnStr']
 
     def insertGenericCode(self, code_issue_time: dt.datetime,
                           code_str: str, other_ldc_codes: str,
@@ -60,6 +65,17 @@ class CodesRepo():
             Optional[ICode]: code object
         """
         return getCodeById(self.appDbConnStr, codeId)
+    
+    def getLatestCode(self) -> Optional[ICode]:
+        """fetches latest code object
+
+        Args:
+            codeId (int): [description]
+
+        Returns:
+            Optional[ICode]: code object
+        """
+        return getLatestCode(self.appDbConnStr)
 
     def deleteCode(self, codeId: int) -> bool:
         """delete a code with id
@@ -153,14 +169,15 @@ class CodesRepo():
         Returns:
             bool: returns true if process is ok
         """
-        isInsertSuccess = insertElementOutageCode(self.appDbConnStr, code_issue_time,
-                                                  code_str, other_ldc_codes,
-                                                  code_description, code_execution_time,
-                                                  code_tags, code_issued_by, code_issued_to,
-                                                  pwc_element_type_id, pwc_element_id,
-                                                  pwc_element_name, pwc_element_type,
-                                                  pwc_outage_type_id, pwc_outage_tag_id,
-                                                  pwc_outage_type, pwc_outage_tag)
+        isInsertSuccess = insertElementOutageCode(appDbConnStr=self.appDbConnStr, pwcDbConnStr=self.pwcDbConnStr,
+                                                  code_issue_time=code_issue_time,
+                                                  code_str=code_str, other_ldc_codes=other_ldc_codes,
+                                                  code_description=code_description, code_execution_time=code_execution_time,
+                                                  code_tags=code_tags, code_issued_by=code_issued_by, code_issued_to=code_issued_to,
+                                                  pwc_element_type_id=pwc_element_type_id, pwc_element_id=pwc_element_id,
+                                                  pwc_element_name=pwc_element_name, pwc_element_type=pwc_element_type,
+                                                  pwc_outage_type_id=pwc_outage_type_id, pwc_outage_tag_id=pwc_outage_tag_id,
+                                                  pwc_outage_type=pwc_outage_type, pwc_outage_tag=pwc_outage_tag)
         return isInsertSuccess
 
     def editElementOutageCode(self, codeId: int, code_issue_time: Optional[dt.datetime],
@@ -191,10 +208,30 @@ class CodesRepo():
         Returns:
             bool: returns true if element outage code editing is ok
         """
-        return editElementOutageCode(self.appDbConnStr, codeId, code_issue_time,
-                                     code_str, other_ldc_codes,
-                                     code_description, code_execution_time,
-                                     code_tags, code_issued_by, code_issued_to,
-                                     is_code_cancelled, pwc_outage_type_id,
-                                     pwc_outage_tag_id, pwc_outage_type,
-                                     pwc_outage_tag)
+        return editElementOutageCode(appDbConnStr=self.appDbConnStr, pwcDbConnStr=self.pwcDbConnStr, codeId=codeId, code_issue_time=code_issue_time,
+                                     code_str=code_str, other_ldc_codes=other_ldc_codes,
+                                     code_description=code_description, code_execution_time=code_execution_time,
+                                     code_tags=code_tags, code_issued_by=code_issued_by, code_issued_to=code_issued_to,
+                                     is_code_cancelled=is_code_cancelled, pwc_outage_type_id=pwc_outage_type_id,
+                                     pwc_outage_tag_id=pwc_outage_tag_id, pwc_outage_type=pwc_outage_type,
+                                     pwc_outage_tag=pwc_outage_tag)
+
+    def insertElementRevivalCode(self, code_issue_time: Optional[dt.datetime],
+                                 code_str: str, other_ldc_codes: str,
+                                 code_description: str, code_execution_time: dt.datetime,
+                                 code_tags: str, code_issued_by: str, code_issued_to: str,
+                                 pwc_element_type_id: int, pwc_element_id: int,
+                                 pwc_element_name: str, pwc_element_type: str,
+                                 pwc_rto_id: int) -> bool:
+        """inserts an element revival code into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        isInsertSuccess = insertElementRevivalCode(appDbConnStr=self.appDbConnStr, pwcDbConnStr=self.pwcDbConnStr, code_issue_time=code_issue_time,
+                                                   code_str=code_str, other_ldc_codes=other_ldc_codes,
+                                                   code_description=code_description, code_execution_time=code_execution_time,
+                                                   code_tags=code_tags, code_issued_by=code_issued_by, code_issued_to=code_issued_to,
+                                                   pwc_element_type_id=pwc_element_type_id, pwc_element_id=pwc_element_id,
+                                                   pwc_element_name=pwc_element_name, pwc_element_type=pwc_element_type,
+                                                   pwc_rto_id=pwc_rto_id)
+        return isInsertSuccess

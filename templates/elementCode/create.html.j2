@@ -19,6 +19,7 @@
 <form method="post">
   <dl>
     {{ render_field(form.code) }}
+    <span id="latestCodeInfoSpan" class="span small"></span>
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
@@ -47,15 +48,23 @@
   <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
   <script>
-  selectedElemInfo_g = null;
+  var selectedElemInfo_g = null;
+  var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
+  var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
   jQuery(document).ready(function($) {
       // populate element types
       loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
       // setup datetime picker
       setupDatetimepicker('datetimepicker');
+      loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
   });
 
+  function onLatestCodeFetch(codeObj) {
+      // console.log(codeObj);
+      document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"];
+  }
   function onElemRowSelect(rowObjs){
     if(rowObjs.length > 0){
       selectedElemInfo_g = rowObjs[0];
@@ -70,8 +79,7 @@
     selectedElemInfo_g = null;
     populateSelectedElemInForm();
     displaySelectedElemInfo();
-    var elsFetchBaseUrl = "{{ url_for('elements.getElementsByType', elType='') }}";
-    loadElements(elsFetchBaseUrl, "elTypesSelect", "displayTable", onElemRowSelect);
+    loadElements(elsFetchBaseUrl_g, "elTypesSelect", "displayTable", onElemRowSelect);
   }
 
   function populateSelectedElemInForm(){

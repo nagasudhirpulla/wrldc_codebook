@@ -56,9 +56,9 @@
             <td>{{item.codeExecTime if item.codeExecTime}}</td>
             <td>{{item.codeTags if item.codeTags}}</td>
             <td style="max-width:2em;">
-                <a href="{{ url_for('code.edit', codeId=item.id) }}">Edit</a>
+                <a href="{{ url_for('codes.edit', codeId=item.id) }}">Edit</a>
                 <span>|</span>
-                <a href="{{ url_for('code.delete', codeId=item.id) }}">Delete</a>
+                <a href="{{ url_for('codes.delete', codeId=item.id) }}">Delete</a>
             </td>
         </tr>
         {% endfor %}

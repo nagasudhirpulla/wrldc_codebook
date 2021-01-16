@@ -16,13 +16,13 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                     // populate outages table only if number of elements > 0
                     // var colNames = Object.keys(outagesList[0]);
                     var dtColumns = [
-                        { title: "Element Type", data: "elType" },
+                        { title: "Outage Time", data: "outageDt" },
                         { title: "Element Name", data: "elName" },
                         { title: "Outage Type", data: "outageType" },
-                        { title: "Outage Time", data: "outageDt" },
-                        { title: "Reason", data: "reason" },
                         { title: "Outage Tag", data: "outageTag" },
-                        { title: "Remarks", data: "outageRemarks" }
+                        { title: "Reason", data: "reason" },
+                        { title: "Remarks", data: "outageRemarks" },
+                        { title: "Element Type", data: "elType" }
                     ];
                     $('#' + outagesTableId).DataTable({
                         data: outagesList,

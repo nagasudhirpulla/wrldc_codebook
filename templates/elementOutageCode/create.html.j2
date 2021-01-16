@@ -19,6 +19,7 @@
 <form method="post">
   <dl>
     {{ render_field(form.code) }}
+    <span id="latestCodeInfoSpan" class="span small"></span>
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
@@ -58,6 +59,7 @@
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
   <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
   <script type="text/javascript">
     var oTypes_g = {{ data.oTypes|safe }};
     oTypes_g.unshift({ id: "", name: "", isGenerator: "" })
@@ -65,6 +67,7 @@
     oTags_g.unshift({ id: "", name: "", outageTypeId: "" })
     var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
     var elTypesFetchUrl_g = "{{ url_for('elements.getElementTypes') }}";
+    var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
   </script>
   <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
   <script src="{{ url_for('static', filename='app/createElementOutageCodePage.js') }}"></script>

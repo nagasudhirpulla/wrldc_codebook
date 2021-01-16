@@ -2,6 +2,7 @@ var selectedOutageInfo_g = null;
 jQuery(document).ready(function($) {
     // populate latest unrevived outages
     loadLatestUnrevivedOutages(outagesFetchFetchUrl_g, "displayTable", onOutageRowSelect);
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
 });
 
 function onOutageRowSelect(rowObjs) {
@@ -9,6 +10,11 @@ function onOutageRowSelect(rowObjs) {
         selectedOutageInfo_g = rowObjs[0];
         populateSelectedOutageInForm();
     }
+}
+
+function onLatestCodeFetch(codeObj) {
+    // console.log(codeObj);
+    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"];
 }
 
 function populateSelectedOutageInForm() {

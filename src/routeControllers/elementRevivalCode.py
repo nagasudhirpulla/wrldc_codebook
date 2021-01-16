@@ -11,8 +11,6 @@ from src.app.utils.getNewCodePlaceHolder import getNewCodePlaceHolder
 elementRevivalCodePage = Blueprint('elementRevivalCode', __name__,
                                    template_folder='templates')
 
-# TODO complete this
-
 
 class CreateElementRevivalCodeForm(Form):
     code = StringField(
@@ -52,5 +50,18 @@ def create():
     if request.method == 'POST' and form.validate():
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
-        # TODO create the insert function
+        isSuccess = cRepo.insertElementRevivalCode(
+            code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
+            code_description=form.codeDescription.data, code_execution_time=None,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
+            pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_rto_id=form.rtoId.data)
+        if isSuccess:
+            flash(
+                'Successfully created the revival code - {0}'.format(form.code.data), category='success')
+            return redirect(url_for('codes.list'))
+        else:
+            flash(
+                'Could not create the revival code - {0}, please check if element is already in service'.format(form.code.data), category='danger')
     return render_template('elementRevivalCode/create.html.j2', form=form)

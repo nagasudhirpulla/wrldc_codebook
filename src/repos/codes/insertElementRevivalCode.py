@@ -1,29 +1,31 @@
 import cx_Oracle
 import datetime as dt
 from typing import Optional, Union
-from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
+from src.app.externalOutages.checkIfElementIsOutByRtoId import checkIfElementIsOutByRtoId
 
 
-def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_time: Optional[dt.datetime],
+def insertElementRevivalCode(appDbConnStr: str, pwcDbConnStr:str, code_issue_time: Optional[dt.datetime],
                             code_str: str, other_ldc_codes: str,
                             code_description: str, code_execution_time: dt.datetime,
                             code_tags: str, code_issued_by: str, code_issued_to: str,
                             pwc_element_type_id: int, pwc_element_id: int,
                             pwc_element_name: str, pwc_element_type: str,
-                            pwc_outage_type_id: int, pwc_outage_tag_id: int,
-                            pwc_outage_type: str, pwc_outage_tag: str) -> bool:
-    """inserts an element outage code into the app db
+                            pwc_rto_id: int) -> bool:
+    """inserts an element revival code into the app db
+    Note: element revival code will not be created if 
+    elemId, elemTypeId, rtoId combination has the outage already revived.
+    We have to manually out the element in outage software for performing
+    the operation
     Returns:
         bool: returns true if process is ok
     """
-
     # check if element is already out
-    isElOut = checkIfElementIsOut(
-        pwcDbConnStr=pwcDbConnStr, elId=pwc_element_id, elTypeId=pwc_element_type_id)
-    if isElOut:
-        # element is already out, hence we will not create element outage code
-        print("could not create element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
-            pwc_element_name, pwc_element_id, pwc_element_type_id))
+    isElOut = checkIfElementIsOutByRtoId(
+        pwcDbConnStr=pwcDbConnStr, elId=pwc_element_id, elTypeId=pwc_element_type_id, rtoId=pwc_rto_id)
+    if not isElOut:
+        # element is already in service, hence we will not create element revival code
+        print("could not create element revival code for element {0} with element id = {1}, element type id = {2}, rtoId = {3} since element is already in service".format(
+            pwc_element_name, pwc_element_id, pwc_element_type_id, pwc_rto_id))
         return False
     dbConn = None
     dbCur = None
@@ -36,8 +38,7 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
                     "code_description", "code_execution_time", "code_tags",
                     "code_issued_by", "code_issued_to", "pwc_element_id",
                     "pwc_element_type_id", "pwc_element_name", "pwc_element_type",
-                    "pwc_outage_type_id", "pwc_outage_tag_id", "pwc_outage_type",
-                    "pwc_outage_tag"]
+                    "pwc_rto_id"]
 
         code_type = "Outage"
 
@@ -48,8 +49,7 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
                    code_description, code_execution_time, code_tags,
                    code_issued_by, code_issued_to, pwc_element_id,
                    pwc_element_type_id, pwc_element_name, pwc_element_type,
-                   pwc_outage_type_id, pwc_outage_tag_id, pwc_outage_type,
-                   pwc_outage_tag]
+                   pwc_rto_id]
 
         # get cursor for raw data table
         dbCur = dbConn.cursor()
@@ -68,7 +68,7 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
         dbConn.commit()
     except Exception as err:
         isInsertSuccess = False
-        print('Error while creation of element outage code')
+        print('Error while creation of element revival code')
         print(err)
     finally:
         # closing database cursor and connection

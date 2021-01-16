@@ -14,6 +14,7 @@
 <form method="post">
   <dl>
     {{ render_field(form.code) }}
+    <span id="latestCodeInfoSpan" class="span small"></span>
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
@@ -38,8 +39,10 @@
   <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
   <script type="text/javascript">
     var outagesFetchFetchUrl_g = "{{ url_for('outages.getLatestUnrevivedOutages') }}";
+    var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
   </script>
   <script src="{{ url_for('static', filename='app/createElementRevivalCodePage.js') }}"></script>
 {% endblock %}

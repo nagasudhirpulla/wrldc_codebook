@@ -6,14 +6,13 @@ from src.repos.codes.getGenericCodeChanges import getGenericCodeChanges
 from src.repos.codes.getElementOutageCodeChanges import getElementOutageCodeChanges
 from src.app.externalOutages.getReasonId import getReasonId
 from src.typeDefs.code import ICode
-from src.appConfig import getConfig
 from src.app.externalOutages.checkIfOutageIsPresent import checkIfOutageIsPresent
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
 from src.app.externalOutages.updateRealTimeOutage import updateRealTimeOutage
 from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
 
 
-def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
+def editElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, codeId: int, code_issue_time: Optional[dt.datetime],
                           code_str: str, other_ldc_codes: str,
                           code_description: str, code_execution_time: dt.datetime,
                           code_tags: str, code_issued_by: str, code_issued_to: str,
@@ -30,7 +29,6 @@ def editElementOutageCode(appDbConnStr: str, codeId: int, code_issue_time: Optio
     Returns:
         bool: returns true if process is ok
     """
-    pwcDbConnStr: str = getConfig()['pwcDbConnStr']
     code: ICode = getCodeById(appDbConnStr, codeId)
 
     changedInfo: List[Tuple[str, Any]] = getGenericCodeChanges(code, code_issue_time,

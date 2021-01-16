@@ -9,8 +9,7 @@ def getCodeById(appDbConnStr: str, codeId: int) -> Optional[ICode]:
 
     Args:
         appDbConnStr (str): app db connection string
-        startDt (dt.datetime): [description]
-        endDt (dt.datetime): [description]
+        codeId (int): [description]
 
     Returns:
         Optional[ICode]: code object

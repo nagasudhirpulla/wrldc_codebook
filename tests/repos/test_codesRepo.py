@@ -35,3 +35,12 @@ class TestCodesRepo(unittest.TestCase):
         codes = cRepo.getCodesBetweenDates(startDt=dt.datetime(
             2021, 1, 6), endDt=dt.datetime(2021, 1, 6))
         self.assertTrue(len(codes) > 0)
+
+    def test_getLatestCode(self) -> None:
+        """tests the function that gets the latest code
+        """
+        appDbConnStr = self.appConf['appDbConnStr']
+        cRepo = CodesRepo(appDbConnStr)
+        # no execution time
+        code = cRepo.getLatestCode()
+        self.assertFalse(code == None)

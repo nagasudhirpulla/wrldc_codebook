@@ -4,7 +4,13 @@ jQuery(document).ready(function($) {
     loadElementTypes(elTypesFetchUrl_g, "elTypesSelect");
     // setup datetime picker
     setupDatetimepicker('datetimepicker');
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
 });
+
+function onLatestCodeFetch(codeObj) {
+    // console.log(codeObj);
+    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"];
+}
 
 function onElemRowSelect(rowObjs) {
     if (rowObjs.length > 0) {
