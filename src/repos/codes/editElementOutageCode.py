@@ -25,7 +25,7 @@ def editElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, codeId: int, cod
 
     case 2 - update code in pwc db
     criteria - (rto_id of code is present) and (outage w.r.t code is not deleted in pwc db)
-    outage can be created in pwc db even if the element is already out
+    Note - outage cannot be created in code book if element is already out
     Returns:
         bool: returns true if process is ok
     """

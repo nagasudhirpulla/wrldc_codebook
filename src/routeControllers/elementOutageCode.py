@@ -77,9 +77,9 @@ def create():
             pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data)
         if isSuccess:
             flash(
-                'Successfully created the outage code - {0}, please check if element is already out'.format(form.code.data), category='success')
+                'Successfully created the outage code - {0}'.format(form.code.data), category='success')
             return redirect(url_for('codes.list'))
         else:
             flash(
-                'Could not create the outage code - {0}'.format(form.code.data), category='danger')
+                'Could not create the outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')
     return render_template('elementOutageCode/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})

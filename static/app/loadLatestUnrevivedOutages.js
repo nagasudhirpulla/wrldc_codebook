@@ -27,6 +27,9 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                     $('#' + outagesTableId).DataTable({
                         data: outagesList,
                         columns: dtColumns,
+                        order: [
+                            [0, "desc"]
+                        ],
                         select: {
                             style: 'single'
                         }

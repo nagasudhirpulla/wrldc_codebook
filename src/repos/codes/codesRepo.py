@@ -6,6 +6,7 @@ from src.repos.codes.insertElementRevivalCode import insertElementRevivalCode
 from src.repos.codes.editGenericCode import editGenericCode
 from src.repos.codes.editElementCode import editElementCode
 from src.repos.codes.editElementOutageCode import editElementOutageCode
+from src.repos.codes.editElementRevivalCode import editElementRevivalCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getLatestCode import getLatestCode
@@ -65,7 +66,7 @@ class CodesRepo():
             Optional[ICode]: code object
         """
         return getCodeById(self.appDbConnStr, codeId)
-    
+
     def getLatestCode(self) -> Optional[ICode]:
         """fetches latest code object
 
@@ -135,7 +136,7 @@ class CodesRepo():
                         code_str: str, other_ldc_codes: str,
                         code_description: str, code_execution_time: dt.datetime,
                         code_tags: str, code_issued_by: str, code_issued_to: str, is_code_cancelled: bool) -> bool:
-        """edit as element code
+        """edit the element code in app db
 
         Args:
             codeId (int): [description]
@@ -187,7 +188,7 @@ class CodesRepo():
                               is_code_cancelled: bool, pwc_outage_type_id: int,
                               pwc_outage_tag_id: int, pwc_outage_type: str,
                               pwc_outage_tag: str) -> bool:
-        """edit element outage code
+        """edit element outage code in app db
 
         Args:
             codeId (int): [description]
@@ -235,3 +236,32 @@ class CodesRepo():
                                                    pwc_element_name=pwc_element_name, pwc_element_type=pwc_element_type,
                                                    pwc_rto_id=pwc_rto_id)
         return isInsertSuccess
+
+    def editElementRevivalCode(self, codeId: int, code_issue_time: Optional[dt.datetime],
+                               code_str: str, other_ldc_codes: str,
+                               code_description: str, code_execution_time: dt.datetime,
+                               code_tags: str, code_issued_by: str, code_issued_to: str,
+                               is_code_cancelled: bool, pwc_rto_id: int) -> bool:
+        """edit element revival code in app db
+
+        Args:
+            codeId (int): [description]
+            code_issue_time (Optional[dt.datetime]): [description]
+            code_str (str): [description]
+            other_ldc_codes (str): [description]
+            code_description (str): [description]
+            code_execution_time (dt.datetime): [description]
+            code_tags (str): [description]
+            code_issued_by (str): [description]
+            code_issued_to (str): [description]
+            is_code_cancelled (bool): [description]
+            pwc_rto_id (int): [description]
+
+        Returns:
+            bool: returns true if element revival code editing is ok
+        """
+        return editElementRevivalCode(appDbConnStr=self.appDbConnStr, pwcDbConnStr=self.pwcDbConnStr, codeId=codeId, code_issue_time=code_issue_time,
+                                      code_str=code_str, other_ldc_codes=other_ldc_codes,
+                                      code_description=code_description, code_execution_time=code_execution_time,
+                                      code_tags=code_tags, code_issued_by=code_issued_by, code_issued_to=code_issued_to,
+                                      is_code_cancelled=is_code_cancelled, pwc_rto_id=pwc_rto_id)

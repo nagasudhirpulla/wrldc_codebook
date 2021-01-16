@@ -13,6 +13,9 @@ from src.app.elementCode.createEditForm import createElementCodeEditForm
 from src.app.elementOutageCode.editForm import EditElementOutageCodeForm
 from src.app.elementOutageCode.editFromForm import editElementOutageCodeViaForm
 from src.app.elementOutageCode.createEditForm import createElementOutageCodeEditForm
+from src.app.elementRevivalCode.editForm import EditElementRevivalCodeForm
+from src.app.elementRevivalCode.editFromForm import editElementRevivalCodeViaForm
+from src.app.elementRevivalCode.createEditForm import createElementRevivalCodeEditForm
 from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
 from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 import werkzeug
@@ -121,10 +124,10 @@ def edit(codeId: int):
                     codeId=codeId, cRepo=cRepo, form=form)
                 if isSuccess:
                     flash(
-                        'Successfully edited the code - {0}, please check if element is already out'.format(form.code.data), category='success')
+                        'Successfully edited the code - {0}'.format(form.code.data), category='success')
                 else:
                     flash(
-                        'Could not edit the code - {0}'.format(form.code.data), category='danger')
+                        'Could not edit the code - {0}, please check if element is already out'.format(form.code.data), category='danger')
                 return redirect(url_for('codes.list'))
         else:
             form = createElementOutageCodeEditForm(code)
@@ -134,5 +137,22 @@ def edit(codeId: int):
         oTypes = oTypesRepo.getRealTimeOutageTypes()
         return render_template('elementOutageCode/edit.html.j2', form=form,
                                data={"code": json.dumps(code, default=defaultJsonEncoder), "oTags": oTags, "oTypes": oTypes})
+    elif code["codeType"] == "Revival":
+        if request.method == 'POST':
+            form = EditElementRevivalCodeForm(request.form)
+            if form.validate():
+                isSuccess = editElementRevivalCodeViaForm(
+                    codeId=codeId, cRepo=cRepo, form=form)
+                if isSuccess:
+                    flash(
+                        'Successfully edited the code - {0}'.format(form.code.data), category='success')
+                else:
+                    flash(
+                        'Could not edit the code - {0}, please check if element is already in service'.format(form.code.data), category='danger')
+                return redirect(url_for('codes.list'))
+        else:
+            form = createElementRevivalCodeEditForm(code)
+        return render_template('elementRevivalCode/edit.html.j2', form=form,
+                               data={"code": json.dumps(code, default=defaultJsonEncoder)})
     else:
         raise werkzeug.exceptions.NotFound()
