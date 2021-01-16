@@ -40,7 +40,7 @@ def insertElementRevivalCode(appDbConnStr: str, pwcDbConnStr:str, code_issue_tim
                     "pwc_element_type_id", "pwc_element_name", "pwc_element_type",
                     "pwc_rto_id"]
 
-        code_type = "Outage"
+        code_type = "Revival"
 
         if code_issue_time == None:
             code_issue_time = dt.datetime.now()
