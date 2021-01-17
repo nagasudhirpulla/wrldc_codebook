@@ -5,6 +5,7 @@ SELECT
 	sr.ELEMENT_ID,
 	sr.REASON_ID,
 	sr.shutdownType,
+	sr.SHUT_DOWN_TYPE_ID,
 	sr.occ_name,
 	sr.elementType,
 	sr.ELEMENT_NAME,
@@ -53,26 +54,3 @@ LEFT JOIN (
 WHERE
 	(to_date('2020-12-22', 'YYYY-MM-DD') BETWEEN TRUNC(sd.APPROVED_START_DATE) AND TRUNC(sd.APPROVED_END_DATE))
 	AND ss.STATUS = 'Approved'
-
-/*
-TODO find rpc approval status column
-In real time outages table,
-USER_DETAILS table has user ids for createdBy and modifiedBy columns
-
-request_type_id refers to shutdown_outage type
-
-entity_id refers to entity_master that has info about element type
-
-element_id has id of element in corresponding table
-For example element_id refers to AC_TRANSMISSION_LINE_CIRCUIT table if element_id is 14
-
-shutdown_type column refers to shutdown outage type table
-
-reason_id refers to outage_reason table
-
-shutdown_request_id refers to shutdown_request table
-
-shutdown_outage_tag refers to shutdown_outage_tag table
-
-region_id refers to region_master table
-*/
