@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
 
 function onLatestCodeFetch(codeObj) {
     // console.log(codeObj);
-    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"];
+    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();
 }
 
 function onElemRowSelect(rowObjs) {

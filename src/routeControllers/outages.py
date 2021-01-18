@@ -9,10 +9,19 @@ outagesPage = Blueprint('outages', __name__,
                         template_folder='templates')
 
 
-@outagesPage.route('/api/getLatestUnrevivedOutages', methods=['GET'])
+@outagesPage.route('/api/latestUnrevivedOutages', methods=['GET'])
 @roles_required(['code_book_editor', 'code_book_viewer'])
 def getLatestUnrevivedOutages() -> dict:
     appConf = getConfig()
     oRepo = OutagesRepo(appConf['pwcDbConnStr'])
     outages = oRepo.getLatestUnrevOutages()
+    return jsonify({"outages": outages})
+
+
+@outagesPage.route('/api/todayApprovedOutages', methods=['GET'])
+@roles_required(['code_book_editor', 'code_book_viewer'])
+def getApprovedOutages() -> dict:
+    appConf = getConfig()
+    oRepo = OutagesRepo(appConf['pwcDbConnStr'])
+    outages = oRepo.getApprovedOutages(dt.datetime.now())
     return jsonify({"outages": outages})
