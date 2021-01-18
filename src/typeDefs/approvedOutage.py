@@ -21,6 +21,7 @@ class IApprovedOutage(TypedDict):
     requesterRemarks: str
     availingStatus: str
     approvalStatus: str
+    nldcApprovalStatus: str
     rldcRemarks: str
     rpcRemarks: str
     nldcRemarks: str

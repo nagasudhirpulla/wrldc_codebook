@@ -15,3 +15,11 @@ class TestOutageTypesRepo(unittest.TestCase):
         oRepo = OutagesRepo(pwcDbConnStr)
         outages = oRepo.getLatestUnrevOutages()
         self.assertFalse(len(outages) == 0)
+
+    def test_getApprovedOutages(self) -> None:
+        """tests the function that gets elements for display from outage software
+        """
+        pwcDbConnStr = self.appConf['pwcDbConnStr']
+        oRepo = OutagesRepo(pwcDbConnStr)
+        outages = oRepo.getApprovedOutages(dt.datetime(2020, 12, 15))
+        self.assertFalse(len(outages) == 0)

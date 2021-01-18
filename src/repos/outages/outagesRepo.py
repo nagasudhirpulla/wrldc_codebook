@@ -1,7 +1,9 @@
 from src.typeDefs.unRevOutage import IUnRevOutage
+from src.typeDefs.approvedOutage import IApprovedOutage
 from src.repos.outages.getLatestUnrevOutages import getLatestUnrevOutages
+from src.repos.outages.getApprovedOutages import getApprovedOutages
 from typing import List
-import cx_Oracle
+import datetime as dt
 
 
 class OutagesRepo():
@@ -18,3 +20,6 @@ class OutagesRepo():
 
     def getLatestUnrevOutages(self) -> List[IUnRevOutage]:
         return getLatestUnrevOutages(self.pwcDbConnStr)
+
+    def getApprovedOutages(self, targetDt: dt.datetime) -> List[IApprovedOutage]:
+        return getApprovedOutages(self.pwcDbConnStr, targetDt)
