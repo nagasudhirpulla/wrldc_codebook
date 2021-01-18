@@ -4,32 +4,31 @@ from typing import Optional
 from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
 
 
-def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_time: Optional[dt.datetime],
+def insertApprovedOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_time: Optional[dt.datetime],
                             code_str: str, other_ldc_codes: str,
                             code_description: str, code_execution_time: dt.datetime,
                             code_tags: str, code_issued_by: str, code_issued_to: str,
                             pwc_element_type_id: int, pwc_element_id: int,
                             pwc_element_name: str, pwc_element_type: str,
                             pwc_outage_type_id: int, pwc_outage_tag_id: int,
-                            pwc_outage_type: str, pwc_outage_tag: str) -> bool:
-    """inserts an element outage code into the app db
+                            pwc_outage_type: str, pwc_outage_tag: str, pwc_sd_req_id: int) -> bool:
+    """inserts an approved outage code into the app db
     Returns:
         bool: returns true if process is ok
     """
-
     # check if element is already out
     isElOut = checkIfElementIsOut(
         pwcDbConnStr=pwcDbConnStr, elId=pwc_element_id, elTypeId=pwc_element_type_id)
     if isElOut:
-        # element is already out, hence we will not create element outage code
-        print("could not create element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
+        # element is already out, hence we will not create approved outage code
+        print("could not create approved outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
             pwc_element_name, pwc_element_id, pwc_element_type_id))
         return False
     dbConn = None
     dbCur = None
     isInsertSuccess = True
     try:
-        # get connection with raw data table
+        # get connection with table
         dbConn = cx_Oracle.connect(appDbConnStr)
         # column names of the raw data table
         colNames = ["code_type", "code_issue_time", "code_str", "other_ldc_codes",
@@ -37,9 +36,9 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
                     "code_issued_by", "code_issued_to", "pwc_element_id",
                     "pwc_element_type_id", "pwc_element_name", "pwc_element_type",
                     "pwc_outage_type_id", "pwc_outage_tag_id", "pwc_outage_type",
-                    "pwc_outage_tag"]
+                    "pwc_outage_tag", "pwc_sd_req_id"]
 
-        code_type = "Outage"
+        code_type = "ApprovedOutage"
 
         if code_issue_time == None:
             code_issue_time = dt.datetime.now()
@@ -49,7 +48,7 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
                    code_issued_by, code_issued_to, pwc_element_id,
                    pwc_element_type_id, pwc_element_name, pwc_element_type,
                    pwc_outage_type_id, pwc_outage_tag_id, pwc_outage_type,
-                   pwc_outage_tag]
+                   pwc_outage_tag, pwc_sd_req_id]
 
         # get cursor for raw data table
         dbCur = dbConn.cursor()
@@ -68,7 +67,7 @@ def insertElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_tim
         dbConn.commit()
     except Exception as err:
         isInsertSuccess = False
-        print('Error while creation of element outage code')
+        print('Error while creation of approved outage code')
         print(err)
     finally:
         # closing database cursor and connection

@@ -13,6 +13,8 @@ class IApprovedOutage(TypedDict):
     reason: str
     outageType: str
     outageTypeId: int
+    outageTag: str
+    outageTagId: int
     occName: str
     requester: str
     dailyCont: str

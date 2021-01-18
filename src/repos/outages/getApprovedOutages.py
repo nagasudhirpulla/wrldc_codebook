@@ -15,6 +15,8 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
         sr.REASON_ID,
         sr.shutdownType,
         sr.SHUT_DOWN_TYPE_ID,
+        sr.	SHUTDOWN_TAG_ID,
+        sr.SHUTDOWN_TAG,
         sr.occ_name,
         sr.elementType,
         sr.ELEMENT_NAME,
@@ -44,7 +46,7 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
         ss.ID = sd.STATUS_ID
     LEFT JOIN (
         SELECT
-            req.*, sot.NAME AS shutdownType, em.ENTITY_NAME AS elementType, or2.REASON, om.OCC_NAME, ud.USER_NAME AS requester_name, ss2.STATUS AS nldc_approval_status
+            req.*, sot.NAME AS shutdownType, em.ENTITY_NAME AS elementType, or2.REASON, om.OCC_NAME, ud.USER_NAME AS requester_name, ss2.STATUS AS nldc_approval_status, sdTag.NAME AS SHUTDOWN_TAG
         FROM
             REPORTING_WEB_UI_UAT.SHUTDOWN_REQUEST req
         LEFT JOIN REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TYPE sot ON
@@ -57,6 +59,8 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
             om.OCC_ID = req.OCC_ID
         LEFT JOIN REPORTING_WEB_UI_UAT.USER_DETAILS ud ON
             req.INTENDED_BY = ud.USERID
+        LEFT JOIN REPORTING_WEB_UI_UAT.SHUTDOWN_OUTAGE_TAG sdTag ON
+            sdTag.ID = req.SHUTDOWN_TAG_ID 
         LEFT JOIN REPORTING_WEB_UI_UAT.SHUTDOWN_STATUS ss2 ON
             req.NLDC_STATUS_ID = ss2.ID ) sr ON
         sr.ID = sd.SHUTDOWN_REQUEST_ID
@@ -65,8 +69,8 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
         AND ss.STATUS = 'Approved'
     """
     targetColumns = ['ID', 'SHUTDOWN_REQUEST_ID', 'ENTITY_ID', 'ELEMENT_ID',
-                     'REASON_ID', 'SHUTDOWNTYPE', 'SHUT_DOWN_TYPE_ID',
-                     'OCC_NAME', 'ELEMENTTYPE', 'ELEMENT_NAME', 'REQUESTER_NAME',
+                     'REASON_ID', 'SHUTDOWNTYPE', 'SHUT_DOWN_TYPE_ID', 'SHUTDOWN_TAG_ID',
+                     'SHUTDOWN_TAG', 'OCC_NAME', 'ELEMENTTYPE', 'ELEMENT_NAME', 'REQUESTER_NAME',
                      'DAILYCONT', 'REASON', 'APPROVED_START_DATE', 'APPROVED_END_DATE',
                      'REQUESTER_REMARKS', 'AVAILINGSTATUS', 'STATUS', 'RLDC_REMARKS',
                      'RPC_REMARKS', 'NLDC_REMARKS', 'NLDC_APPROVAL_STATUS']
@@ -114,6 +118,8 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
             "reason": row[colNames.index("REASON")],
             "outageType": row[colNames.index("SHUTDOWNTYPE")],
             "outageTypeId": row[colNames.index("SHUT_DOWN_TYPE_ID")],
+            "outageTag": row[colNames.index("SHUTDOWN_TAG")],
+            "outageTagId": row[colNames.index("SHUTDOWN_TAG_ID")],
             "occName": row[colNames.index("OCC_NAME")],
             "requester": row[colNames.index("REQUESTER_NAME")],
             "dailyCont": row[colNames.index("DAILYCONT")],
