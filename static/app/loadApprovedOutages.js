@@ -40,6 +40,11 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
                     }
                     footerHtml += "</tr></tfoot>";
                     $("#" + tableId).append(footerHtml);
+                    // Setup - add a text input to each footer cell
+                    $('#' + tableId + ' tfoot th').each(function() {
+                        //var title = $(this).text();
+                        $(this).html('<input type="text" placeholder="Search" />');
+                    });
                     var dataTable = $('#' + tableId).DataTable({
                         data: outagesList,
                         columns: dtColumns,
