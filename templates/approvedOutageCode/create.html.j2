@@ -1,0 +1,71 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Approved Outage Code{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Create Approved Outage Code</h3>
+<table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
+<thead></thead>
+</table>
+
+<h4><span>Selected Element = </span><span id="selApprovalDisplaySpan">None</span></h4>
+
+{% from "_formhelpers.html.j2" import render_field %}
+<form method="post">
+  <dl>
+    {{ render_field(form.code) }}
+    <span id="latestCodeInfoSpan" class="span small"></span>
+    {{ render_field(form.codeDescription) }}
+    {{ render_field(form.otherLdcCodes) }}
+    {{ render_field(form.codeIssuedTo) }}
+    {{ render_field(form.codeTags) }}
+    <dt><label>Outage Type</label></dt>
+    <dd>
+      <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
+    </dd>
+    <dt><label>Outage Tag</label></dt>
+    <dd>
+      <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
+    </dd>
+    <dt><input type="submit" value="Create Approved Outage Code" class="btn btn-success"/></dt>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTagId, readonly="true", hidden="true") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true") }}
+    {{ render_field(form.outageTag, readonly="true", hidden="true") }}
+    {{ render_field(form.outageType, readonly="true", hidden="true") }}
+    {{ render_field(form.sdReqId, readonly="true", hidden="true") }}
+  </dl> 
+</form>
+{% endblock %}
+{% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+  <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadApprovedOutages.js') }}"></script>
+  <script type="text/javascript">
+    var oTypes_g = {{ data.oTypes|safe }};
+    oTypes_g.unshift({ id: "", name: "", isGenerator: "" })
+    var oTags_g = {{ data.oTags|safe }};
+    oTags_g.unshift({ id: "", name: "", outageTypeId: "" })
+    var apprOutagesFetchUrl_g = "{{ url_for('outages.getApprovedOutages') }}";
+    var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+  </script>
+  <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/createApprovedOutageCodePage.js') }}"></script>
+{% endblock %}
