@@ -37,16 +37,16 @@
 </form>
 {% endblock %}
 {% block scripts %}
-  <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
-  <script type="text/javascript">
+  <script type="application/javascript">
     var oTypes_g = {{ data.oTypes|safe }};
     oTypes_g.unshift({ id: "", name: "", isGenerator: "" });
     var oTags_g = {{ data.oTags|safe }};
     oTags_g.unshift({ id: "", name: "", outageTypeId: "" });
     var code_g = {{data.code|safe}};
   </script>
-  <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/editElementOutageCodePage.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/editElementOutageCodePage.js') }}"></script>
 {% endblock %}

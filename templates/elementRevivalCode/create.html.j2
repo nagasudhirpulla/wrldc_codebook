@@ -11,6 +11,8 @@
 <thead></thead>
 </table>
 
+<h4><span id="selOutageDisplaySpan"></span></h4>
+
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
@@ -31,17 +33,17 @@
 {% endblock %}
 {% block scripts %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
-  <script type="text/javascript">
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+  <script type="application/javascript">
     var outagesFetchFetchUrl_g = "{{ url_for('outages.getLatestUnrevivedOutages') }}";
     var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
   </script>

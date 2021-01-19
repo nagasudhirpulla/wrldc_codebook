@@ -22,7 +22,7 @@
 {% endblock %}
 {% block scripts %}
   <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
-  <script type="text/javascript">
+  <script type="application/javascript">
     var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
     jQuery(document).ready(function($) {
       loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)

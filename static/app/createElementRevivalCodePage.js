@@ -8,6 +8,7 @@ jQuery(document).ready(function($) {
 function onOutageRowSelect(rowObjs) {
     if (rowObjs.length > 0) {
         selectedOutageInfo_g = rowObjs[0];
+        displaySelectedElemInfo();
         populateSelectedOutageInForm();
     }
 }
@@ -30,5 +31,14 @@ function populateSelectedOutageInForm() {
         document.getElementById('elementType').value = "";
         document.getElementById('elementTypeId').value = "";
         document.getElementById('rtoId').value = "";
+    }
+}
+
+function displaySelectedElemInfo() {
+    var displayElem = document.getElementById("selOutageDisplaySpan");
+    if (selectedOutageInfo_g != null) {
+        displayElem.innerText = "Selected element is " + selectedOutageInfo_g["elName"];
+    } else {
+        displayElem.innerText = "";
     }
 }

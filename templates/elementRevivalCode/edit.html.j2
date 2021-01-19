@@ -26,10 +26,10 @@
 </form>
 {% endblock %}
 {% block scripts %}
-  <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
-  <script type="text/javascript">
+  <script type="application/javascript">
     var code_g = {{data.code|safe}};
   </script>
   <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>

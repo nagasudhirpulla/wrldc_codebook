@@ -36,22 +36,22 @@
 {% endblock %}
 {% block scripts %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-  <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
-  <script src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
-  <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
-  <script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+  <script type="application/javascript">
   var selectedElemInfo_g = null;
   var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
   var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
