@@ -36,7 +36,6 @@ class ListCodesForm(Form):
 @codesPage.route('/api/latest', methods=['GET'])
 @roles_required(['code_book_editor', 'code_book_viewer'])
 def getLatestCode():
-    form = ListCodesForm(request.form)
     appConf = getConfig()
     cRepo = CodesRepo(appConf['appDbConnStr'])
     latestCode = cRepo.getLatestCode()

@@ -10,7 +10,7 @@ class EditElementCodeForm(Form):
         'Other LDC Codes', [validators.Length(min=0, max=150)])
     codeDescription = StringField(
         'Description', [validators.DataRequired(), validators.Length(min=1, max=500)])
-    codeTags = StringField('Tags', [validators.Length(min=0, max=500)])
+    codeTags = StringField('Tag(s)', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
     codeExecTime = DateTimeField(
