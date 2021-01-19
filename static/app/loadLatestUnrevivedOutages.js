@@ -3,6 +3,7 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
         $('#' + outagesTableId).DataTable().destroy();
         $('#' + outagesTableId + ' tbody').empty();
         $('#' + outagesTableId + ' thead').empty();
+        $('#' + outagesTableId + ' tfoot').remove();
     }
     $.ajax({
         url: fetchUrl,
@@ -24,16 +25,53 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                         { title: "Remarks", data: "outageRemarks" },
                         { title: "Element Type", data: "elType" }
                     ];
-                    $('#' + outagesTableId).DataTable({
+
+                    // create footer th elements
+                    var footerHtml = "<tfoot><tr>";
+                    for (var i = 0; i < dtColumns.length; i++) {
+                        footerHtml += '<th>' + dtColumns[i].title + '</th>';
+                    }
+                    footerHtml += "</tr></tfoot>";
+                    $("#" + outagesTableId).append(footerHtml);
+
+                    // Setup - add a text input to each footer cell
+                    $('#' + outagesTableId + ' tfoot th').each(function() {
+                        //var title = $(this).text();
+                        $(this).html('<input type="text" placeholder="Search" />');
+                    });
+
+                    var dataTable = $('#' + outagesTableId).DataTable({
                         data: outagesList,
                         columns: dtColumns,
+                        lengthMenu: [
+                            [10, 20, 50, 100, -1],
+                            [10, 20, 50, 100, "All"]
+                        ],
                         order: [
                             [0, "desc"]
                         ],
                         select: {
                             style: 'single'
-                        }
+                        },
+                        dom: 'Bfrtip',
+                        fixedHeader: true,
+                        buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
                     });
+
+                    // setup column based search
+                    var r = $('#' + outagesTableId + ' tfoot tr');
+                    r.find('th').each(function() {
+                        $(this).css('padding', '3px');
+                    });
+                    $('#' + outagesTableId + ' thead').append(r);
+                    $('#' + outagesTableId + " thead input").on('keyup change', function() {
+                        dataTable
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw();
+                    });
+
+                    // setup row selection listener
                     $('#' + outagesTableId).on('select.dt', function(e, dt, type, indexes) {
                         // get the array of rows
                         var rowsData = dt.rows(indexes).data();

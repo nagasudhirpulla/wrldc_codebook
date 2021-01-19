@@ -3,6 +3,7 @@ function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
         $('#' + elTableId).DataTable().destroy();
         $('#' + elTableId + ' tbody').empty();
         $('#' + elTableId + ' thead').empty();
+        $('#' + elTableId + ' tfoot').remove();
     }
     var elTypeSelector = document.getElementById(selElId);
     var selElType = elTypeSelector.options[elTypeSelector.selectedIndex].text;
@@ -18,13 +19,13 @@ function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
                     // populate elements table only if number of elements > 0
                     var colNames = Object.keys(elemsList[0]);
                     // move element name column to first
-                    const elNameInd = colNames.indexOf("elementName");
+                    var elNameInd = colNames.indexOf("elementName");
                     if (elNameInd >= 0) {
                         colNames.splice(elNameInd, 1);
                         colNames.unshift("elementName")
                     }
                     // remove element id column
-                    const elIdInd = colNames.indexOf("elementId");
+                    var elIdInd = colNames.indexOf("elementId");
                     if (elIdInd >= 0) {
                         colNames.splice(elIdInd, 1);
                     }
@@ -33,18 +34,57 @@ function loadElements(fetchUrl, selElId, elTableId, onRowSelect) {
                         elemsList[i]["elementTypeId"] = elTypeSelector.value;
                     }
 
-
                     var dtColumns = [];
                     for (var i = 0; i < colNames.length; i++) {
                         dtColumns.push({ title: colNames[i], data: colNames[i] });
                     }
-                    $('#' + elTableId).DataTable({
+
+                    // create footer th elements
+                    var footerHtml = "<tfoot><tr>";
+                    for (var i = 0; i < dtColumns.length; i++) {
+                        footerHtml += '<th>' + dtColumns[i].title + '</th>';
+                    }
+                    footerHtml += "</tr></tfoot>";
+                    $("#" + elTableId).append(footerHtml);
+
+                    // Setup - add a text input to each footer cell
+                    $('#' + elTableId + ' tfoot th').each(function() {
+                        //var title = $(this).text();
+                        $(this).html('<input type="text" placeholder="Search" />');
+                    });
+
+                    var dataTable = $('#' + elTableId).DataTable({
                         data: elemsList,
                         columns: dtColumns,
+                        lengthMenu: [
+                            [10, 20, 50, 100, -1],
+                            [10, 20, 50, 100, "All"]
+                        ],
                         select: {
                             style: 'single'
-                        }
+                        },
+                        order: [
+                            [0, "desc"]
+                        ],
+                        dom: 'Bfrtip',
+                        fixedHeader: true,
+                        buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
                     });
+
+                    // setup column based search
+                    var r = $('#' + elTableId + ' tfoot tr');
+                    r.find('th').each(function() {
+                        $(this).css('padding', '3px');
+                    });
+                    $('#' + elTableId + ' thead').append(r);
+                    $('#' + elTableId + " thead input").on('keyup change', function() {
+                        dataTable
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw();
+                    });
+
+                    // setup row selection listener
                     $('#' + elTableId).on('select.dt', function(e, dt, type, indexes) {
                         // get the array of rows
                         var rowsData = dt.rows(indexes).data();

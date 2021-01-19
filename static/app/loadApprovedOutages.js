@@ -3,7 +3,7 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
         $('#' + tableId).DataTable().destroy();
         $('#' + tableId + ' tbody').empty();
         $('#' + tableId + ' thead').empty();
-        $('#' + tableId + ' tfoot').empty();
+        $('#' + tableId + ' tfoot').remove();
     }
     $.ajax({
         url: fetchUrl,
@@ -33,6 +33,7 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
                         { title: "RLDC Remarks", data: "rldcRemarks" },
                         { title: "NLDC Remarks", data: "nldcRemarks" }
                     ];
+
                     // create footer th elements
                     var footerHtml = "<tfoot><tr>";
                     for (var i = 0; i < dtColumns.length; i++) {
@@ -40,11 +41,13 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
                     }
                     footerHtml += "</tr></tfoot>";
                     $("#" + tableId).append(footerHtml);
+
                     // Setup - add a text input to each footer cell
                     $('#' + tableId + ' tfoot th').each(function() {
                         //var title = $(this).text();
                         $(this).html('<input type="text" placeholder="Search" />');
                     });
+
                     var dataTable = $('#' + tableId).DataTable({
                         data: outagesList,
                         columns: dtColumns,
@@ -59,20 +62,24 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
                             [0, "desc"]
                         ],
                         dom: 'Bfrtip',
+                        fixedHeader: true,
                         buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
                     });
+
+                    // setup column based search
                     var r = $('#' + tableId + ' tfoot tr');
                     r.find('th').each(function() {
                         $(this).css('padding', '3px');
                     });
                     $('#' + tableId + ' thead').append(r);
-                    // Apply the filter
                     $('#' + tableId + " thead input").on('keyup change', function() {
                         dataTable
                             .column($(this).parent().index() + ':visible')
                             .search(this.value)
                             .draw();
                     });
+
+                    // setup row selection listener
                     $('#' + tableId).on('select.dt', function(e, dt, type, indexes) {
                         // get the array of rows
                         var rowsData = dt.rows(indexes).data();
