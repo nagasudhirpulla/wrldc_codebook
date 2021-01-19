@@ -23,7 +23,7 @@ import json
 from src.app.utils.defaultJsonEncoder import defaultJsonEncoder
 
 codesPage = Blueprint('codes', __name__,
-                     template_folder='templates')
+                      template_folder='templates')
 
 
 class ListCodesForm(Form):
@@ -64,6 +64,7 @@ def list():
 def delete(codeId: int):
     appConf = getConfig()
     cRepo = CodesRepo(appConf['appDbConnStr'])
+    code = cRepo.getCodeById(codeId)
     if request.method == 'POST':
         isSuccess = cRepo.deleteCode(codeId)
         if isSuccess:
@@ -71,8 +72,6 @@ def delete(codeId: int):
             return redirect(url_for('codes.list'))
         else:
             flash('Could not delete the code', category='error')
-    else:
-        code = cRepo.getCodeById(codeId)
     return render_template('code/delete.html.j2', data={'code': code})
 
 
@@ -116,7 +115,7 @@ def edit(codeId: int):
         else:
             form = createElementCodeEditForm(code)
         return render_template('elementCode/edit.html.j2', form=form)
-    elif code["codeType"] == "Outage":
+    elif code["codeType"] in ["Outage", "ApprovedOutage"]:
         if request.method == 'POST':
             form = EditElementOutageCodeForm(request.form)
             if form.validate():

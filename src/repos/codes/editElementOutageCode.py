@@ -4,7 +4,6 @@ from typing import Optional, List, Tuple, Any
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getGenericCodeChanges import getGenericCodeChanges
 from src.repos.codes.getElementOutageCodeChanges import getElementOutageCodeChanges
-from src.app.externalOutages.getReasonId import getReasonId
 from src.typeDefs.code import ICode
 from src.app.externalOutages.checkIfOutageIsPresent import checkIfOutageIsPresent
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
@@ -44,6 +43,9 @@ def editElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, codeId: int, cod
     elName = code["pwcElName"]
     elId = code["pwcElId"]
     elTypeId = code["pwcElTypeId"]
+    sdReqId = 0
+    if code["codeType"] == "ApprovedOutage":
+        sdReqId = code["pwcSdReqId"]
     isRtoProcessOk = True
     if (rtoId == None) and (code["codeExecTime"] == None) and not(code_execution_time == None):
         # check if element is already out
@@ -58,7 +60,7 @@ def editElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, codeId: int, cod
             newRtoId = createRealTimeOutage(
                 pwcDbConnStr=pwcDbConnStr, elemTypeId=elTypeId,
                 elementId=elId, outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
-                reason=code_description, elementName=elName, sdReqId=0,
+                reason=code_description, elementName=elName, sdReqId=sdReqId,
                 outageTagId=pwc_outage_tag_id)
             if newRtoId > 0:
                 changedInfo.append(("pwc_rto_id", newRtoId))
