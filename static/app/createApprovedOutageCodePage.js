@@ -16,9 +16,17 @@ function onOutageRowSelect(rowObjs) {
     if (rowObjs.length > 0) {
         selOutageInfo_g = rowObjs[0];
         displaySelectedElemInfo();
+        populateDescriptionInForm();
         populateSelOutageInForm();
         populateOutageTypes();
     }
+}
+
+function populateDescriptionInForm() {
+    if (selOutageInfo_g != null) {
+        document.getElementById('codeDescription').value = selOutageInfo_g["reason"];
+    }
+
 }
 
 function populateSelOutageInForm() {
