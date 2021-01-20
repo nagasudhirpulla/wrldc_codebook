@@ -1,0 +1,104 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Code Details{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Code Details</h3>
+<table>
+<tr class="{% if data.code.isCodeCancelled %}cancelledCode {% endif %}">
+    <td>Code</td>
+    <td>{{ data.code.codeStr }}</td>
+</tr>
+<tr>
+    <td>Issued at</td>
+    <td>{{ data.code.codeIssueTime }}</td>
+</tr>
+<tr>
+    <td>Other LDC Codes</td>
+    <td>{{ data.code.otherLdcCodes }}</td>
+</tr>
+<tr>
+    <td>Issued to</td>
+    <td>{{ data.code.codeIssuedTo }}</td>
+</tr>
+<tr>
+    <td>Description</td>
+    <td>{{ data.code.codeDesc }}</td>
+</tr>
+<tr>
+    <td>Execution Time</td>
+    <td>{{ data.code.codeExecTime }}</td>
+</tr>
+<tr>
+    <td>Element Name</td>
+    <td>{{ data.code.pwcElName }}</td>
+</tr>
+<tr>
+    <td>Code Type</td>
+    <td>{{ data.code.codeType }}</td>
+</tr>
+<tr>
+    <td>Element Type</td>
+    <td>{{ data.code.pwcElType }}</td>
+</tr>
+<tr>
+    <td>Outage Type</td>
+    <td>{{ data.code.pwcOutageType }}</td>
+</tr>
+<tr>
+    <td>Outage Tag</td>
+    <td>{{ data.code.pwcOutageTag }}</td>
+</tr>
+<tr>
+    <td>Tag(s)</td>
+    <td>{{ data.code.codeTags }}</td>
+</tr>
+<tr>
+    <td>Issued By</td>
+    <td>{{ data.code.codeIssuedBy }}</td>
+</tr>
+<tr>
+    <td>Is Code Cancelled</td>
+    <td>{{ 'No' if data.code.isCodeCancelled==0 else 'Yes' }}</td>
+</tr>
+<tr>
+    <td>Is Outage Entry Deleted at Source</td>
+    <td>{{ 'No' if data.code.isDelAtSrc==0 else 'Yes' }}</td>
+</tr>
+<tr>
+    <td>Entry Created At</td>
+    <td>{{ data.code.createdAt }}</td>
+</tr>
+<tr>
+    <td>Entry Updated At</td>
+    <td>{{ data.code.updatedAt }}</td>
+</tr>
+</table>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
+
+{% endblock %}
+
+{% block scripts %}
+<style>
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    }
+
+    td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    }
+
+    tr.cancelledCode{
+        text-decoration: line-through;
+    }
+</style>
+{% endblock %}

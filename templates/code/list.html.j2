@@ -23,40 +23,44 @@
 <table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
     <thead>
         <tr>
+            <th>Code Id</th>
             <th>Issued Time</th>
-            <th>Code Type</th>
             <th>Code</th>
             <th>Other LDC Codes</th>
             <th>Issued To</th>
+            <th>Description</th>
+            <th>Execution Time</th>
             <th>Element Name</th>
+            <th>Code Type</th>
             <th>Element Type</th>
             <th>Outage Type</th>
             <th>Outage Tag</th>
-            <th>Description</th>
-            <th>Issued By</th>
-            <th>Execution Time</th>
             <th>Tags</th>
-            <th></th>
+            <th>Issued By</th>
+            <th>Actions</th>
         </tr>
     </thead>    
     <tbody>
         {% for item in data['codes'] %}
         <tr {% if item.isCodeCancelled %} class="cancelledCode" {% endif %}>
+            <td>{{item.id}}</td>
             <td>{{item.codeIssueTime}}</td>
-            <td>{{item.codeType}}</td>
             <td>{{item.codeStr}}</td>
             <td>{{item.otherLdcCodes if item.otherLdcCodes}}</td>
             <td>{{item.codeIssuedTo}}</td>
+            <td>{{item.codeDesc}}</td>
+            <td>{{item.codeExecTime if item.codeExecTime}}</td>
             <td>{{item.pwcElName if item.pwcElName}}</td>
+            <td>{{item.codeType}}</td>
             <td>{{item.pwcElType if item.pwcElType}}</td>
             <td>{{item.pwcOutageType if item.pwcOutageType}}</td>
             <td>{{item.pwcOutageTag if item.pwcOutageTag}}</td>
-            <td>{{item.codeDesc}}</td>
-            <td>{{item.codeIssuedBy}}</td>
-            <td>{{item.codeExecTime if item.codeExecTime}}</td>
             <td>{{item.codeTags if item.codeTags}}</td>
+            <td>{{item.codeIssuedBy}}</td>
             <td style="max-width:2em;">
                 <a href="{{ url_for('codes.edit', codeId=item.id) }}">Edit</a>
+                <span>|</span>
+                <a href="{{ url_for('codes.detail', codeId=item.id) }}">Details</a>
                 <span>|</span>
                 <a href="{{ url_for('codes.delete', codeId=item.id) }}">Delete</a>
             </td>
@@ -65,20 +69,21 @@
     </tbody>
     <tfoot>
         <tr>
+            <th>Code Id</th>
             <th>Issued Time</th>
-            <th>Code Type</th>
             <th>Code</th>
             <th>Other LDC Codes</th>
             <th>Issued To</th>
+            <th>Description</th>
+            <th>Execution Time</th>
             <th>Element Name</th>
+            <th>Code Type</th>
             <th>Element Type</th>
             <th>Outage Type</th>
             <th>Outage Tag</th>
-            <th>Description</th>
-            <th>Issued By</th>
-            <th>Execution Time</th>
             <th>Tags</th>
-            <th></th>
+            <th>Issued By</th>
+            <th>Actions</th>
         </tr>
     </tfoot>
 </table>
@@ -96,19 +101,28 @@
     <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
     <script type="application/javascript">
+    var editCodeBaseUrl_g = "{{ url_for('codes.edit', codeId='') }}";
     $(document).ready(function() {
         // Setup - add a text input to each footer cell
         $('#displayTable tfoot th').each(function () {
             //var title = $(this).text();
             $(this).html('<input type="text" placeholder="Search" />');
         });
+
         var filesTable = $('#displayTable').DataTable({
             fixedHeader: true,
-            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
-            "pageLength": 50,
+            lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            pageLength: 50,
             dom: 'Bfrtip',
-            "order": [[0, "desc"]],
-            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
+            order: [[0, "desc"]],
+            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
+            columnDefs: [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
         });
         var r = $('#displayTable tfoot tr');
         r.find('th').each(function () {
@@ -122,6 +136,14 @@
                 .column($(this).parent().index() + ':visible')
                 .search(this.value)
                 .draw();
+        });
+        
+        // setup double click to redirect to edit page
+        $('#displayTable tbody').on('dblclick', 'tr', function () {
+        // get the row data from table
+        var data = filesTable.row(this).data();
+        // Simulate a mouse click:
+        window.location.href = editCodeBaseUrl_g + data[0];
         });
     });
     </script>

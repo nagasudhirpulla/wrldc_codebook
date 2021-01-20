@@ -22,6 +22,10 @@
   </dl>
   <p><input type="submit" value="Update Code" class="btn btn-sm btn-primary"/>
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>

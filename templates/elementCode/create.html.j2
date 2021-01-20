@@ -15,11 +15,11 @@
 <thead></thead>
 </table>
 
-<h4><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h4>
-
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
+  <h4><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h4>
   <dl>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
     {{ render_field(form.code) }}
     <span id="latestCodeInfoSpan" class="span small"></span>
     {{ render_field(form.codeDescription) }}
@@ -27,12 +27,15 @@
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
     <dt><input type="submit" value="Create Element Code" class="btn btn-success"/></dt>
-    {{ render_field(form.elementId, readonly="true", hidden="true") }}
-    {{ render_field(form.elementTypeId, readonly="true", hidden="true") }}
-    {{ render_field(form.elementName, readonly="true", hidden="true") }}
-    {{ render_field(form.elementType, readonly="true", hidden="true") }}
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true", showErrors="false") }}
   </dl> 
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />

@@ -13,11 +13,11 @@
 <table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
 </table>
 
-<h4><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h4>
-
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
+  <h4><span>Selected Element = </span><span id="selElemDisplaySpan">None</span></h4>
   <dl>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
     {{ render_field(form.code) }}
     <span id="latestCodeInfoSpan" class="span small"></span>
     {{ render_field(form.codeDescription) }}
@@ -28,21 +28,24 @@
     <dd>
       <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
     </dd>
+    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
     <dt><label>Outage Tag</label></dt>
     <dd>
       <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
     </dd>
-    <dt><input type="submit" value="Create Outage Code" class="btn btn-success"/></dt>
-    {{ render_field(form.elementId, readonly="true", hidden="true") }}
-    {{ render_field(form.elementTypeId, readonly="true", hidden="true") }}
-    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
     {{ render_field(form.outageTagId, readonly="true", hidden="true") }}
-    {{ render_field(form.elementName, readonly="true", hidden="true") }}
-    {{ render_field(form.elementType, readonly="true", hidden="true") }}
-    {{ render_field(form.outageTag, readonly="true", hidden="true") }}
-    {{ render_field(form.outageType, readonly="true", hidden="true") }}
-  </dl> 
+    <dt><input type="submit" value="Create Outage Code" class="btn btn-success"/></dt>
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.outageTag, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.outageType, readonly="true", hidden="true", showErrors="false") }}
+  </dl>
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />

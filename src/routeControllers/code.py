@@ -58,6 +58,14 @@ def list():
     return render_template('code/list.html.j2', form=form, data={'codes': codes})
 
 
+@codesPage.route('/detail/<codeId>', methods=['GET', 'POST'])
+@roles_required(['code_book_editor'])
+def detail(codeId: int):
+    appConf = getConfig()
+    cRepo = CodesRepo(appConf['appDbConnStr'])
+    code = cRepo.getCodeById(codeId)
+    return render_template('code/detail.html.j2', data={'code': code})
+
 @codesPage.route('/delete/<codeId>', methods=['GET', 'POST'])
 @roles_required(['code_book_editor'])
 def delete(codeId: int):

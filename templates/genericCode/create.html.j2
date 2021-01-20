@@ -19,6 +19,10 @@
   </dl>
   <p><input type="submit" value="Create Code" class="btn btn-sm btn-success"/>
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
   <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>

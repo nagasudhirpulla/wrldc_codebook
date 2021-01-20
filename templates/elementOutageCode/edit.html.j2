@@ -7,7 +7,9 @@
 
 {% block content %}
 <h3>Edit Outage Code</h3>
+
 <h4>Element is <span id="elemNameDisplaySpan"></span></h4>
+
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
@@ -24,17 +26,21 @@
     <dd>
       <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
     </dd>
+    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
     <dt><label>Outage Tag</label></dt>
     <dd>
       <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
     </dd>
-    <dt><input type="submit" value="Edit Element Outage Code" class="btn btn-success"></dt>
-    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
     {{ render_field(form.outageTagId, readonly="true", hidden="true") }}
-    {{ render_field(form.outageTag, readonly="true", hidden="true") }}
-    {{ render_field(form.outageType, readonly="true", hidden="true") }}
+    <dt><input type="submit" value="Edit Element Outage Code" class="btn btn-success"></dt>
+    {{ render_field(form.outageTag, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.outageType, readonly="true", hidden="true", showErrors="false") }}
   </dl>
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
   <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>

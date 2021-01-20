@@ -8,9 +8,11 @@
 {% block content %}
 <h3>Edit Revival Code</h3>
 <h4>Element is <span id="elemNameDisplaySpan"></span></h4>
+
 {% from "_formhelpers.html.j2" import render_field %}
 <form method="post">
   <dl>
+    {{ render_field(form.rtoId, readonly="true", hidden="true") }}
     {{ render_field(form.code) }}
     {{ render_field(form.codeIssueTime, class="datetimepicker") }}
     {{ render_field(form.codeDescription) }}
@@ -21,9 +23,12 @@
     {{ render_field(form.codeIssuedBy) }}
     {{ render_field(form.isCodeCancelled) }}
     <dt><input type="submit" value="Edit Revival Code" class="btn btn-success"></dt>
-    {{ render_field(form.rtoId, readonly="true", hidden="true") }}
   </dl>
 </form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
   <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
