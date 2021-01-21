@@ -4,7 +4,7 @@ from src.repos.outages.outagesRepo import OutagesRepo
 import datetime as dt
 
 
-class TestOutageTypesRepo(unittest.TestCase):
+class TestOutagesRepo(unittest.TestCase):
     def setUp(self):
         self.appConf = initAppConfig()
 
