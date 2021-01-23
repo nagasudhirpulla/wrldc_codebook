@@ -11,7 +11,7 @@
 <span>Select element type - </span><select id="elTypesSelect" onchange="onElTypeChange()"></select>
 </div>
 
-<table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
+<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
 <thead></thead>
 </table>
 
@@ -38,84 +38,86 @@
 <p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
-  <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
-  <script type="application/javascript">
-  var selectedElemInfo_g = null;
-  var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
-  var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
-  jQuery(document).ready(function($) {
-      // populate element types
-      loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
-      // setup datetime picker
-      setupDatetimepicker('datetimepicker');
-      loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
-  });
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
 
-  function onLatestCodeFetch(codeObj) {
-      // console.log(codeObj);
-      document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();
-  }
-  function onElemRowSelect(rowObjs){
-    if(rowObjs.length > 0){
-      selectedElemInfo_g = rowObjs[0];
-      displaySelectedElemInfo();
-      populateSelectedElemInForm();
-    }
-  }
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/select.bootstrap4.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
 
-  function onElTypeChange(){
-    // clear element info in form
-    // populate element type info in form
-    selectedElemInfo_g = null;
-    populateSelectedElemInForm();
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+<script type="application/javascript">
+var selectedElemInfo_g = null;
+var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
+var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+jQuery(document).ready(function($) {
+    // populate element types
+    loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+});
+
+function onLatestCodeFetch(codeObj) {
+    // console.log(codeObj);
+    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();
+}
+function onElemRowSelect(rowObjs){
+  if(rowObjs.length > 0){
+    selectedElemInfo_g = rowObjs[0];
     displaySelectedElemInfo();
-    loadElements(elsFetchBaseUrl_g, "elTypesSelect", "displayTable", onElemRowSelect);
+    populateSelectedElemInForm();
   }
+}
 
-  function populateSelectedElemInForm(){
-    if(selectedElemInfo_g!=null){
-      document.getElementById('elementName').value = selectedElemInfo_g["elementName"];
-      document.getElementById('elementId').value = selectedElemInfo_g["elementId"];
-      document.getElementById('elementType').value = selectedElemInfo_g["elementType"];
-      document.getElementById('elementTypeId').value = selectedElemInfo_g["elementTypeId"];
-    } else{
-      document.getElementById('elementName').value = "";
-      document.getElementById('elementId').value = "";
-      document.getElementById('elementType').value = "";
-      document.getElementById('elementTypeId').value = "";
-    }
-  }
+function onElTypeChange(){
+  // clear element info in form
+  // populate element type info in form
+  selectedElemInfo_g = null;
+  populateSelectedElemInForm();
+  displaySelectedElemInfo();
+  loadElements(elsFetchBaseUrl_g, "elTypesSelect", "displayTable", onElemRowSelect);
+}
 
-  function resetElemInfo(){
-    // populate element name and element id
+function populateSelectedElemInForm(){
+  if(selectedElemInfo_g!=null){
+    document.getElementById('elementName').value = selectedElemInfo_g["elementName"];
+    document.getElementById('elementId').value = selectedElemInfo_g["elementId"];
+    document.getElementById('elementType').value = selectedElemInfo_g["elementType"];
+    document.getElementById('elementTypeId').value = selectedElemInfo_g["elementTypeId"];
+  } else{
     document.getElementById('elementName').value = "";
     document.getElementById('elementId').value = "";
     document.getElementById('elementType').value = "";
     document.getElementById('elementTypeId').value = "";
   }
+}
 
-  function displaySelectedElemInfo(){
-    var displayElem = document.getElementById("selElemDisplaySpan");
-    if(selectedElemInfo_g!=null){
-      displayElem.innerText = selectedElemInfo_g["elementName"];
-    } else{
-      displayElem.innerText = "";
-    }
+function resetElemInfo(){
+  // populate element name and element id
+  document.getElementById('elementName').value = "";
+  document.getElementById('elementId').value = "";
+  document.getElementById('elementType').value = "";
+  document.getElementById('elementTypeId').value = "";
+}
+
+function displaySelectedElemInfo(){
+  var displayElem = document.getElementById("selElemDisplaySpan");
+  if(selectedElemInfo_g!=null){
+    displayElem.innerText = selectedElemInfo_g["elementName"];
+  } else{
+    displayElem.innerText = "";
   }
-  </script>
+}
+</script>
 {% endblock %}

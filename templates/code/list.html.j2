@@ -20,7 +20,7 @@
 </div>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
-<table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
+<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
     <thead>
         <tr>
             <th>Code Id</th>
@@ -92,74 +92,77 @@
 {% endblock %}
 
 {% block scripts %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-    <script type="application/javascript">
-    var editCodeBaseUrl_g = "{{ url_for('codes.edit', codeId='') }}";
-    $(document).ready(function() {
-        // Setup - add a text input to each footer cell
-        $('#displayTable tfoot th').each(function () {
-            //var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search" />');
-        });
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
 
-        var filesTable = $('#displayTable').DataTable({
-            fixedHeader: true,
-            lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
-            pageLength: 50,
-            dom: 'Bfrtip',
-            order: [[1, "desc"]],
-            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print'],
-            columnDefs: [
+<script type="application/javascript">
+var editCodeBaseUrl_g = "{{ url_for('codes.edit', codeId='') }}";
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#displayTable tfoot th').each(function () {
+        //var title = $(this).text();
+        $(this).html('<input type="text" placeholder="Search" />');
+    });
+
+    var filesTable = $('#displayTable').DataTable({
+        fixedHeader: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 50,
+        dom: 'Bfrtip',
+        order: [[1, "desc"]],
+        columnDefs: [
             {
                 "targets": [0],
                 "visible": false,
                 "searchable": false
             }
-        ]
-        });
-        var r = $('#displayTable tfoot tr');
-        r.find('th').each(function () {
-            $(this).css('padding', '3px');
-        });
-        $('#displayTable thead').append(r);
-        // Apply the filter
-        // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
-        $("#displayTable thead input").on('keyup change', function () {
-            filesTable
-                .column($(this).parent().index() + ':visible')
-                .search(this.value)
-                .draw();
-        });
-        
-        // setup double click to redirect to edit page
-        $('#displayTable tbody').on('dblclick', 'tr', function () {
-        // get the row data from table
-        var data = filesTable.row(this).data();
-        // Simulate a mouse click:
-        window.location.href = editCodeBaseUrl_g + data[0];
-        });
+        ],
+        buttons: ['pageLength', 'copy', 'excel', 'pdf', 'csv', 'print']
     });
-    </script>
-    <style>
-        thead input {
-            padding: 2px;
-            box-sizing: border-box;
-            font-size: small;
-            width: 100%;
-        }
-        tr.cancelledCode{
-            text-decoration: line-through;
-        }
-    </style>
+
+    var r = $('#displayTable tfoot tr');
+    r.find('th').each(function () {
+        $(this).css('padding', '3px');
+    });
+    $('#displayTable thead').append(r);
+    // Apply the filter
+    // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+    $("#displayTable thead input").on('keyup change', function () {
+        filesTable
+            .column($(this).parent().index() + ':visible')
+            .search(this.value)
+            .draw();
+    });
+    
+    // setup double click to redirect to edit page
+    $('#displayTable tbody').on('dblclick', 'tr', function () {
+    // get the row data from table
+    var data = filesTable.row(this).data();
+    // Simulate a mouse click:
+    window.location.href = editCodeBaseUrl_g + data[0];
+    });
+});
+</script>
+<style>
+    thead input {
+        padding: 2px;
+        box-sizing: border-box;
+        font-size: small;
+        width: 100%;
+    }
+    tr.cancelledCode{
+        text-decoration: line-through;
+    }
+</style>
 {% endblock %}

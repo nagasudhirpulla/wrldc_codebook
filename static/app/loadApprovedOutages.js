@@ -63,7 +63,7 @@ function loadApprovedOutages(fetchUrl, tableId, onRowSelect) {
                         ],
                         dom: 'Bfrtip',
                         fixedHeader: true,
-                        buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
+                        buttons: ['pageLength', 'copy', 'excel', 'pdf', 'csv', 'print']
                     });
 
                     // setup column based search

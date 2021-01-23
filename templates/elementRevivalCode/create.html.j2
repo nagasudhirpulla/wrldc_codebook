@@ -7,7 +7,7 @@
 
 {% block content %}
 <h3>Create Revival Code</h3>
-<table id="displayTable" class="display table table-bordered table-hover table-responsive w-auto">
+<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
 <thead></thead>
 </table>
 
@@ -35,20 +35,28 @@
 <p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
-  <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
-  <script type="application/javascript">
-    var outagesFetchFetchUrl_g = "{{ url_for('outages.getLatestUnrevivedOutages') }}";
-    var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
-  </script>
-  <script src="{{ url_for('static', filename='app/createElementRevivalCodePage.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/select.bootstrap4.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+<script type="application/javascript">
+  var outagesFetchFetchUrl_g = "{{ url_for('outages.getLatestUnrevivedOutages') }}";
+  var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+</script>
+<script src="{{ url_for('static', filename='app/createElementRevivalCodePage.js') }}"></script>
 {% endblock %}
