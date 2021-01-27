@@ -20,7 +20,7 @@
 </div>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
-<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
+<table id="displayTable" class="display table table-bordered table-responsive w-auto">
     <thead>
         <tr>
             <th>Code Id</th>
@@ -42,7 +42,7 @@
     </thead>    
     <tbody>
         {% for item in data['codes'] %}
-        <tr {% if item.isCodeCancelled %} class="cancelledCode" {% endif %}>
+        <tr class="{{item.cssClass}}">
             <td>{{item.id}}</td>
             <td>{{item.codeIssueTime}}</td>
             <td>{{item.codeStr}}</td>
@@ -163,6 +163,12 @@ $(document).ready(function() {
     }
     tr.cancelledCode{
         text-decoration: line-through;
+    }
+    tr.notExecCode{
+        background-color: #f5deb3;
+    }
+    tr.revivalCode{
+        background-color: #acfbaf;
     }
 </style>
 {% endblock %}
