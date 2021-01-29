@@ -17,6 +17,13 @@
     <input class="ml-3 btn btn-sm btn-success" type="submit" value="View Codes"/>
     <br/>
     </form>
+    <p>
+    <label><input type="checkbox" checked onchange="updateDisplayFilters()" id="showOutageCodesChkBx">Outage</label>
+    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showApprovedCodesChkBx">Approved</label>
+    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showRevivalCodesChkBx">Revival</label>
+    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showElementCodesChkBx">Element</label>
+    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showGenericCodesChkBx">Generic</label>
+    </p>
 </div>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
@@ -31,7 +38,7 @@
             <th>Description</th>
             <th>Execution Time</th>
             <th>Element Name</th>
-            <th>Code Type</th>
+            <th class="codeTypeHead">Code Type</th>
             <th>Element Type</th>
             <th>Outage Type</th>
             <th>Outage Tag</th>
@@ -153,6 +160,29 @@ $(document).ready(function() {
     window.location.href = editCodeBaseUrl_g + data[0];
     });
 });
+
+function updateDisplayFilters() {
+    var searchList = [];
+    if ($('#showGenericCodesChkBx').is(":checked")) {
+        searchList.push("^Generic$");
+    } 
+    if ($('#showElementCodesChkBx').is(":checked")) {
+        searchList.push("^Element$");
+    } 
+    if ($('#showOutageCodesChkBx').is(":checked")) {
+        searchList.push("^Outage$");
+    } 
+    if ($('#showApprovedCodesChkBx').is(":checked")) {
+        searchList.push("^ApprovedOutage$");
+    } 
+    if ($('#showRevivalCodesChkBx').is(":checked")) {
+        searchList.push("^Revival$");
+    } 
+    $('#displayTable').DataTable()
+        .columns('.codeTypeHead')
+        .search(searchList.join("|"),true,false)
+        .draw();
+}
 </script>
 <style>
     thead input {
