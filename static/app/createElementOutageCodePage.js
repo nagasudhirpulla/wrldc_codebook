@@ -7,6 +7,10 @@ jQuery(document).ready(function($) {
     loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
 });
 
+function onLatestCodeRefreshBtnClick() {
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+}
+
 function onLatestCodeFetch(codeObj) {
     // console.log(codeObj);
     document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();

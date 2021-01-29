@@ -5,6 +5,10 @@ jQuery(document).ready(function($) {
     loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
 });
 
+function onLatestCodeRefreshBtnClick() {
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+}
+
 function onOutageRowSelect(rowObjs) {
     if (rowObjs.length > 0) {
         selectedOutageInfo_g = rowObjs[0];

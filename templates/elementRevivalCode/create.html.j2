@@ -18,6 +18,9 @@
   <dl>
     {{ render_field(form.code) }}
     <span id="latestCodeInfoSpan" class="span small"></span>
+    <button type="button" class="btn btn-sm btn-link" onclick="onLatestCodeRefreshBtnClick()">
+      refresh
+    </button>
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
