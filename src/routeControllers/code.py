@@ -59,7 +59,7 @@ def list():
             classStrs = []
             if code['isCodeCancelled'] == True:
                 classStrs.append("cancelledCode")
-            if code['codeType'] in ["Outage", "ApprovedOutage", "Revival"] and not code['codeExecTime']:
+            if not code['codeExecTime']:
                 classStrs.append("notExecCode")
             elif code['codeType'] == "Revival":
                 classStrs.append("revivalCode")
