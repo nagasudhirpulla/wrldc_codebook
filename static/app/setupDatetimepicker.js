@@ -15,6 +15,12 @@ function setupDatetimepicker(pickerClass) {
                 today: 'fa fa-check',
                 clear: 'fa fa-trash',
                 close: 'fa fa-times'
+            },
+            keyBinds: {
+                up: null,
+                down: null,
+                right: null,
+                left: null
             }
         });
     };
