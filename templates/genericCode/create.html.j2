@@ -20,7 +20,7 @@
     {{ render_field(form.codeIssuedTo) }}
     {{ render_field(form.codeTags) }}
   </dl>
-  <p><input type="submit" value="Create Code" class="btn btn-sm btn-success"/>
+  <p><input type="submit" value="Create Code" class="btn btn-success"/>
 </form>
 
 <br/>
@@ -28,6 +28,7 @@
 <p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
 {% endblock %}
 {% block scripts %}
+  <script type="application/javascript" src="{{ url_for('static', filename='app/deriveCodeNumberForAuto.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
   <script type="application/javascript">
     var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
@@ -40,8 +41,15 @@
     }
     
     function onLatestCodeFetch(codeObj) {
-      // console.log(codeObj);
-      document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();
+        // console.log(codeObj);
+        var latestCodeNum = deriveCodeNumberForAuto(codeObj["codeStr"]);
+        var message = "";
+        if (latestCodeNum === false) {
+            message = "Please enter code number manually, since the latest code " + codeObj["codeStr"] + " is not in desired format for auto code generation";
+        } else {
+            message = "Latest code is " + latestCodeNum;
+        }
+        document.getElementById("latestCodeInfoSpan").textContent = message;
     }
   </script>
 {% endblock %}

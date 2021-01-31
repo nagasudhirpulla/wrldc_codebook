@@ -13,7 +13,14 @@ function onLatestCodeRefreshBtnClick() {
 
 function onLatestCodeFetch(codeObj) {
     // console.log(codeObj);
-    document.getElementById("latestCodeInfoSpan").textContent = "Latest code is " + codeObj["codeStr"].split('/').pop();
+    var latestCodeNum = deriveCodeNumberForAuto(codeObj["codeStr"]);
+    var message = "";
+    if (latestCodeNum === false) {
+        message = "Please enter code number manually, since the latest code " + codeObj["codeStr"] + " is not in desired format for auto code generation";
+    } else {
+        message = "Latest code is " + latestCodeNum;
+    }
+    document.getElementById("latestCodeInfoSpan").textContent = message;
 }
 
 function onElemRowSelect(rowObjs) {
