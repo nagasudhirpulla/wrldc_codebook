@@ -15,15 +15,13 @@
     {{form.endDate(type="date")}}
     
     <input class="ml-3 btn btn-sm btn-success" type="submit" value="View Codes"/>
-    <br/>
+    
+    <label class="ml-3"><input type="checkbox" onchange="updateDisplayFilters()" id="showOutageCodesChkBx">Outage</label>
+    <label class="ml-2"><input type="checkbox" onchange="updateDisplayFilters()" id="showApprovedCodesChkBx">Approved</label>
+    <label class="ml-2"><input type="checkbox" onchange="updateDisplayFilters()" id="showRevivalCodesChkBx">Revival</label>
+    <label class="ml-2"><input type="checkbox" onchange="updateDisplayFilters()" id="showElementCodesChkBx">Element</label>
+    <label class="ml-2"><input type="checkbox" onchange="updateDisplayFilters()" id="showGenericCodesChkBx">Generic</label>
     </form>
-    <p>
-    <label><input type="checkbox" checked onchange="updateDisplayFilters()" id="showOutageCodesChkBx">Outage</label>
-    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showApprovedCodesChkBx">Approved</label>
-    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showRevivalCodesChkBx">Revival</label>
-    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showElementCodesChkBx">Element</label>
-    <label class="ml-2"><input type="checkbox" checked onchange="updateDisplayFilters()" id="showGenericCodesChkBx">Generic</label>
-    </p>
 </div>
 {% if data and data['codes'] %}
 {# <p>{{ data.codes|safe }}</p> #}
