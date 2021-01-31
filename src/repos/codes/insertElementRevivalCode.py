@@ -1,16 +1,17 @@
 import cx_Oracle
 import datetime as dt
-from typing import Optional, Union
+from typing import Optional
 from src.app.externalOutages.checkIfElementIsOutByRtoId import checkIfElementIsOutByRtoId
+from src.repos.codes.getNextCodeForInsertion import getNextCodeForInsertion
 
 
-def insertElementRevivalCode(appDbConnStr: str, pwcDbConnStr:str, code_issue_time: Optional[dt.datetime],
-                            code_str: str, other_ldc_codes: str,
-                            code_description: str, code_execution_time: dt.datetime,
-                            code_tags: str, code_issued_by: str, code_issued_to: str,
-                            pwc_element_type_id: int, pwc_element_id: int,
-                            pwc_element_name: str, pwc_element_type: str,
-                            pwc_rto_id: int) -> bool:
+def insertElementRevivalCode(appDbConnStr: str, pwcDbConnStr: str, code_issue_time: Optional[dt.datetime],
+                             code_str: str, other_ldc_codes: str,
+                             code_description: str, code_execution_time: dt.datetime,
+                             code_tags: str, code_issued_by: str, code_issued_to: str,
+                             pwc_element_type_id: int, pwc_element_id: int,
+                             pwc_element_name: str, pwc_element_type: str,
+                             pwc_rto_id: int) -> bool:
     """inserts an element revival code into the app db
     Note: element revival code will not be created if 
     elemId, elemTypeId, rtoId combination has the outage already revived.
@@ -45,14 +46,19 @@ def insertElementRevivalCode(appDbConnStr: str, pwcDbConnStr:str, code_issue_tim
         if code_issue_time == None:
             code_issue_time = dt.datetime.now()
 
-        sqlVals = [code_type, code_issue_time, code_str, other_ldc_codes,
+        # get cursor for raw data table
+        dbCur = dbConn.cursor()
+
+        # auto-generate new code if supplied code was None
+        derivedCodeStr = code_str
+        if code_str == None:
+            derivedCodeStr = getNextCodeForInsertion(dbCur=dbCur)
+
+        sqlVals = [code_type, code_issue_time, derivedCodeStr, other_ldc_codes,
                    code_description, code_execution_time, code_tags,
                    code_issued_by, code_issued_to, pwc_element_id,
                    pwc_element_type_id, pwc_element_name, pwc_element_type,
                    pwc_rto_id]
-
-        # get cursor for raw data table
-        dbCur = dbConn.cursor()
 
         # text for sql place holders
         sqlPlaceHldrsTxt = ','.join([':{0}'.format(x+1)

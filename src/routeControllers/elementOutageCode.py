@@ -17,7 +17,7 @@ elementOutageCodePage = Blueprint('elementOutageCode', __name__,
 
 class CreateElementOutageCodeForm(Form):
     code = StringField(
-        'Code', validators=[validators.DataRequired(), validators.Length(min=1, max=100)])
+        'Code (Optional)', validators=[validators.Length(min=0, max=100)])
     otherLdcCodes = StringField(
         'Other LDC Codes', [validators.Length(min=0, max=150)])
     codeDescription = StringField(
@@ -67,8 +67,17 @@ def create():
     if request.method == 'POST' and form.validate():
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
+        # initialize new code as None
+        codeStr = None
+
+        # attach placeholder to code only if form input is not None
+        suppliedCodeStr = form.code.data
+        if (not suppliedCodeStr == None) and (not suppliedCodeStr.strip() == ""):
+            codeStr = getNewCodePlaceHolder()+suppliedCodeStr
+
+        # create outage code
         isSuccess = cRepo.insertElementOutageCode(
-            code_issue_time=None, code_str=getNewCodePlaceHolder()+form.code.data, other_ldc_codes=form.otherLdcCodes.data,
+            code_issue_time=None, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,

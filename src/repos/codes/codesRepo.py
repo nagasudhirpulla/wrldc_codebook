@@ -11,8 +11,9 @@ from src.repos.codes.editElementRevivalCode import editElementRevivalCode
 from src.repos.codes.getCodesBetweenDates import getCodesBetweenDates
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getLatestCode import getLatestCode
+from src.repos.codes.getNextCodeForInsertion import getNextCodeForInsertion
 from src.repos.codes.deleteCode import deleteCode
-from typing import List, Optional
+from typing import List, Optional, Any
 from src.typeDefs.code import ICode
 from src.appConfig import getConfig
 
@@ -78,6 +79,17 @@ class CodesRepo():
             Optional[ICode]: code object
         """
         return getLatestCode(self.appDbConnStr)
+    
+    def getNextCodeForInsertion(self, dbCur: Any) -> Optional[str]:
+        """gets the next auto code for creating a new code
+    
+        Args:
+            dbCur (Any): db cursor through which data is to be fetched
+
+        Returns:
+            Optional[str]: auto generated code for inserting new code
+        """
+        return getNextCodeForInsertion(dbCur)
 
     def deleteCode(self, codeId: int) -> bool:
         """delete a code with id

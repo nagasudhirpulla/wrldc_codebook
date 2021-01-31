@@ -6,7 +6,7 @@ from src.repos.codes.getCodeById import getCodeById
 
 
 def getLatestCode(appDbConnStr: str) -> Optional[ICode]:
-    """fetches codes between 2 dates from app db
+    """get latest created code from db
 
     Args:
         appDbConnStr (str): app db connection string
@@ -42,7 +42,7 @@ def getLatestCode(appDbConnStr: str) -> Optional[ICode]:
         dbRows = dbCur.fetchall()
     except Exception as err:
         dbRows = []
-        print('Error while creation of fetching latest code id from app db')
+        print('Error while fetching latest code id from app db')
         print(err)
     finally:
         # closing database cursor and connection

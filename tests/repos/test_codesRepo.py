@@ -2,6 +2,7 @@ import unittest
 from src.appConfig import initAppConfig
 from src.repos.codes.codesRepo import CodesRepo
 import datetime as dt
+import cx_Oracle
 
 
 class TestCodesRepo(unittest.TestCase):
@@ -44,3 +45,31 @@ class TestCodesRepo(unittest.TestCase):
         # no execution time
         code = cRepo.getLatestCode()
         self.assertFalse(code == None)
+
+    def test_getNextCodeForInsertion(self) -> None:
+        """tests the function that gets Next Code For Insertion
+        """
+        appDbConnStr = self.appConf['appDbConnStr']
+        cRepo = CodesRepo(appDbConnStr)
+        dbConn = None
+        dbCur = None
+        nextCode = None
+        try:
+            # get connection with raw data table
+            dbConn = cx_Oracle.connect(appDbConnStr)
+
+            # get cursor and execute fetch sql
+            dbCur = dbConn.cursor()
+
+            nextCode = cRepo.getNextCodeForInsertion(dbCur=dbCur)
+        except Exception as err:
+            print('Error while fetching next code for insertion from codes repo')
+            print(err)
+        finally:
+            # closing database cursor and connection
+            if dbCur is not None:
+                dbCur.close()
+            if dbConn is not None:
+                dbConn.close()
+        print(nextCode)
+        self.assertFalse(nextCode == None)
