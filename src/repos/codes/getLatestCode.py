@@ -17,7 +17,7 @@ def getLatestCode(appDbConnStr: str) -> Optional[ICode]:
     latestIdFetchsql = """
             select id
             from code_book.op_codes 
-            where created_at=(select max(created_at) from code_book.op_codes where is_deleted=0) 
+            where code_issue_time=(select max(code_issue_time) from code_book.op_codes where is_deleted=0) 
             and is_deleted=0
             order by id desc
         """
