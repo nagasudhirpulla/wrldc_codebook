@@ -55,19 +55,21 @@ def list():
         todayDt = dt.datetime.now()
         codes = cRepo.getCodesBetweenDates(
             startDt=todayDt, endDt=todayDt)
-        for code in codes:
-            classStrs = []
-            if code['isCodeCancelled'] == True:
-                classStrs.append("cancelledCode")
-            if not code['codeExecTime']:
-                classStrs.append("notExecCode")
-            elif code['codeType'] == "Revival":
-                classStrs.append("revivalCode")
-            elif code['codeType'] in ["Outage"]:
-                classStrs.append("outageCode")
-            elif code['codeType'] in ["ApprovedOutage"]:
-                classStrs.append("approvedOutageCode")
-            code["cssClass"] = ' '.join(classStrs)
+        form.startDate.data = dt.datetime(todayDt.year, todayDt.month, todayDt.day)
+        form.endDate.data = dt.datetime(todayDt.year, todayDt.month, todayDt.day)
+    for code in codes:
+        classStrs = []
+        if code['isCodeCancelled'] == True:
+            classStrs.append("cancelledCode")
+        if not code['codeExecTime']:
+            classStrs.append("notExecCode")
+        elif code['codeType'] == "Revival":
+            classStrs.append("revivalCode")
+        elif code['codeType'] in ["Outage"]:
+            classStrs.append("outageCode")
+        elif code['codeType'] in ["ApprovedOutage"]:
+            classStrs.append("approvedOutageCode")
+        code["cssClass"] = ' '.join(classStrs)
     return render_template('code/list.html.j2', form=form, data={'codes': codes})
 
 
