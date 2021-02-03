@@ -20,6 +20,8 @@ class CreateGenericCodeForm(Form):
     codeTags = StringField('Tag(s)', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
+    codeIssueTime = DateTimeField(
+        'Issue Time (Optional)', format='%Y-%m-%d %H:%M', validators=[validators.Optional()])
 
 
 @genericCodePage.route('/create', methods=['GET', 'POST'])
@@ -41,7 +43,7 @@ def create():
 
         # create generic code
         isSuccess = cRepo.insertGenericCode(
-            code_issue_time=None, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data)
         if isSuccess:

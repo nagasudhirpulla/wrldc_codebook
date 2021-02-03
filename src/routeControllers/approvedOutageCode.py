@@ -25,6 +25,8 @@ class CreateApprovedOutageCodeForm(Form):
     codeTags = StringField('Tag(s)', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
+    codeIssueTime = DateTimeField(
+        'Issue Time (Optional)', format='%Y-%m-%d %H:%M', validators=[validators.Optional()])
     elementId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
@@ -82,7 +84,7 @@ def create():
 
         # create approved outage code
         isSuccess = cRepo.insertApprovedOutageCode(
-            code_issue_time=None, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,

@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
     // populate latest unrevived outages
     loadLatestUnrevivedOutages(outagesFetchFetchUrl_g, "displayTable", onOutageRowSelect);
     loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+    setupDatetimepicker('datetimepicker');
 });
 
 function onLatestCodeRefreshBtnClick() {

@@ -25,6 +25,7 @@
     <button type="button" class="btn btn-sm btn-link" onclick="onLatestCodeRefreshBtnClick()">
       refresh
     </button>
+    {{ render_field(form.codeIssueTime, class="datetimepicker") }}
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
@@ -62,6 +63,12 @@
 <script type="application/javascript" src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
 <script type="application/javascript" src="{{ url_for('static', filename='app/deriveCodeNumberForAuto.js') }}"></script>
 <script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+
+<script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+<link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+<script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+
 <script type="application/javascript">
 var selectedElemInfo_g = null;
 var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
@@ -69,7 +76,8 @@ var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
 jQuery(document).ready(function($) {
     // populate element types
     loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
-    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch);
+    setupDatetimepicker('datetimepicker');
 });
 
 function onLatestCodeRefreshBtnClick() {
