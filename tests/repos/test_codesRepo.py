@@ -73,3 +73,12 @@ class TestCodesRepo(unittest.TestCase):
                 dbConn.close()
         print(nextCode)
         self.assertFalse(nextCode == None)
+
+    def test_getCodesForRtoIds(self) -> None:
+        """tests the function that gets codes for rto Ids
+        """
+        appDbConnStr = self.appConf['appDbConnStr']
+        cRepo = CodesRepo(appDbConnStr)
+        rtoCodes = cRepo.getCodesForRtoIds([430, 5163])
+        # print(rtoCodes)
+        self.assertFalse(len(rtoCodes) == 0)

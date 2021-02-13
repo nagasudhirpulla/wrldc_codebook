@@ -19,6 +19,7 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                     var dtColumns = [
                         { title: "Outage Time", data: "outageDt" },
                         { title: "Element Name", data: "elName" },
+                        { title: "Code", data: "code" },
                         { title: "Outage Type", data: "outageType" },
                         { title: "Outage Tag", data: "outageTag" },
                         { title: "Reason", data: "reason" },
