@@ -16,6 +16,7 @@ jQuery(document).ready(function($) {
     $("#outageTag").val(defOutageTag);
     // set outage tag value as per code object
     $("#outageTagSelEl").val($("#outageTagId").val());
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });
 
 function initOutageTypesOptions() {

@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
     loadLatestUnrevivedOutages(outagesFetchFetchUrl_g, "displayTable", onOutageRowSelect);
     loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
     setupDatetimepicker('datetimepicker');
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });
 
 function onLatestCodeRefreshBtnClick() {

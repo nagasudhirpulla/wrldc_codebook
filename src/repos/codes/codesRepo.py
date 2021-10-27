@@ -14,6 +14,7 @@ from src.repos.codes.getLatestCode import getLatestCode
 from src.repos.codes.getNextCodeForInsertion import getNextCodeForInsertion
 from src.repos.codes.deleteCode import deleteCode
 from src.repos.codes.getCodesForRtos import getCodesForRtoIds
+from src.repos.codes.getAllCodeTags import getAllCodeTags
 from typing import List, Optional, Any, Dict
 from src.typeDefs.code import ICode
 from src.appConfig import getConfig
@@ -80,10 +81,10 @@ class CodesRepo():
             Optional[ICode]: code object
         """
         return getLatestCode(self.appDbConnStr)
-    
+
     def getNextCodeForInsertion(self, dbCur: Any) -> Optional[str]:
         """gets the next auto code for creating a new code
-    
+
         Args:
             dbCur (Any): db cursor through which data is to be fetched
 
@@ -91,7 +92,7 @@ class CodesRepo():
             Optional[str]: auto generated code for inserting new code
         """
         return getNextCodeForInsertion(dbCur)
-    
+
     def getCodesForRtoIds(self, rtoIds: List[int]) -> Dict[int, str]:
         """fetches codes corresponding to pwc RTO ids
         Args:
@@ -102,6 +103,11 @@ class CodesRepo():
             List[ICode]: list of code objects
         """
         return getCodesForRtoIds(self.appDbConnStr, rtoIds)
+
+    def getAllCodeTags(self) -> List[str]:
+        """fetches all code tags
+        """
+        return getAllCodeTags(self.appDbConnStr)
 
     def deleteCode(self, codeId: int) -> bool:
         """delete a code with id

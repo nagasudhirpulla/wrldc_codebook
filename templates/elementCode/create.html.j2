@@ -29,7 +29,7 @@
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
-    {{ render_field(form.codeTags) }}
+    {{ render_field(form.codeTags, class="autocom") }}
     <dt><input type="submit" value="Create Element Code" class="btn btn-success"/></dt>
     {{ render_field(form.elementTypeId, readonly="true", hidden="true", showErrors="false") }}
     {{ render_field(form.elementName, readonly="true", hidden="true", showErrors="false") }}
@@ -59,6 +59,9 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/select.bootstrap4.min.css') }}">
 <script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
 
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery_ui/jquery-ui.css') }}">
+<script src="{{ url_for('static', filename='jquery_ui/jquery-ui.js') }}"></script>
+
 <script type="application/javascript" src="{{ url_for('static', filename='app/loadElementTypes.js') }}"></script>
 <script type="application/javascript" src="{{ url_for('static', filename='app/loadElements.js') }}"></script>
 <script type="application/javascript" src="{{ url_for('static', filename='app/deriveCodeNumberForAuto.js') }}"></script>
@@ -68,16 +71,19 @@
 <script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
 <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
 <script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
-
+<script src="{{ url_for('static', filename='app/loadCodeTags.js') }}"></script>
+<script src="{{ url_for('static', filename='app/setupAutocomplete.js') }}"></script>
 <script type="application/javascript">
 var selectedElemInfo_g = null;
 var elsFetchBaseUrl_g = "{{ url_for('elements.getElementsByType', elType='') }}";
 var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+var codeTagsFetchUrl_g = "{{ url_for('codeTags.getCodeTags') }}";
 jQuery(document).ready(function($) {
     // populate element types
     loadElementTypes("{{ url_for('elements.getElementTypes') }}","elTypesSelect");
     loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch);
     setupDatetimepicker('datetimepicker');
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });
 
 function onLatestCodeRefreshBtnClick() {

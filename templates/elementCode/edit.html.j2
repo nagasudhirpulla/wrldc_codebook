@@ -15,7 +15,7 @@
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
-    {{ render_field(form.codeTags) }}
+    {{ render_field(form.codeTags, class="autocom") }}
     {{ render_field(form.codeExecTime, class="datetimepicker") }}
     {{ render_field(form.codeIssuedBy) }}
     {{ render_field(form.isCodeCancelled) }}
@@ -31,7 +31,12 @@
 <script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
 <script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
 <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery_ui/jquery-ui.css') }}">
+<script src="{{ url_for('static', filename='jquery_ui/jquery-ui.js') }}"></script>
+<script src="{{ url_for('static', filename='app/loadCodeTags.js') }}"></script>
+<script src="{{ url_for('static', filename='app/setupAutocomplete.js') }}"></script>
 <script type="application/javascript">
+var codeTagsFetchUrl_g = "{{ url_for('codeTags.getCodeTags') }}";
 jQuery(document).ready(function($) {
     if (window.jQuery().datetimepicker) {
         $('.datetimepicker').datetimepicker({
@@ -58,6 +63,7 @@ jQuery(document).ready(function($) {
             }
         });
     }
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });
 </script>
 {% endblock %}

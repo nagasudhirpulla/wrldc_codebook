@@ -4,4 +4,5 @@ jQuery(document).ready(function($) {
     setupDatetimepicker('datetimepicker');
     //initialize element name span
     $("#elemNameDisplaySpan").text(code_g.pwcElName);
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });

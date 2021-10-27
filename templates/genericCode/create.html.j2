@@ -19,7 +19,7 @@
     {{ render_field(form.codeDescription) }}
     {{ render_field(form.otherLdcCodes) }}
     {{ render_field(form.codeIssuedTo) }}
-    {{ render_field(form.codeTags) }}
+    {{ render_field(form.codeTags, class="autocom") }}
   </dl>
   <p><input type="submit" value="Create Code" class="btn btn-success"/>
 </form>
@@ -34,12 +34,18 @@
   <link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
   <script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
   <script type="application/javascript" src="{{ url_for('static', filename='app/deriveCodeNumberForAuto.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='jquery_ui/jquery-ui.css') }}">
+  <script src="{{ url_for('static', filename='jquery_ui/jquery-ui.js') }}"></script>
   <script src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/loadCodeTags.js') }}"></script>
+  <script src="{{ url_for('static', filename='app/setupAutocomplete.js') }}"></script>
   <script type="application/javascript">
     var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+    var codeTagsFetchUrl_g = "{{ url_for('codeTags.getCodeTags') }}";
     jQuery(document).ready(function($) {
       loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch);
       setupDatetimepicker('datetimepicker');
+      loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
     });
     
     function onLatestCodeRefreshBtnClick() {

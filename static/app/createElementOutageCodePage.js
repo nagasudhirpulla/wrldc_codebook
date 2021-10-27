@@ -4,7 +4,8 @@ jQuery(document).ready(function($) {
     loadElementTypes(elTypesFetchUrl_g, "elTypesSelect");
     // setup datetime picker
     setupDatetimepicker('datetimepicker');
-    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch)
+    loadLatestCode(latestCodeFetchUrl_g, onLatestCodeFetch);
+    loadCodeTags(codeTagsFetchUrl_g, function(codeTags){setupAutocomplete(".autocom", codeTags)});
 });
 
 function onLatestCodeRefreshBtnClick() {
