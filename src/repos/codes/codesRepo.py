@@ -14,7 +14,6 @@ from src.repos.codes.getLatestCode import getLatestCode
 from src.repos.codes.getNextCodeForInsertion import getNextCodeForInsertion
 from src.repos.codes.deleteCode import deleteCode
 from src.repos.codes.getCodesForRtos import getCodesForRtoIds
-from src.repos.codes.getAllCodeTags import getAllCodeTags
 from typing import List, Optional, Any, Dict
 from src.typeDefs.code import ICode
 from src.appConfig import getConfig
@@ -103,11 +102,6 @@ class CodesRepo():
             List[ICode]: list of code objects
         """
         return getCodesForRtoIds(self.appDbConnStr, rtoIds)
-
-    def getAllCodeTags(self) -> List[str]:
-        """fetches all code tags
-        """
-        return getAllCodeTags(self.appDbConnStr)
 
     def deleteCode(self, codeId: int) -> bool:
         """delete a code with id
