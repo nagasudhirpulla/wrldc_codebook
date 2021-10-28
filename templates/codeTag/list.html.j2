@@ -1,0 +1,38 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}View Code Tag Suggestions{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+{% if data and data['codeTags'] %}
+{# <p>{{ data.codeTags|safe }}</p> #}
+<table id="displayTable" class="display table table-bordered table-responsive w-auto">
+    <thead>
+        <tr>
+            <th>Tag</th>
+            <th>Actions</th>
+        </tr>
+    </thead>    
+    <tbody>
+        {% for item in data['codeTags'] %}
+        <tr>
+            <td>{{item.tag}}</td>
+            <td style="max-width:2em;">
+                <a href="{{ url_for('codeTags.delete', codeTagId=item.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br/>
+<a class="btn btn-sm btn-success" href="{{ url_for('codeTags.create') }}">Create Code Tag Suggestion</a>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

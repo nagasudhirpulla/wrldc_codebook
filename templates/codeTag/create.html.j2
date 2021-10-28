@@ -1,0 +1,22 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Code Tag Suggestion{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Create Code Tag Suggestion</h3>
+{% from "_formhelpers.html.j2" import render_field %}
+<form method="post">
+  <dl>
+    {{ render_field(form.codeTag) }}
+  </dl>
+  <br/>
+  <input type="submit" value="Create Code Tag Suggestion" class="btn btn-success"/>
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('codeTags.list') }}">< Back to Code Tags List</a></p>
+{% endblock %}

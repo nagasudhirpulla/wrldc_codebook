@@ -1,0 +1,40 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Delete Code Tag Suggestion{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Delete a Code Tag Suggestion</h3>
+<form method="post">
+  <h3>Are you sure you want to delete the code tag suggestion?</h3>
+{# <pre>{{ data.codeTag|safe }}</pre> #}
+  <table>
+    <tr>
+      <td>Tag</td>
+      <td>{{ data.codeTag.tag }}</td>
+    </tr>
+  </table>
+  <br/>
+  <input type="submit" value="Delete Code Tag Suggestion" class="btn btn-sm btn-danger"/>
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('codeTags.list') }}">< Back to Code Tags List</a></p>
+{% endblock %}
+{% block scripts %}
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+</style>
+{% endblock %}
