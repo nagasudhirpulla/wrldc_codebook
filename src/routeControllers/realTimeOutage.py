@@ -18,7 +18,7 @@ class CreateElementOutageCodeForm(Form):
     outageReason = StringField(
         'Description', validators=[validators.DataRequired(), validators.Length(min=1, max=500)], widget=TextArea())
     outageTime = DateTimeField(
-        'Issue Time (Optional)', format='%Y-%m-%d %H:%M', validators=[validators.Optional()])
+        'Outage Time', format='%Y-%m-%d %H:%M', validators=[validators.DataRequired()])
     elementId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),
         validators=[validators.DataRequired()]
