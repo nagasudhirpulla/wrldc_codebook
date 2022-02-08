@@ -8,6 +8,7 @@ from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
+from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
 
 realTimeOutagePage = Blueprint('realTimeOutage', __name__,
                                template_folder='templates')
@@ -53,21 +54,35 @@ class CreateElementOutageCodeForm(Form):
 def create():
     form = CreateElementOutageCodeForm(request.form)
     appConf = getConfig()
-    oTagsRepo = OutageTagsRepo(appConf['pwcDbConnStr'])
-    oTypesRepo = OutageTypesRepo(appConf['pwcDbConnStr'])
+    pwcDbConnStr = appConf['pwcDbConnStr']
+    oTagsRepo = OutageTagsRepo(pwcDbConnStr)
+    oTypesRepo = OutageTypesRepo(pwcDbConnStr)
     oTags = oTagsRepo.getRealTimeOutageTags()
     oTypes = oTypesRepo.getRealTimeOutageTypes()
     if request.method == 'POST' and form.validate():
-        # create real time outage
-        newRtoId = createRealTimeOutage(
-            pwcDbConnStr=appConf['pwcDbConnStr'], elemTypeId=form.elementTypeId.data,
-            elementId=form.elementId.data, outageDt=form.outageTime.data, outageTypeId=form.outageTypeId.data,
-            reason=form.outageReason.data, elementName=form.elementName.data, sdReqId=0,
-            outageTagId=form.outageTagId)
-        if newRtoId > 0:
+        elId = form.elementId.data
+        elTypeId = form.elementTypeId.data
+        elName = form.elementName.data
+        # check if element is already out
+        isElOut = checkIfElementIsOut(
+            pwcDbConnStr=pwcDbConnStr, elId=elId, elTypeId=elTypeId)
+        if isElOut:
+            # element is already out, hence this is not a valid real time outage
+            print("could not edit element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
+                elName, elId, elTypeId))
             flash(
-                'Successfully created the real-time outage with id - {0}'.format(newRtoId), category='success')
-            return redirect(url_for('codes.list'))
+                'element already out, hence could not create the real-time outage', category='danger')
         else:
-            flash('Could not create the real-time outage', category='danger')
+            # create real time outage
+            newRtoId = createRealTimeOutage(
+                pwcDbConnStr=pwcDbConnStr, elemTypeId=elTypeId,
+                elementId=elId, outageDt=form.outageTime.data, outageTypeId=form.outageTypeId.data,
+                reason=form.outageReason.data, elementName=form.elementName.data, sdReqId=0,
+                outageTagId=form.outageTagId)
+            if newRtoId > 0:
+                flash(
+                    'Successfully created the real-time outage with id - {0}'.format(newRtoId), category='success')
+                return redirect(url_for('codes.list'))
+            else:
+                flash('Could not create the real-time outage', category='danger')
     return render_template('realTimeOutage/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})
