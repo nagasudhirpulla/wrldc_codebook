@@ -78,7 +78,7 @@ def create():
                 pwcDbConnStr=pwcDbConnStr, elemTypeId=elTypeId,
                 elementId=elId, outageDt=form.outageTime.data, outageTypeId=form.outageTypeId.data,
                 reason=form.outageReason.data, elementName=form.elementName.data, sdReqId=0,
-                outageTagId=form.outageTagId)
+                outageTagId=form.outageTagId.data)
             if newRtoId > 0:
                 flash(
                     'Successfully created the real-time outage with id - {0}'.format(newRtoId), category='success')
