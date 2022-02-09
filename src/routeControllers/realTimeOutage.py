@@ -82,7 +82,7 @@ def create():
             if newRtoId > 0:
                 flash(
                     'Successfully created the real-time outage with id - {0}'.format(newRtoId), category='success')
-                return redirect(url_for('codes.list'))
+                # return redirect(url_for('codes.list'))
             else:
                 flash('Could not create the real-time outage', category='danger')
     return render_template('realTimeOutage/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})
