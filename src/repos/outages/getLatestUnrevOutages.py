@@ -41,8 +41,7 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
         ((latest_out_info.entity_id = rto.entity_id)
         AND (latest_out_info.element_id = rto.element_id)
         AND (latest_out_info.out_date_time = rto.out_date_time))
-    WHERE
-        rto.REVIVED_TIME IS NULL
+    WHERE rto.REVIVED_TIME IS NULL
     ORDER BY
         rto.out_date_time DESC"""
     targetColumns = ['ID', 'ENTITY_ID', 'ELEMENT_ID', 'ELEMENTTYPE',
