@@ -1,10 +1,11 @@
 import datetime as dt
+from typing import Optional, cast
 import cx_Oracle
 from src.app.externalOutages.getReasonId import getReasonId
 
 
 def createRealTimeOutage(pwcDbConnStr: str, elemTypeId: int, elementId: int, outageDt: dt.datetime, outageTypeId: int,
-                         reason: str, elementName: str, sdReqId: int, outageTagId: int) -> int:
+                         reason: str, elementName: str, sdReqId: int, outageTagId: int, expectedRevivalDt: Optional[dt.datetime] = None) -> int:
     """create a new row in real time outages pwc table and return the id of newly created row
 
     Args:
@@ -33,6 +34,13 @@ def createRealTimeOutage(pwcDbConnStr: str, elemTypeId: int, elementId: int, out
         outageDt.year, outageDt.month, outageDt.day)
     outageTime: str = dt.datetime.strftime(outageDt, "%H:%M")
 
+    expectedRevivalDate:Optional[dt.datetime] = None
+    expectedRevivalTime:Optional[str] = None
+    if not expectedRevivalDt == None:
+        expRevDt = cast(dt.datetime, expectedRevivalDt)
+        expectedRevivalDate = dt.datetime(expRevDt.year, expRevDt.month, expRevDt.day)
+        expectedRevivalTime = dt.datetime.strftime(expRevDt, "%H:%M")
+
     newRtoIdFetchSql = """
     SELECT MAX(rto.ID)+1 FROM REPORTING_WEB_UI_UAT.real_time_outage rto
     """
@@ -41,9 +49,9 @@ def createRealTimeOutage(pwcDbConnStr: str, elemTypeId: int, elementId: int, out
     insert into reporting_web_ui_uat.real_time_outage rto(ID, ENTITY_ID, ELEMENT_ID, OUTAGE_DATE, 
     OUTAGE_TIME, RELAY_INDICATION_SENDING_ID, RELAY_INDICATION_RECIEVING_ID, CREATED_DATE, 
     SHUT_DOWN_TYPE, REASON_ID, CREATED_BY, MODIFIED_BY, REGION_ID, ELEMENTNAME,
-    SHUTDOWNREQUEST_ID, LOAD_AFFECTED, IS_LOAD_OR_GEN_AFFECTED, SHUTDOWN_TAG_ID, IS_DELETED) values 
+    SHUTDOWNREQUEST_ID, LOAD_AFFECTED, IS_LOAD_OR_GEN_AFFECTED, SHUTDOWN_TAG_ID, IS_DELETED, EXPECTED_DATE, EXPECTED_TIME) values 
     (:id, :elemTypeId, :elementId, :outageDate, :outageTime, 0, 0, CURRENT_TIMESTAMP, :outageTypeId, 
-    :reasonId, 123, 123, 4, :elementName, :sdReqId, 0, 0, :outageTagId, NULL)
+    :reasonId, 123, 123, 4, :elementName, :sdReqId, 0, 0, :outageTagId, NULL, :expectedDate, :expectedTime)
     """
 
     dbConn = None
@@ -64,7 +72,8 @@ def createRealTimeOutage(pwcDbConnStr: str, elemTypeId: int, elementId: int, out
                    "outageDate": outageDate, "outageTime": outageTime,
                    "outageTypeId": outageTypeId, "reasonId": reasId,
                    "elementName": elementName, "sdReqId": sdReqId,
-                   "outageTagId": outageTagId}
+                   "outageTagId": outageTagId, "expectedDate": expectedRevivalDate,
+                   "expectedTime": expectedRevivalTime}
 
         # execute the new row insertion sql
         dbCur.execute(rtoInsertSql, sqlData)

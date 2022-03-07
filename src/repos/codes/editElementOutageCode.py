@@ -4,6 +4,7 @@ from typing import Optional, List, Tuple, Any
 from src.repos.codes.getCodeById import getCodeById
 from src.repos.codes.getGenericCodeChanges import getGenericCodeChanges
 from src.repos.codes.getElementOutageCodeChanges import getElementOutageCodeChanges
+from src.repos.outages.getExpectedRevivalTime import getExpectedRevivalTime
 from src.typeDefs.code import ICode
 from src.app.externalOutages.checkIfOutageIsPresent import checkIfOutageIsPresent
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
@@ -57,11 +58,14 @@ def editElementOutageCode(appDbConnStr: str, pwcDbConnStr: str, codeId: int, cod
             print("could not edit element outage code for element {0} with element id = {1}, element type id = {2}, since element is already out".format(
                 elName, elId, elTypeId))
         else:
+            expectedRevDt:Optional[dt.datetime] = None
+            if sdReqId > 0:
+                expectedRevDt = getExpectedRevivalTime(pwcDbConnStr=pwcDbConnStr, sdReqId=sdReqId)
             newRtoId = createRealTimeOutage(
                 pwcDbConnStr=pwcDbConnStr, elemTypeId=elTypeId,
                 elementId=elId, outageDt=code_execution_time, outageTypeId=pwc_outage_type_id,
                 reason=code_description, elementName=elName, sdReqId=sdReqId,
-                outageTagId=pwc_outage_tag_id)
+                outageTagId=pwc_outage_tag_id, expectedRevivalDt=expectedRevDt)
             if newRtoId > 0:
                 changedInfo.append(("pwc_rto_id", newRtoId))
             else:
