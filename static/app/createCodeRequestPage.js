@@ -43,16 +43,23 @@ function populateDescriptionInForm() {
 
 function populateSelOutageInForm() {
     if (selOutageInfo_g != null) {
-        var stake=[];
         document.getElementById('elementName').value = selOutageInfo_g["elementName"];
         document.getElementById('elementId').value = selOutageInfo_g["elementId"];
         document.getElementById('elementType').value = selOutageInfo_g["elementType"];
         document.getElementById('elementTypeId').value = selOutageInfo_g["elementTypeId"];
         document.getElementById('sdReqId').value = selOutageInfo_g["outageRequestId"];
-        if(selOutageInfo_g[concernedStakeholders]!= null)
+        var stakeholders= [];
+        if(selOutageInfo_g["concernedStakeholders"]!= null)
         {
-            
+            for(var x in selOutageInfo_g["concernedStakeholders"])
+            stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
         }
+        const requester = selOutageInfo_g["requester"];
+        if(!stakeholders.includes(requester)){
+            stakeholders.push(requester);
+        }
+        console.log(stakeholders)
+        document.getElementById('codeIssuedTo').value = stakeholders.join(",");
     } else {
         document.getElementById('elementName').value = "";
         document.getElementById('elementId').value = "";
