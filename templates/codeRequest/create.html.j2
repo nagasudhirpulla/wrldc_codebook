@@ -1,0 +1,96 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Code{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Create Code</h3>
+<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
+<thead></thead>
+</table>
+
+{% from "_formhelpers.html.j2" import render_field %}
+<form method="post">
+  <h4><span>Selected Element = </span><span id="selApprovalDisplaySpan">None</span></h4>
+  <dl>
+    {{ render_field(form.elementId, readonly="true", hidden="true") }}
+    {{ render_field(form.code) }}
+    <span id="latestCodeInfoSpan" class="span small"></span>
+    <button type="button" class="btn btn-sm btn-link" onclick="onLatestCodeRefreshBtnClick()">
+      refresh
+    </button>
+    {{ render_field(form.codeIssueTime, class="datetimepicker") }}
+    {{ render_field(form.codeDescription) }}
+    {{ render_field(form.otherLdcCodes) }}
+    {{ render_field(form.codeIssuedTo) }}
+    {{ render_field(form.codeTags, class="autocom") }}
+    <dt><label>Outage Type</label></dt>
+    <dd>
+      <select id="outageTypeSelEl" onchange="onOutageTypeChange()"></select>
+    </dd>
+    {{ render_field(form.outageTypeId, readonly="true", hidden="true") }}
+    <dt><label>Outage Tag</label></dt>
+    <dd>
+      <select id="outageTagSelEl" onchange="onOutageTagChange()"></select>
+    </dd>
+    {{ render_field(form.outageTagId, readonly="true", hidden="true") }}
+    <dt><input type="submit" value="Create Approved Outage Code" class="btn btn-success"/></dt>
+    {{ render_field(form.elementTypeId, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementName, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.elementType, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.outageTag, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.outageType, readonly="true", hidden="true", showErrors="false") }}
+    {{ render_field(form.sdReqId, readonly="true", hidden="true", showErrors="false") }}
+  </dl> 
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
+{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/select.bootstrap4.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery_ui/jquery-ui.css') }}">
+<script src="{{ url_for('static', filename='jquery_ui/jquery-ui.js') }}"></script>
+
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+<link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+
+
+<script type="application/javascript" src="{{ url_for('static', filename='app/deriveCodeNumberForAuto.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestCode.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadCodeRequest.js') }}"></script>
+<script src="{{ url_for('static', filename='app/loadCodeTags.js') }}"></script>
+<script src="{{ url_for('static', filename='app/setupAutocomplete.js') }}"></script>
+<script type="application/javascript">
+  var oTypes_g = {{ data.oTypes|safe }};
+  oTypes_g.unshift({ id: "", name: "", isGenerator: "" })
+  var oTags_g = {{ data.oTags|safe }};
+  oTags_g.unshift({ id: "", name: "", outageTypeId: "" })
+
+  var codeRequestFetchUrl_g = "{{ url_for('codeRequestApi.getCodeRequests') }}";
+  var latestCodeFetchUrl_g = "{{ url_for('codes.getLatestCode') }}";
+  var codeTagsFetchUrl_g = "{{ url_for('codeTags.getCodeTags') }}";
+</script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='app/createCodeRequestPage.js') }}"></script>
+{% endblock %}

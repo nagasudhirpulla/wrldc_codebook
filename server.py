@@ -12,6 +12,8 @@ from src.routeControllers.codeTags import codeTagsPage
 from src.routeControllers.elements import elementsPage
 from src.routeControllers.outages import outagesPage
 from src.routeControllers.realTimeOutage import realTimeOutagePage
+from src.routeControllers.codeRequestApi import codeRequestApiPage
+from src.routeControllers.codeRequest import codeRequestPage
 from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
 from flask import Flask, request, jsonify, render_template
 from waitress import serve
@@ -67,7 +69,8 @@ app.register_blueprint(codesPage, url_prefix='/codes')
 app.register_blueprint(elementsPage, url_prefix='/elements')
 app.register_blueprint(outagesPage, url_prefix='/outages')
 app.register_blueprint(realTimeOutagePage, url_prefix='/realTimeOutage')
-
+app.register_blueprint(codeRequestApiPage, url_prefix='/codeRequestApi')
+app.register_blueprint(codeRequestPage, url_prefix='/codeRequest')
 hostedApp = Flask(__name__)
 
 cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
