@@ -49,9 +49,16 @@ function populateSelOutageInForm() {
         document.getElementById('elementType').value = selOutageInfo_g["elementType"];
         document.getElementById('elementTypeId').value = selOutageInfo_g["elementTypeId"];
         document.getElementById('sdReqId').value = selOutageInfo_g["outageRequestId"];
-        if(selOutageInfo_g[concernedStakeholders]!= null)
+        if(selOutageInfo_g["concernedStakeholders"]!= null)
         {
-            
+            let text = "";
+            let strConCat = selOutageInfo_g["concernedStakeholders"].toString();
+            for (let x in selOutageInfo_g["concernedStakeholders"]) 
+            {
+                text += selOutageInfo_g["concernedStakeholders"][x].item2 + ",";
+            }
+            document.getElementById("codeIssuedTo").value = text;
+            console.log(text)
         }
     } else {
         document.getElementById('elementName').value = "";
