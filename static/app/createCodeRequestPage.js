@@ -48,6 +48,7 @@ function populateSelOutageInForm() {
         document.getElementById('elementType').value = selOutageInfo_g["elementType"];
         document.getElementById('elementTypeId').value = selOutageInfo_g["elementTypeId"];
         document.getElementById('sdReqId').value = selOutageInfo_g["outageRequestId"];
+        document.getElementById('codeType').value = selOutageInfo_g["codeType"].value;
         var stakeholders= [];
         if(selOutageInfo_g["concernedStakeholders"]!= null)
         {
@@ -58,7 +59,7 @@ function populateSelOutageInForm() {
         if(!stakeholders.includes(requester)){
             stakeholders.push(requester);
         }
-        console.log(stakeholders)
+        // console.log(stakeholders)
         document.getElementById('codeIssuedTo').value = stakeholders.join(", ");
     } else {
         document.getElementById('elementName').value = "";

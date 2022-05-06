@@ -34,7 +34,7 @@ def getCodeRequests() -> dict:
     endDate = '2022-03-10'
     startDt = dt.datetime.strptime(startDate, '%Y-%m-%d')
     endDt = dt.datetime.strptime(endDate, '%Y-%m-%d')
-    print("API Handler")
+    # print("API Handler")
     resp = outageCodes.getCodeRequest(startDt, endDt)
     # print(resp)
     # Api using APiHandler ends

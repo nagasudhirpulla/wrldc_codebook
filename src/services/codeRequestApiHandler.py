@@ -26,7 +26,7 @@ class CodeRequestApiHandler():
                             params=createCodeRequestPayload, verify=False, auth=('903ad724-6136-4e51-bb17-d7a654b598f2', ''))
 
         outages= res.json()
-        print(outages)
+        # print(outages)
         data=jsonify({"outages": outages})
 
         return data

@@ -1,3 +1,4 @@
+from types import CodeType
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from wtforms import Form, StringField, validators, DateTimeField, BooleanField, IntegerField
 from wtforms.fields import html5 as h5fields
@@ -22,6 +23,8 @@ class CreateCodeRequestForm(Form):
         'Other LDC Codes', [validators.Length(min=0, max=150)])
     codeDescription = StringField(
         'Description', validators=[validators.DataRequired(), validators.Length(min=1, max=500)], widget=TextArea())
+    codeType = StringField(
+        'Code Type', [validators.DataRequired(), validators.Length(min=1, max=500)])
     codeTags = StringField('Tag(s)', [validators.Length(min=0, max=500)])
     codeIssuedTo = StringField(
         'Issued To', [validators.DataRequired(), validators.Length(min=1, max=500)])
@@ -57,7 +60,7 @@ class CreateCodeRequestForm(Form):
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
     sdReqId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),
-        validators=[validators.DataRequired()]
+        validators=[]
     )
 
 
@@ -83,7 +86,18 @@ def create():
             codeStr = getNewCodePlaceHolder()+suppliedCodeStr
 
         # create approved outage code
-        isSuccess = cRepo.insertApprovedOutageCode(
+        if form.codeType == "OUTAGE":
+            isSuccess = cRepo.insertElementOutageCode(
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_description=form.codeDescription.data, code_execution_time=None,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
+            pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
+            pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data)
+
+        elif form.codeType == "APPROVED_OUTAGE":
+            isSuccess = cRepo.insertApprovedOutageCode(
             code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
             code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
@@ -91,6 +105,16 @@ def create():
             pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
             pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
             pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data, pwc_sd_req_id=form.sdReqId.data)
+
+        elif form.codeType == "REVIVAL":
+            isSuccess = cRepo.insertElementRevivalCode(
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_description=form.codeDescription.data, code_execution_time=None,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
+            pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_rto_id=form.rtoId.data)
+        
         if isSuccess:
             flash(
                 'Successfully created the approved outage code - {0}'.format(form.code.data), category='success')
