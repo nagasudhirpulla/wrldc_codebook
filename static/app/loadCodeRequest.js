@@ -31,7 +31,8 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         // { title: "NLDC Approval Status", data: "nldcApprovalStatus" },
                         { title: "RPC Remarks", data: "remarks" },
                         { title: "RLDC Remarks", data: "remarks" },
-                        { title: "NLDC Remarks", data: "remarks" }
+                        { title: "NLDC Remarks", data: "remarks" },
+                        { title: "Code Type", data: "codeType.value" }
                     ];
 
                     // create footer th elements

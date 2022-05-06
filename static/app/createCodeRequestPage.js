@@ -51,21 +51,22 @@ function populateSelOutageInForm() {
         var stakeholders= [];
         if(selOutageInfo_g["concernedStakeholders"]!= null)
         {
-            for(var x in selOutageInfo_g["concernedStakeholders"])
-            stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
+            for(var x = 0; x < selOutageInfo_g["concernedStakeholders"].length; x++)
+                stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
         }
         const requester = selOutageInfo_g["requester"];
         if(!stakeholders.includes(requester)){
             stakeholders.push(requester);
         }
         console.log(stakeholders)
-        document.getElementById('codeIssuedTo').value = stakeholders.join(",");
+        document.getElementById('codeIssuedTo').value = stakeholders.join(", ");
     } else {
         document.getElementById('elementName').value = "";
         document.getElementById('elementId').value = "";
         document.getElementById('elementType').value = "";
         document.getElementById('elementTypeId').value = "";
         document.getElementById('sdReqId').value = "";
+        document.getElementById('codeIssuedTo').value = "";
     }
 }
 
