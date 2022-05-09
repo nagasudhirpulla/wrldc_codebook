@@ -30,8 +30,8 @@ def getCodeRequests() -> dict:
     # payload = {'startDt': '2022-03-01', 'endDt': '2022-04-28'}
         
     # Api using APiHandler starts
-    startDate = '2022-01-03'
-    endDate = '2022-04-28'
+    startDate = '2022-05-09'
+    endDate = '2022-05-09'
     startDt = dt.datetime.strptime(startDate, '%Y-%m-%d')
     endDt = dt.datetime.strptime(endDate, '%Y-%m-%d')
     # print("API Handler")
