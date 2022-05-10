@@ -13,16 +13,6 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
             if (resp.hasOwnProperty("outages")) {
                 var outagesList = resp["outages"]
                 console.log(outagesList);
-                var stakeholders= [];
-                if(selOutageInfo_g["concernedStakeholders"]!= null)
-                {
-                    for(var x = 0; x < selOutageInfo_g["concernedStakeholders"].length; x++)
-                        stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
-                }
-                const requester = selOutageInfo_g["requester"];
-                if(!stakeholders.includes(requester)){
-                    stakeholders.push(requester);
-                }
                 if (outagesList.length > 0) {
                     // populate code request table only if number of rows > 0
                     var dtColumns = [
