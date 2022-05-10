@@ -93,7 +93,21 @@ def create():
         # create approved outage code
         if form.codeType.data == 'OUTAGE':
             # TODO complete this
-            isSuccess = False
+            isSuccess = cRepo.insertElementOutageCode(
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_description=form.codeDescription.data, code_execution_time=None,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
+            pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
+            pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data)
+            if isSuccess:
+                flash(
+                    'Successfully created the emergency outage code - {0}'.format(form.code.data), category='success')
+                return redirect(url_for('codes.list'))
+            else:
+                flash(
+                    'Could not create the emergency outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')
 
         elif form.codeType.data == 'APPROVED_OUTAGE':
             # TODO complete this
@@ -105,6 +119,13 @@ def create():
             pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
             pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
             pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data, pwc_sd_req_id=form.sdReqId.data)
+            if isSuccess:
+                flash(
+                    'Successfully created the approved outage code - {0}'.format(form.code.data), category='success')
+                return redirect(url_for('codes.list'))
+            else:
+                flash(
+                    'Could not create the approved outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')
 
         elif form.codeType.data == 'REVIVAL':
             isSuccess = cRepo.insertElementRevivalCode(
@@ -114,12 +135,19 @@ def create():
             pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
             pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
             pwc_rto_id=form.rtoId.data)
+            if isSuccess:
+                flash(
+                    'Successfully created the revival code - {0}'.format(form.code.data), category='success')
+                return redirect(url_for('codes.list'))
+            else:
+                flash(
+                    'Could not create the revival code - {0}, please check if element is already out'.format(form.code.data), category='danger')
         
-        if isSuccess:
-            flash(
-                'Successfully created the approved outage code - {0}'.format(form.code.data), category='success')
-            return redirect(url_for('codes.list'))
-        else:
-            flash(
-                'Could not create the approved outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')
+        # if isSuccess:
+        #     flash(
+        #         'Successfully created the approved outage code - {0}'.format(form.code.data), category='success')
+        #     return redirect(url_for('codes.list'))
+        # else:
+        #     flash(
+        #         'Could not create the approved outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')
     return render_template('codeRequest/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})
