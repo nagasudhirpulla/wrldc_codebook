@@ -13,11 +13,10 @@ codeRequestApiPage = Blueprint('codeRequestApi', __name__,
                         template_folder='templates')
 
 
-@codeRequestApiPage.route('/api/latestUnrevivedOutages', methods=['GET'])
+@codeRequestApiPage.route('/api/updateCodeRequest', methods=['GET'])
 @roles_required(['code_book_editor', 'code_book_viewer'])
-def getLatestUnrevivedOutages() -> dict:
+def updateLatestCodeRequest() -> dict:
     appConf = getConfig()
-    outages = getLatestUnrevOutages(appConf['appDbConnStr'], appConf['pwcDbConnStr'])
     return jsonify({"outages": outages})
 
 
@@ -31,7 +30,7 @@ def getCodeRequests() -> dict:
         
     # Api using APiHandler starts
     startDate = '2022-05-09'
-    endDate = '2022-05-09'
+    endDate = '2022-05-10'
     startDt = dt.datetime.strptime(startDate, '%Y-%m-%d')
     endDt = dt.datetime.strptime(endDate, '%Y-%m-%d')
     # print("API Handler")

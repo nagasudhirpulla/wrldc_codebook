@@ -60,10 +60,11 @@ class CreateCodeRequestForm(Form):
         validators=[validators.DataRequired(), validators.Length(min=1, max=250)])
     sdReqId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),
-        validators=[])
+        validators=[validators.Optional()]
+    )
     rtoId = h5fields.IntegerField(
         '', widget=h5widgets.NumberInput(min=0, step=1),
-        validators=[]
+        validators=[validators.Optional()]
     )
 
 
@@ -76,6 +77,7 @@ def create():
     oTypesRepo = OutageTypesRepo(appConf['pwcDbConnStr'])
     oTags = oTagsRepo.getRealTimeOutageTags()
     oTypes = oTypesRepo.getRealTimeOutageTypes()
+    a=form.validate()
     if request.method == 'POST':
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
@@ -87,15 +89,24 @@ def create():
         suppliedCodeStr = form.code.data
         if (not suppliedCodeStr == None) and (not suppliedCodeStr.strip() == ""):
             codeStr = getNewCodePlaceHolder()+suppliedCodeStr
-
+        isSuccess = False
         # create approved outage code
-        if form.codeType.data == "OUTAGE":
+        if form.codeType.data == 'OUTAGE':
+            # TODO complete this
             isSuccess = False
 
-        elif form.codeType.data == "APPROVED_OUTAGE":
-            isSuccess = False
+        elif form.codeType.data == 'APPROVED_OUTAGE':
+            # TODO complete this
+            isSuccess = cRepo.insertApprovedOutageCode(
+            code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
+            code_description=form.codeDescription.data, code_execution_time=None,
+            code_tags=form.codeTags.data, code_issued_by=loggedInUsername, code_issued_to=form.codeIssuedTo.data,
+            pwc_element_type_id=form.elementTypeId.data, pwc_element_id=form.elementId.data,
+            pwc_element_name=form.elementName.data, pwc_element_type=form.elementType.data,
+            pwc_outage_type_id=form.outageTypeId.data, pwc_outage_tag_id=form.outageTagId.data,
+            pwc_outage_type=form.outageType.data, pwc_outage_tag=form.outageTag.data, pwc_sd_req_id=form.sdReqId.data)
 
-        elif form.codeType.data == "REVIVAL":
+        elif form.codeType.data == 'REVIVAL':
             isSuccess = cRepo.insertElementRevivalCode(
             code_issue_time=form.codeIssueTime.data, code_str=codeStr, other_ldc_codes=form.otherLdcCodes.data,
             code_description=form.codeDescription.data, code_execution_time=None,
