@@ -26,7 +26,7 @@ class UpdateCodeRequestApiHandler():
             "code": code,
             "codeIssueTime": dt.datetime.strftime(codeIssueTime, '%Y-%m-%d')
         }
-        res = requests.get(self.UpdateCodeRequestApiUrl,
+        res = requests.post(self.UpdateCodeRequestApiUrl,
                             params=updateCodeRequestPayload, verify=False, auth=('903ad724-6136-4e51-bb17-d7a654b598f2', ''))
         data= res.json()
         # print(data)

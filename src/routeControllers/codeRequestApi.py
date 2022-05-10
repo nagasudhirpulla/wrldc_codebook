@@ -4,6 +4,7 @@ from src.repos.outages.outagesRepo import OutagesRepo
 from src.app.outages.getLatestUnrevOutages import getLatestUnrevOutages
 from src.appConfig import getConfig
 from src.services.codeRequestApiHandler import CodeRequestApiHandler
+from src.services.updateCodeRequestApiHandler import UpdateCodeRequestApiHandler
 from typing import List
 import requests 
 from wtforms import Form, StringField, validators, DateTimeField
@@ -13,11 +14,13 @@ codeRequestApiPage = Blueprint('codeRequestApi', __name__,
                         template_folder='templates')
 
 
-@codeRequestApiPage.route('/api/updateCodeRequest', methods=['GET'])
-@roles_required(['code_book_editor', 'code_book_viewer'])
-def updateLatestCodeRequest() -> dict:
+def updateLatestCodeRequest(codeReqId: int, isApproved: bool, code: str) -> bool:
     appConf = getConfig()
-    return jsonify({"outages": outages})
+    url = appConf['code_update_url']
+    updatesCode = UpdateCodeRequestApiHandler(url)
+    resp = updatesCode.updateCodeRequest(codeReqId, isApproved, code)
+    
+    return True
 
 
 @codeRequestApiPage.route('/api/pendingCodeRequests', methods=['GET'])
@@ -39,3 +42,5 @@ def getCodeRequests() -> dict:
     # Api using APiHandler ends
 
     return resp
+
+
