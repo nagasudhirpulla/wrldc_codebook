@@ -4,6 +4,7 @@ from wtforms import Form, StringField, validators, DateTimeField, BooleanField, 
 from wtforms.fields import html5 as h5fields
 from wtforms.widgets import html5 as h5widgets
 from wtforms.widgets import TextArea
+from src.repos.codes.getNextCodeForCodeRequest import getNextCodeForCodeRequest
 from src.repos.elements.elementsRepo import ElementsRepo
 from src.repos.codes.codesRepo import CodesRepo
 from src.repos.outageTags.outageTagsRepo import OutageTagsRepo
@@ -18,6 +19,9 @@ codeRequestPage = Blueprint('codeRequest', __name__,
 
 
 class CreateCodeRequestForm(Form):
+    codeReqId = h5fields.IntegerField(
+        '', widget=h5widgets.NumberInput(min=0, step=1),
+        validators=[validators.DataRequired()])
     code = StringField(
         'Code (Optional)', validators=[validators.Length(min=0, max=100)])
     otherLdcCodes = StringField(
@@ -78,7 +82,7 @@ def create():
     oTypesRepo = OutageTypesRepo(appConf['pwcDbConnStr'])
     oTags = oTagsRepo.getRealTimeOutageTags()
     oTypes = oTypesRepo.getRealTimeOutageTypes()
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
         
@@ -89,6 +93,9 @@ def create():
         suppliedCodeStr = form.code.data
         if (not suppliedCodeStr == None) and (not suppliedCodeStr.strip() == ""):
             codeStr = getNewCodePlaceHolder()+suppliedCodeStr
+
+        if suppliedCodeStr == "":
+            codeStr = getNextCodeForCodeRequest(appConf['appDbConnStr'])
         isSuccess = False
         # create approved outage code
         if form.codeType.data == 'OUTAGE':
@@ -104,6 +111,7 @@ def create():
             if isSuccess:
                 flash(
                     'Successfully created the emergency outage code - {0}'.format(form.code.data), category='success')
+                updateLatestCodeRequest(form.codeReqId.data, True, codeStr)
                 return redirect(url_for('codes.list'))
             else:
                 flash(
@@ -122,6 +130,7 @@ def create():
             if isSuccess:
                 flash(
                     'Successfully created the approved outage code - {0}'.format(form.code.data), category='success')
+                updateLatestCodeRequest(form.codeReqId.data, True, codeStr)
                 return redirect(url_for('codes.list'))
             else:
                 flash(
@@ -138,7 +147,7 @@ def create():
             if isSuccess:
                 flash(
                     'Successfully created the revival code - {0}'.format(form.code.data), category='success')
-                
+                updateLatestCodeRequest(form.codeReqId.data, True, codeStr)
                 return redirect(url_for('codes.list'))
             else:
                 flash(

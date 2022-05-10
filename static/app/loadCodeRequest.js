@@ -13,8 +13,18 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
             if (resp.hasOwnProperty("outages")) {
                 var outagesList = resp["outages"]
                 console.log(outagesList);
+                var stakeholders= [];
+                if(selOutageInfo_g["concernedStakeholders"]!= null)
+                {
+                    for(var x = 0; x < selOutageInfo_g["concernedStakeholders"].length; x++)
+                        stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
+                }
+                const requester = selOutageInfo_g["requester"];
+                if(!stakeholders.includes(requester)){
+                    stakeholders.push(requester);
+                }
                 if (outagesList.length > 0) {
-                    // populate outages table only if number of rows > 0
+                    // populate code request table only if number of rows > 0
                     var dtColumns = [
                         { title: "desired Execution Start Time", data: "desiredExecutionStartTime" },
                         { title: "desired Execution End Time", data: "desiredExecutionEndTime" },
@@ -22,16 +32,9 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         { title: "Element Type", data: "elementType" },
                         { title: "Reason", data: "description" },
                         { title: "Outage Type", data: "outageType" },
-                        // { title: "OCC Number", data: "occName" },
                         { title: "Requester", data: "requester" },
-                        // { title: "Dailt/Cont.", data: "dailyCont" },
                         { title: "Requester Remarks", data: "remarks" },
-                        // { title: "Availing Status", data: "availingStatus" },
-                        // { title: "Approval Status", data: "approvalStatus" },
-                        // { title: "NLDC Approval Status", data: "nldcApprovalStatus" },
-                        { title: "RPC Remarks", data: "remarks" },
-                        { title: "RLDC Remarks", data: "remarks" },
-                        { title: "NLDC Remarks", data: "remarks" },
+                        { title: "Concerned Stakeholders", data: "remarks" },
                         { title: "Code Type", data: "codeType.value" }
                     ];
 
