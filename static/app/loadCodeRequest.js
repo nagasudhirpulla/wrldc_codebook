@@ -5,6 +5,8 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
         $('#' + tableId + ' thead').empty();
         $('#' + tableId + ' tfoot').remove();
     }
+    
+    
     $.ajax({
         url: fetchUrl,
         type: 'get',
@@ -20,6 +22,7 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         stakeholders.push(y);
                 }
                 if (outagesList.length > 0) {
+                   
                     // populate code request table only if number of rows > 0
                     var dtColumns = [
                         { title: "desired Execution Start Time", data: "desiredExecutionStartTime" },
@@ -30,7 +33,6 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         { title: "Outage Type", data: "outageType" },
                         { title: "Requester", data: "requester" },
                         { title: "Requester Remarks", data: "remarks" },
-                        { title: "Concerned Stakeholders", data: "remarks" },
                         { title: "Code Type", data: "codeType.value" }
                     ];
 
