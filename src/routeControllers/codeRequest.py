@@ -138,7 +138,7 @@ def create():
             if isSuccess:
                 flash(
                     'Successfully created the revival code - {0}'.format(form.code.data), category='success')
-                
+                updateLatestCodeRequest(form, True, codeStr)
                 return redirect(url_for('codes.list'))
             else:
                 flash(

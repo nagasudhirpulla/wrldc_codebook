@@ -13,6 +13,12 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
             if (resp.hasOwnProperty("outages")) {
                 var outagesList = resp["outages"]
                 console.log(outagesList);
+                var stakeholders= [];
+                for(var x = 0; x < outagesList.length; x++)
+                {
+                    for(var y = 0; y < outagesList[x].concernedStakeholders.length; y++)
+                        stakeholders.push(y);
+                }
                 if (outagesList.length > 0) {
                     // populate outages table only if number of rows > 0
                     var dtColumns = [
@@ -26,12 +32,6 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         { title: "Requester", data: "requester" },
                         // { title: "Dailt/Cont.", data: "dailyCont" },
                         { title: "Requester Remarks", data: "remarks" },
-                        // { title: "Availing Status", data: "availingStatus" },
-                        // { title: "Approval Status", data: "approvalStatus" },
-                        // { title: "NLDC Approval Status", data: "nldcApprovalStatus" },
-                        { title: "RPC Remarks", data: "remarks" },
-                        { title: "RLDC Remarks", data: "remarks" },
-                        { title: "NLDC Remarks", data: "remarks" },
                         { title: "Code Type", data: "codeType.value" }
                     ];
 
