@@ -18,8 +18,19 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                 var stakeholders= [];
                 for(var x = 0; x < outagesList.length; x++)
                 {
+                    var stakeholders= [];
                     for(var y = 0; y < outagesList[x].concernedStakeholders.length; y++)
-                        stakeholders.push(y);
+                        stakeholders.push(outagesList[x].concernedStakeholders[y].item2);
+                        // console.log(stakeholders)
+                    const requester = outagesList[x].requester;
+                    
+                    if(!stakeholders.includes(requester)){
+                        stakeholders.push(requester);}
+                    stakeholdersList = ({
+                        key:   "testStakeholders",
+                        value: stakeholders
+                    });
+                    outagesList[x][stakeholdersList.key] = stakeholdersList.value;
                 }
                 if (outagesList.length > 0) {
                    
@@ -33,6 +44,7 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         { title: "Outage Type", data: "outageType" },
                         { title: "Requester", data: "requester" },
                         { title: "Requester Remarks", data: "remarks" },
+                        { title: "Concerned Stakeholders", data: "testStakeholders" },
                         { title: "Code Type", data: "codeType.value" }
                     ];
 

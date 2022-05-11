@@ -54,18 +54,19 @@ function populateSelOutageInForm() {
         document.getElementById('rtoId').value = selOutageInfo_g["outageId"];
         document.getElementById('codeType').value = selOutageInfo_g["codeType"].value;
         document.getElementById('codeReqId').value = selOutageInfo_g["id"];
-        var stakeholders= [];
-        if(selOutageInfo_g["concernedStakeholders"]!= null)
-        {
-            for(var x = 0; x < selOutageInfo_g["concernedStakeholders"].length; x++)
-                stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
-        }
-        const requester = selOutageInfo_g["requester"];
-        if(!stakeholders.includes(requester)){
-            stakeholders.push(requester);
-        }
+        // var stakeholders= [];
+        // if(selOutageInfo_g["concernedStakeholders"]!= null)
+        // {
+        //     for(var x = 0; x < selOutageInfo_g["concernedStakeholders"].length; x++)
+        //         stakeholders.push(selOutageInfo_g.concernedStakeholders[x].item2);
+        // }
+        // const requester = selOutageInfo_g["requester"];
+        // if(!stakeholders.includes(requester)){
+        //     stakeholders.push(requester);
+        // }
         // console.log(stakeholders)
-        document.getElementById('codeIssuedTo').value = stakeholders.join(", ");
+        // document.getElementById('codeIssuedTo').value = stakeholders.join(", ");
+        document.getElementById('codeIssuedTo').value = selOutageInfo_g["testStakeholders"];
     } else {
         document.getElementById('elementName').value = "";
         document.getElementById('elementId').value = "";
