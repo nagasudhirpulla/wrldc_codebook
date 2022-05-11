@@ -53,6 +53,7 @@ function populateSelOutageInForm() {
         document.getElementById('sdReqId').value = selOutageInfo_g["outageRequestId"];
         document.getElementById('rtoId').value = selOutageInfo_g["outageId"];
         document.getElementById('codeType').value = selOutageInfo_g["codeType"].value;
+        document.getElementById('codeReqId').value = selOutageInfo_g["id"];
         var stakeholders= [];
         if(selOutageInfo_g["concernedStakeholders"]!= null)
         {
@@ -74,6 +75,7 @@ function populateSelOutageInForm() {
         document.getElementById('rtoId').value = "" ;
         document.getElementById('codeType').value ="" ;
         document.getElementById('codeIssuedTo').value = "";
+        document.getElementById('codeReqId').value ="" ;
     }
 }
 

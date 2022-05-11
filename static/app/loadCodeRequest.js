@@ -20,7 +20,7 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         stakeholders.push(y);
                 }
                 if (outagesList.length > 0) {
-                    // populate outages table only if number of rows > 0
+                    // populate code request table only if number of rows > 0
                     var dtColumns = [
                         { title: "desired Execution Start Time", data: "desiredExecutionStartTime" },
                         { title: "desired Execution End Time", data: "desiredExecutionEndTime" },
@@ -28,10 +28,9 @@ function loadCodeRequest(fetchUrl, tableId, onRowSelect) {
                         { title: "Element Type", data: "elementType" },
                         { title: "Reason", data: "description" },
                         { title: "Outage Type", data: "outageType" },
-                        // { title: "OCC Number", data: "occName" },
                         { title: "Requester", data: "requester" },
-                        // { title: "Dailt/Cont.", data: "dailyCont" },
                         { title: "Requester Remarks", data: "remarks" },
+                        { title: "Concerned Stakeholders", data: "remarks" },
                         { title: "Code Type", data: "codeType.value" }
                     ];
 
