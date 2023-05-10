@@ -43,6 +43,7 @@
             <th>Tags</th>
             <th>Issued By</th>
             <th>Actions</th>
+            <th>Is Code Cancelled</th>
         </tr>
     </thead>    
     <tbody>
@@ -69,6 +70,7 @@
                 <span>|</span>
                 <a href="{{ url_for('codes.delete', codeId=item.id) }}">Delete</a>
             </td>
+            <td>{{item.isCodeCancelled}}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -89,6 +91,7 @@
             <th>Tags</th>
             <th>Issued By</th>
             <th>Actions</th>
+            <th>Is Code Cancelled</th>
         </tr>
     </tfoot>
 </table>
@@ -128,7 +131,7 @@ $(document).ready(function() {
         order: [[1, "desc"]],
         columnDefs: [
             {
-                "targets": [0],
+                "targets": [0,15],
                 "visible": false,
                 "searchable": false
             }
