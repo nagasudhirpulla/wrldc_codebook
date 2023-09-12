@@ -9,6 +9,7 @@ from src.appConfig import getConfig
 from src.security.decorators import role_required
 from src.app.externalOutages.createRealTimeOutage import createRealTimeOutage
 from src.app.externalOutages.checkIfElementIsOut import checkIfElementIsOut
+from src.app.externalOutages.updateRtoRevivalData import updateRtoRevivalData
 
 realTimeOutagePage = Blueprint('realTimeOutage', __name__,
                                template_folder='templates')
@@ -86,3 +87,33 @@ def create():
             else:
                 flash('Could not create the real-time outage', category='danger')
     return render_template('realTimeOutage/create.html.j2', form=form, data={"oTags": oTags, "oTypes": oTypes})
+
+
+class CreateElementOutageRevivalForm(Form):
+    rtoId = h5fields.IntegerField(
+        '', widget=h5widgets.NumberInput(min=0, step=1),
+        validators=[validators.DataRequired()]
+    )
+    revivalRemarks = StringField(
+        'Revival Remarks', validators=[validators.DataRequired(), validators.Length(min=1, max=500)], widget=TextArea(), default="To Normalize")
+    revivalTime = DateTimeField(
+        'Revival Time', format='%Y-%m-%d %H:%M', validators=[validators.DataRequired()])
+
+
+@realTimeOutagePage.route('/revive', methods=['GET', 'POST'])
+@role_required('code_book_editor')
+def revive():
+    form = CreateElementOutageRevivalForm(request.form)
+    appConf = getConfig()
+    pwcDbConnStr = appConf['pwcDbConnStr']
+    if request.method == 'POST' and form.validate():
+        # edit real time outage
+        rtoId = form.rtoId.data
+        isSuccess = updateRtoRevivalData(pwcDbConnStr=pwcDbConnStr, rtoId=rtoId,
+                                         revivalDt=form.revivalTime.data, remarks=form.revivalRemarks.data)
+        if isSuccess:
+            flash(
+                'Successfully revived the real-time outage with id - {0}'.format(rtoId), category='success')
+        else:
+            flash('Could not revive the real-time outage', category='danger')
+    return render_template('realTimeOutage/revive.html.j2', form=form)

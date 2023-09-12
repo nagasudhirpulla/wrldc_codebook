@@ -1,0 +1,59 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Revive Real Time Outage{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h3>Revive Real Time Outage</h3>
+<table id="displayTable" class="display table table-striped table-bordered table-hover table-responsive w-auto">
+<thead></thead>
+</table>
+
+{% from "_formhelpers.html.j2" import render_field %}
+<form method="post">
+  <h4><span id="selOutageDisplaySpan">Please select an Outage in the above table...</span></h4>
+  <dl>
+    {{ render_field(form.revivalTime, class="datetimepicker") }}
+    {{ render_field(form.revivalRemarks) }}
+    <dt><input type="submit" value="Revive Outage" class="btn btn-success"/></dt>
+    {{ render_field(form.rtoId, readonly="true", hidden="true", showErrors="false") }}
+  </dl> 
+</form>
+
+<br/>
+
+<p><a href="{{ url_for('codes.list') }}">< Back to Codes List</a></p>
+{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/fixedHeader.dataTables.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datatables/select.bootstrap4.min.css') }}">
+<script type="application/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery_ui/jquery-ui.css') }}">
+<script src="{{ url_for('static', filename='jquery_ui/jquery-ui.js') }}"></script>
+
+<script type="application/javascript" src="{{ url_for('static', filename='app/loadLatestUnrevivedOutages.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/moment/min/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='datetime_picker/js/bootstrap-datetimepicker.min.js') }}"></script>
+<link href="{{ url_for('static', filename='datetime_picker/css/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet"/>
+<script type="application/javascript" src="{{ url_for('static', filename='app/setupDatetimepicker.js') }}"></script>
+<script type="application/javascript">
+  var outagesFetchFetchUrl_g = "{{ url_for('outages.getLatestUnrevivedOutages') }}";
+</script>
+<script src="{{ url_for('static', filename='app/createRealTimeRevivalPage.js') }}"></script>
+{% endblock %}
