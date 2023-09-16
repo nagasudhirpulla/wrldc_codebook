@@ -24,7 +24,7 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
         FROM
             reporting_web_ui_uat.REAL_TIME_OUTAGE outages
         LEFT JOIN reporting_web_ui_uat.outage_reason reas ON
-            reas.id = outages.reason_id
+            reas.id = outages.reason_id AND reas.OUTAGE_TYPE_ID = outages.shut_down_type
         LEFT JOIN reporting_web_ui_uat.entity_master ent_master ON
             ent_master.id = outages.ENTITY_ID
         LEFT JOIN reporting_web_ui_uat.shutdown_outage_tag sd_tag ON

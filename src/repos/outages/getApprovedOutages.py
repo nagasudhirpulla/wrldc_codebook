@@ -54,7 +54,7 @@ def getApprovedOutages(pwcDbConnStr: str, targetDt: dt.datetime) -> List[IApprov
         LEFT JOIN REPORTING_WEB_UI_UAT.ENTITY_MASTER em ON
             em.ID = req.ENTITY_ID
         LEFT JOIN REPORTING_WEB_UI_UAT.OUTAGE_REASON or2 ON
-            or2.ID = req.REASON_ID
+            or2.ID = req.REASON_ID AND or2.OUTAGE_TYPE_ID = req.SHUT_DOWN_TYPE_ID
         LEFT JOIN REPORTING_WEB_UI_UAT.OCC_MASTER om ON
             om.OCC_ID = req.OCC_ID
         LEFT JOIN REPORTING_WEB_UI_UAT.USER_DETAILS ud ON
