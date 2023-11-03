@@ -14,7 +14,8 @@ def getGeneratingUnitsForDisplay(pwcDbConnStr: str) -> List[IGenUnit]:
                 FROM
                     REPORTING_WEB_UI_UAT.GENERATING_UNIT gu
                 LEFT JOIN REPORTING_WEB_UI_UAT.TRANS_ELEMENT_TYPE_MASTER vol ON
-                    vol.TRANS_ELEMENT_TYPE_ID = gu.GENERATING_VOLTAGE_KV"""
+                    vol.TRANS_ELEMENT_TYPE_ID = gu.GENERATING_VOLTAGE_KV
+                WHERE gu.ACTIVE=1"""
     targetColumns = ['ELEMENT_ID', 'ELEMENT_NAME', 'UNIT_NUMBER',
                      'INSTALLED_CAPACITY', 'MVA_CAPACITY', 'GENERATING_VOLTAGE']
     elems: List[IGenUnit] = []
