@@ -2,17 +2,18 @@ from flask import Blueprint, redirect, request, url_for, session, render_templat
 import requests
 import json
 from oauthlib.oauth2 import WebApplicationClient
+# from src.config.appConfig import getAppConfig
+from src.appConfig import getConfig
 import urllib.parse
+from src.security.user import User
 
 from flask_login import (
     LoginManager,
     login_user,
     logout_user,
-    login_required,
+    login_required
 )
 
-from src.appConfig import getConfig
-from src.security.user import User
 
 login_manager = LoginManager()
 
@@ -162,14 +163,13 @@ def callback():
         unique_id = userInfo["sub"]
         users_email = userInfo["email"]
         users_name = userInfo["preferred_username"]
-        uRoles = userInfo["role"]
+        uRoles = userInfo['resource_access'][oauth_app_client_id]["roles"]
         if not(isinstance(uRoles, list)):
             uRoles = [uRoles]
     else:
-        return "User email not available or not verified by Google.", 400
+        return "User email not available or not verified", 400
 
     # Create a user in our db with the information provided
-    # by Google
     user = User(
         id_=unique_id, name=users_name, email=users_email, roles=uRoles
     )
@@ -179,7 +179,8 @@ def callback():
     # Begin user session by logging the user in
     login_user(user)
     # Send user back to homepage
-    return redirect(url_for("index"))
+    return redirect(urllib.parse.urljoin(
+            originalRequestScheme+originalHost, url_for("index")))
 
 
 @oauthPage.route("/logout")
@@ -188,23 +189,14 @@ def logout():
     # logout from this application
     logout_user()
     appConfig = getConfig()
-    # oauth_app_client_id = appConfig["oauth_app_client_id"]
-
-    # OAuth2 client setup
-    # client = WebApplicationClient(oauth_app_client_id)
-
-    # redirect to oauth provider for logout
-    # https://identityserver4.readthedocs.io/en/latest/endpoints/endsession.html
-    # https://connect2id.com/products/server/docs/api/logout
     oauth_provider_cfg = get_oauth_provider_cfg()
+    requestScheme = 'https://' if request.is_secure else 'http://'
+    pathForCallback = url_for("index")
+    redirectUri = urllib.parse.urljoin(
+        requestScheme+request.host, pathForCallback)
     if "id_token" in client.token:
         endSessionEndpoint = oauth_provider_cfg["end_session_endpoint"]
         idToken = client.token["id_token"]
-        # make redirect url as home page
-        requestScheme = 'https://' if request.is_secure else 'http://'
-        pathForCallback = url_for("index")
-        redirectUri = urllib.parse.urljoin(
-            requestScheme+request.host, pathForCallback)
         # handle reverse proxy
         if 'x-original-host' in request.headers:
             # manipulate redirectUrl as per reverse proxy host
@@ -216,5 +208,6 @@ def logout():
         logoutUrl = "{0}?id_token_hint={1}&post_logout_redirect_uri={2}".format(
             endSessionEndpoint, idToken, redirectUri)
         return redirect(logoutUrl)
+        
     else:
-        return redirect(url_for("index"))
+        return redirect(redirectUri)

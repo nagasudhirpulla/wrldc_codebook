@@ -21,6 +21,7 @@ from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 import werkzeug
 import json
 from src.app.utils.defaultJsonEncoder import defaultJsonEncoder
+from src.utils.returnUri import redirectTo
 
 codesPage = Blueprint('codes', __name__,
                       template_folder='templates')
@@ -91,7 +92,7 @@ def delete(codeId: int):
         isSuccess = cRepo.deleteCode(codeId)
         if isSuccess:
             flash('Successfully deleted the code', category='success')
-            return redirect(url_for('codes.list'))
+            return redirectTo(url_for('codes.list'))
         else:
             flash('Could not delete the code', category='error')
     return render_template('code/delete.html.j2', data={'code': code})
@@ -117,7 +118,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}'.format(form.code.data), category='danger')
-                return redirect(url_for('codes.list'))
+                return redirectTo(url_for('codes.list'))
         else:
             form = createGenericCodeEditForm(code)
         return render_template('genericCode/edit.html.j2', form=form)
@@ -133,7 +134,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}'.format(form.code.data), category='danger')
-                return redirect(url_for('codes.list'))
+                return redirectTo(url_for('codes.list'))
         else:
             form = createElementCodeEditForm(code)
         return render_template('elementCode/edit.html.j2', form=form)
@@ -149,7 +150,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}, please check if element is already out'.format(form.code.data), category='danger')
-                return redirect(url_for('codes.list'))
+                return redirectTo(url_for('codes.list'))
         else:
             form = createElementOutageCodeEditForm(code)
         oTagsRepo = OutageTagsRepo(appConf['pwcDbConnStr'])
@@ -170,7 +171,7 @@ def edit(codeId: int):
                 else:
                     flash(
                         'Could not edit the code - {0}, please check if element is already in service'.format(form.code.data), category='danger')
-                return redirect(url_for('codes.list'))
+                return redirectTo(url_for('codes.list'))
         else:
             form = createElementRevivalCodeEditForm(code)
         return render_template('elementRevivalCode/edit.html.j2', form=form,

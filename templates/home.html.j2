@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-<img id="left-curtain" src="{{url_for('static', filename='img/curtain1.jpg')}}" onclick="open_curtain()"/>
-<img id="right-curtain" src="{{url_for('static', filename='img/curtain1.jpg')}}" onclick="open_curtain()"/>
+<!--<img id="left-curtain" src="{{url_for('static', filename='img/curtain1.jpg')}}" onclick="open_curtain()"/>-->
+<!--<img id="right-curtain" src="{{url_for('static', filename='img/curtain1.jpg')}}" onclick="open_curtain()"/>-->
 <div class="text-center cover-container d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto"></header>
     <main role="main" class="inner cover">
@@ -91,7 +91,7 @@ body {
 
 jQuery(document).ready(function($) {
   // setup curtain close upon click
-  document.getElementsByClassName("mr-2 d-none d-md-inline text-current")[0].onclick = closeCurtain;
+  //document.getElementsByClassName("mr-2 d-none d-md-inline text-current")[0].onclick = closeCurtain;
 });
 
 function closeCurtain(){

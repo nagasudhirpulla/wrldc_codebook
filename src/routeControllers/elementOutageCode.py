@@ -10,6 +10,7 @@ from src.repos.outageTypes.outageTypesRepo import OutageTypesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
 from src.app.utils.getNewCodePlaceHolder import getNewCodePlaceHolder
+from src.utils.returnUri import redirectTo
 
 elementOutageCodePage = Blueprint('elementOutageCode', __name__,
                                   template_folder='templates')
@@ -69,6 +70,7 @@ def create():
     if request.method == 'POST' and form.validate():
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
+        # loggedInUsername = 'wrldccr'
         # initialize new code as None
         codeStr = None
 
@@ -89,7 +91,7 @@ def create():
         if isSuccess:
             flash(
                 'Successfully created the outage code - {0}'.format(form.code.data), category='success')
-            return redirect(url_for('codes.list'))
+            return redirectTo(url_for('codes.list'))
         else:
             flash(
                 'Could not create the outage code - {0}, please check if element is already out'.format(form.code.data), category='danger')

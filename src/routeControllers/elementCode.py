@@ -8,6 +8,7 @@ from src.repos.codes.codesRepo import CodesRepo
 from src.appConfig import getConfig
 from src.security.decorators import role_required
 from src.app.utils.getNewCodePlaceHolder import getNewCodePlaceHolder
+from src.utils.returnUri import redirectTo
 
 elementCodePage = Blueprint('elementCode', __name__,
                             template_folder='templates')
@@ -48,6 +49,7 @@ def create():
         appConf = getConfig()
         cRepo = CodesRepo(appConf['appDbConnStr'])
         loggedInUsername = session['SUSER']['name']
+        # loggedInUsername = 'wrldccr'
         # initialize new code as None
         codeStr = None
 
@@ -66,7 +68,7 @@ def create():
         if isSuccess:
             flash(
                 'Successfully created the element code - {0}'.format(form.code.data), category='success')
-            return redirect(url_for('codes.list'))
+            return redirectTo(url_for('codes.list'))
         else:
             flash(
                 'Could not create the element code - {0}'.format(form.code.data), category='danger')

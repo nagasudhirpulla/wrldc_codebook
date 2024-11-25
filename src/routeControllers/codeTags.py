@@ -3,6 +3,7 @@ from wtforms import Form, StringField, validators
 from src.repos.codeTags.codeTagsRepo import CodeTagsRepo
 from src.appConfig import getConfig
 from src.security.decorators import roles_required, role_required
+from src.utils.returnUri import redirectTo
 
 codeTagsPage = Blueprint('codeTags', __name__,
                          template_folder='templates')
@@ -18,7 +19,7 @@ def getCodeTags():
 
 
 @codeTagsPage.route('/', methods=['GET'])
-@roles_required(['code_book_editor', 'code_book_viewer'])
+@roles_required(['code_book_editor'])
 def list():
     appConf = getConfig()
     cTagsRepo = CodeTagsRepo(appConf['appDbConnStr'])
@@ -36,7 +37,7 @@ def delete(codeTagId: int):
         isSuccess = cTagsRepo.deleteCodeTag(codeTagId)
         if isSuccess:
             flash('Successfully deleted the code tag suggestion', category='success')
-            return redirect(url_for('codeTags.list'))
+            return redirectTo(url_for('codeTags.list'))
         else:
             flash('Could not delete the code tag suggestion', category='error')
     return render_template('codeTag/delete.html.j2', data={'codeTag': codeTag})
@@ -67,7 +68,7 @@ def create():
         if isSuccess:
             flash(
                 'Successfully created the code tag - {0}'.format(form.codeTag.data), category='success')
-            return redirect(url_for('codeTags.list'))
+            return redirectTo(url_for('codeTags.list'))
         else:
             flash(
                 'Could not create the code tag - {0}'.format(form.codeTag.data), category='danger')
