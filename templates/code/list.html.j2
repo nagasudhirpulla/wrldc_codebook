@@ -41,6 +41,7 @@
             <th>Outage Type</th>
             <th>Outage Tag</th>
             <th>Tags</th>
+            <th>Shutdown Request ID</th>
             <th>Issued By</th>
             <th>Actions</th>
             <th>Is Code Cancelled</th>
@@ -62,6 +63,7 @@
             <td>{{item.pwcOutageType if item.pwcOutageType}}</td>
             <td>{{item.pwcOutageTag if item.pwcOutageTag}}</td>
             <td>{{item.codeTags if item.codeTags}}</td>
+            <td>{{item.pwcSdReqId if item.pwcSdReqId}}</td>
             <td>{{item.codeIssuedBy}}</td>
             <td style="max-width:2em;">
                 <a href="{{ url_for('codes.edit', codeId=item.id) }}">Edit</a>
@@ -89,6 +91,7 @@
             <th>Outage Type</th>
             <th>Outage Tag</th>
             <th>Tags</th>
+            <th>Shutdown Request ID</th>
             <th>Issued By</th>
             <th>Actions</th>
             <th>Is Code Cancelled</th>
@@ -131,7 +134,7 @@ $(document).ready(function() {
         order: [[1, "desc"]],
         columnDefs: [
             {
-                "targets": [0,15],
+                "targets": [0,16],
                 "visible": false,
                 "searchable": false
             }
