@@ -2,6 +2,7 @@ from src.typeDefs.unRevOutage import IUnRevOutage
 from typing import List
 import cx_Oracle
 from src.app.utils.getTimeDeltaFromDbStr import getTimeDeltaFromDbStr
+import datetime as dt
 
 
 def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
@@ -14,6 +15,8 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
         rto.elementname,
         trunc(rto.outage_date) AS outage_date,
         rto.outage_time,
+        trunc(rto.expected_date) AS expected_date,
+        rto.expected_time,
         rto.reason,
         rto.shutdown_tag,
         rto.outage_remarks
@@ -46,7 +49,7 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
         rto.out_date_time DESC"""
     targetColumns = ['ID', 'ENTITY_ID', 'ELEMENT_ID', 'ELEMENTTYPE',
                      'SHUT_DOWN_TYPE_NAME', 'ELEMENTNAME', 'OUTAGE_DATE',
-                     'OUTAGE_TIME', 'REASON', 'SHUTDOWN_TAG', 'OUTAGE_REMARKS']
+                     'OUTAGE_TIME', 'EXPECTED_DATE', 'EXPECTED_TIME', 'REASON', 'SHUTDOWN_TAG', 'OUTAGE_REMARKS']
     outages: List[IUnRevOutage] = []
     colNames = []
     dbRows = []
@@ -88,6 +91,16 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
             hour=0, minute=0, second=0, microsecond=0)
         # add out time to out date to get outage timestamp
         outageDt += outTimeDelta
+        expectedRevDt = row[colNames.index("EXPECTED_DATE")]
+        if not expectedRevDt == None:
+            expectedRevDt = expectedRevDt.replace(
+                hour=0, minute=0, second=0, microsecond=0)
+            expectedRevTimeStr = row[colNames.index("EXPECTED_TIME")]
+            expectedRevTimeDelta = getTimeDeltaFromDbStr(expectedRevTimeStr)
+            expectedRevDt += expectedRevTimeDelta
+            expectedRevDt = dt.datetime.strftime(expectedRevDt, "%Y-%m-%d %H:%M:%S")
+        else:
+            expectedRevDt = ''
         outage: IUnRevOutage = {
             "rtoId": row[colNames.index("ID")],
             "elTypeId": row[colNames.index("ENTITY_ID")],
@@ -98,7 +111,8 @@ def getLatestUnrevOutages(pwcDbConnStr: str) -> List[IUnRevOutage]:
             "outageDt": outageDt,
             "reason": row[colNames.index("REASON")],
             "outageTag": row[colNames.index("SHUTDOWN_TAG")],
-            "outageRemarks": row[colNames.index("OUTAGE_REMARKS")]
+            "outageRemarks": row[colNames.index("OUTAGE_REMARKS")],
+            "expectedRevDt": expectedRevDt
         }
         outages.append(outage)
 

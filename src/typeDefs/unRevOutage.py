@@ -10,6 +10,7 @@ class IUnRevOutage(TypedDict):
     outageType: str
     elName: str
     outageDt: str
+    expectedRevDt: str
     reason: str
     outageTag: str
     outageRemarks: str
@@ -23,6 +24,7 @@ class IUnRevOutageWithCode(TypedDict):
     outageType: str
     elName: str
     outageDt: str
+    expectedRevDt: str
     reason: str
     outageTag: str
     outageRemarks: str

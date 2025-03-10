@@ -24,6 +24,7 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                         { title: "Outage Tag", data: "outageTag" },
                         { title: "Reason", data: "reason" },
                         { title: "Remarks", data: "outageRemarks" },
+                        { title: "Expected Revival", data: "expectedRevDt" },
                         { title: "Element Type", data: "elType" }
                     ];
 
