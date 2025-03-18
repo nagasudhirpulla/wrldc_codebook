@@ -18,13 +18,13 @@ function loadLatestUnrevivedOutages(fetchUrl, outagesTableId, onRowSelect) {
                     // var colNames = Object.keys(outagesList[0]);
                     var dtColumns = [
                         { title: "Outage Time", data: "outageDt" },
+                        { title: "Expected Revival", data: "expectedRevDt" },
                         { title: "Element Name", data: "elName" },
                         { title: "Code", data: "code" },
                         { title: "Outage Type", data: "outageType" },
                         { title: "Outage Tag", data: "outageTag" },
                         { title: "Reason", data: "reason" },
                         { title: "Remarks", data: "outageRemarks" },
-                        { title: "Expected Revival", data: "expectedRevDt" },
                         { title: "Element Type", data: "elType" }
                     ];
 
