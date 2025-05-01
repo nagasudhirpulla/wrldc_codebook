@@ -42,6 +42,7 @@
             <th>Outage Tag</th>
             <th>Tags</th>
             <th>Shutdown Request ID</th>
+            <th>RTO ID</th>
             <th>Issued By</th>
             <th>Actions</th>
             <th>Is Code Cancelled</th>
@@ -64,6 +65,7 @@
             <td>{{item.pwcOutageTag if item.pwcOutageTag}}</td>
             <td>{{item.codeTags if item.codeTags}}</td>
             <td>{{item.pwcSdReqId if item.pwcSdReqId}}</td>
+            <td>{{item.pwcRtoId if item.pwcRtoId}}</td>
             <td>{{item.codeIssuedBy}}</td>
             <td style="max-width:2em;">
                 <a href="{{ url_for('codes.edit', codeId=item.id) }}">Edit</a>
@@ -92,6 +94,7 @@
             <th>Outage Tag</th>
             <th>Tags</th>
             <th>Shutdown Request ID</th>
+            <th>RTO ID</th>
             <th>Issued By</th>
             <th>Actions</th>
             <th>Is Code Cancelled</th>
